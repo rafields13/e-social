@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="pt-BR" ng-app="myApp">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,158 +10,202 @@
     <script src="../node_modules/angular/angular.min.js"></script>
     <script src="index.js"></script>
 </head>
+
 <body ng-controller="MyCtrl">
 
-
-<!--Div com Menu-->
-<div class="grid grid-rows-[auto_1fr] h-screen">
-    <div>
-        <div class="flex justify-between items-center px-4 py-2 bg-[#0061AF]">
-            <div class="flex space-x-6">
-                <div class="relative">
-                    <button type="button"
-                            class="text-white font-medium border border-white rounded-sm flex justify-center items-center p-2 gap-2 hover:bg-[#1E4D8A] hover:cursor-pointer group transition-transform duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                             class="transition duration-200 group-hover:rotate-90">
-                            <path d="M10 16.6667V10V16.6667ZM10 10V3.33333V10ZM10 10H16.6667H10ZM10 10H3.33334H10Z"
-                                  fill="#2563EB"/>
-                            <path d="M10 16.6667V10M10 10V3.33333M10 10H16.6667M10 10H3.33334" stroke="white"
-                                  stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        <span>Cadastro de Usuário</span>
-                    </button>
-                </div>
-                <div class="relative inline-block">
-                    <button type="button"
-                            class="text-white font-medium border border-white rounded-sm flex justify-center items-center p-2 gap-2 update-button hover:bg-[#1E4D8A] group transition-transform duration-200"
-                            ng-mouseenter="showUpdateMenu = true"
-                            ng-mouseleave="checkCloseUpdateDropdown()">
-                        <span>Atualização de Usuário</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                             class="transition duration-200"
-                             ng-class="{'rotate-180': showUpdateMenu, 'rotate-0': !showUpdateMenu}">
-                            <path d="M5.83331 8.33333L9.99998 12.5L14.1666 8.33333" stroke="white" stroke-width="1.5"
-                                  stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <div class="absolute left-0 mt-2 bg-white shadow-lg transition-opacity duration-200 w-auto min-w-[180px] p-0"
-                         ng-class="{'opacity-100 visible': showUpdateMenu, 'opacity-0 invisible': !showUpdateMenu}"
-                         ng-mouseenter="showUpdateMenu = true"
-                         ng-mouseleave="checkCloseUpdateDropdown()">
-                        <div class="flex flex-col items-center p-0">
-                            <button class="flex items-center w-full p-2 gap-2 text-[#0061AF] font-medium border border-transparent rounded-sm group hover:bg-[#2563EB] hover:cursor-pointer update-dropdown group">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 15"
-                                     class="w-5 h-5 fill-[#0061AF] group-hover:fill-white"
-                                     fill="currentColor">
-                                    <g clip-path="url(#clip0_137_3009)">
-                                        <path d="M12.7773 13.8887C12.7773 14.3926 12.3688 14.8012 11.8648 14.8012H0.912513C0.408556 14.8012 0 14.3926 0 13.8887C0 10.8645 2.45176 8.41276 5.47594 8.41276H7.30139C10.3256 8.41276 12.7773 10.8645 12.7773 13.8887ZM6.38845 0.198853C4.37219 0.198853 2.73797 1.83351 2.73797 3.84933C2.73797 5.86516 4.37262 7.49982 6.38845 7.49982C8.40428 7.49982 10.0389 5.86516 10.0389 3.84933C10.0389 1.83351 8.40471 0.198853 6.38845 0.198853Z"/>
-                                        <path d="M15.8695 6.59669L15.1957 6.43113C15.1551 6.30321 15.1033 6.17958 15.0404 6.06107C15.1418 5.89252 15.3545 5.53829 15.3545 5.53829C15.3951 5.4707 15.3844 5.38386 15.3284 5.32781L14.8415 4.84097C14.7859 4.78493 14.6991 4.77423 14.631 4.81487L14.1074 5.12888C13.9898 5.06642 13.8665 5.01509 13.7395 4.97487L13.5739 4.30107C13.5547 4.2245 13.4858 4.17059 13.4071 4.17059H12.7187C12.6396 4.17059 12.5707 4.2245 12.5519 4.30107C12.5519 4.30107 12.4372 4.77124 12.3863 4.97487C12.2511 5.01765 12.1202 5.07327 11.9957 5.14129L11.4524 4.8153C11.3844 4.77509 11.298 4.78535 11.2419 4.8414L10.7551 5.32824C10.6995 5.38386 10.6884 5.4707 10.729 5.53872L11.0648 6.09958C11.0105 6.20653 10.9652 6.31733 10.9292 6.43113L10.2554 6.59755C10.1788 6.6168 10.1249 6.68525 10.1249 6.76439V7.45273C10.1249 7.53188 10.1788 7.60075 10.2554 7.61958L10.9296 7.78514C10.9703 7.91476 11.0238 8.04054 11.0879 8.16161L10.7872 8.66257C10.7465 8.73017 10.7572 8.81701 10.8133 8.87305L11.3001 9.3599C11.3557 9.41551 11.4426 9.42621 11.5106 9.38599C11.5106 9.38599 11.8477 9.18407 12.0129 9.08525C12.1322 9.14899 12.2576 9.20161 12.3863 9.24225L12.5519 9.91605C12.5707 9.99263 12.6396 10.0465 12.7187 10.0465H13.4071C13.4862 10.0465 13.5547 9.99263 13.5739 9.91605L13.7395 9.24225C13.8721 9.20033 14 9.14599 14.1215 9.08011C14.2909 9.18193 14.6315 9.38599 14.6315 9.38599C14.6991 9.42664 14.7859 9.41594 14.8419 9.3599L15.3288 8.87305C15.3844 8.81744 15.3955 8.73059 15.3549 8.66257L15.0456 8.14706C15.1068 8.03113 15.1572 7.91006 15.1966 7.78514L15.8704 7.61958C15.947 7.60033 16.0009 7.53188 16.0009 7.45273V6.76439C16.0009 6.68525 15.947 6.6168 15.8704 6.59755L15.8695 6.59669ZM13.0623 8.31263C12.3979 8.31263 11.8576 7.77188 11.8576 7.10792C11.8576 6.44396 12.3983 5.90321 13.0623 5.90321C13.7262 5.90321 14.267 6.44396 14.267 7.10792C14.267 7.77188 13.7262 8.31263 13.0623 8.31263Z"/>
-                                    </g>
-                                </svg>
-                                <span class="text-left flex flex-col">
-                                    <span class="text-[#0061AF] font-semibold group-hover:text-white">Usuário SIGEST</span>
-                                    <span class="text-gray-500 text-sm group-hover:text-white group-hover:opacity-80">Supervisor/Executor</span>
-                                </span>
-                            </button>
-                            <button type="button"
-                                    ng-click="mode = 'updateIntern'"
+    <div class="grid grid-rows-[auto_1fr] h-screen">
+        <div>
+            <div class="flex justify-between items-center px-4 py-2 bg-[#0061AF]">
+                <div class="flex space-x-6">
+                    <div class="relative">
+                        <button type="button"
+                            class="text-white font-medium bg-[#0080E7] shadow-sm rounded-sm flex justify-center items-center p-2 gap-2 hover:bg-[#1E4D8A] hover:cursor-pointer group transition-transform duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                                fill="none" class="transition duration-200 group-hover:rotate-90">
+                                <path d="M10 16.6667V10V16.6667ZM10 10V3.33333V10ZM10 10H16.6667H10ZM10 10H3.33334H10Z"
+                                    fill="#2563EB" />
+                                <path d="M10 16.6667V10M10 10V3.33333M10 10H16.6667M10 10H3.33334" stroke="white"
+                                    stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                            <span>Cadastro de Usuário</span>
+                        </button>
+                    </div>
+                    <div class="relative inline-block">
+                        <button type="button"
+                            class="text-white font-medium bg-[#0080E7] shadow-sm rounded-sm flex justify-center items-center p-2 gap-2 update-button hover:bg-[#1E4D8A] group transition-transform duration-200"
+                            ng-mouseenter="showUpdateMenu = true" ng-mouseleave="checkCloseUpdateDropdown()">
+                            <span>Atualização de Usuário</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                                fill="none" class="transition duration-200"
+                                ng-class="{'rotate-180': showUpdateMenu, 'rotate-0': !showUpdateMenu}">
+                                <path d="M5.83331 8.33333L9.99998 12.5L14.1666 8.33333" stroke="white"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <div class="absolute left-0 mt-3 bg-white shadow-lg transition-opacity duration-200 w-auto min-w-[180px] p-0"
+                            ng-class="{'opacity-100 visible': showUpdateMenu, 'opacity-0 invisible': !showUpdateMenu}"
+                            ng-mouseenter="showUpdateMenu = true" ng-mouseleave="checkCloseUpdateDropdown()">
+                            <div class="flex flex-col items-center p-0">
+                                <button
                                     class="flex items-center w-full p-2 gap-2 text-[#0061AF] font-medium border border-transparent rounded-sm group hover:bg-[#2563EB] hover:cursor-pointer update-dropdown group">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 15"
-                                     class="w-5 h-5 fill-[#0061AF] group-hover:fill-white"
-                                     fill="currentColor">
-                                    <g clip-path="url(#clip0_137_3009)">
-                                        <path d="M12.7773 13.8887C12.7773 14.3926 12.3688 14.8012 11.8648 14.8012H0.912513C0.408556 14.8012 0 14.3926 0 13.8887C0 10.8645 2.45176 8.41276 5.47594 8.41276H7.30139C10.3256 8.41276 12.7773 10.8645 12.7773 13.8887ZM6.38845 0.198853C4.37219 0.198853 2.73797 1.83351 2.73797 3.84933C2.73797 5.86516 4.37262 7.49982 6.38845 7.49982C8.40428 7.49982 10.0389 5.86516 10.0389 3.84933C10.0389 1.83351 8.40471 0.198853 6.38845 0.198853Z"/>
-                                        <path d="M15.8695 6.59669L15.1957 6.43113C15.1551 6.30321 15.1033 6.17958 15.0404 6.06107C15.1418 5.89252 15.3545 5.53829 15.3545 5.53829C15.3951 5.4707 15.3844 5.38386 15.3284 5.32781L14.8415 4.84097C14.7859 4.78493 14.6991 4.77423 14.631 4.81487L14.1074 5.12888C13.9898 5.06642 13.8665 5.01509 13.7395 4.97487L13.5739 4.30107C13.5547 4.2245 13.4858 4.17059 13.4071 4.17059H12.7187C12.6396 4.17059 12.5707 4.2245 12.5519 4.30107C12.5519 4.30107 12.4372 4.77124 12.3863 4.97487C12.2511 5.01765 12.1202 5.07327 11.9957 5.14129L11.4524 4.8153C11.3844 4.77509 11.298 4.78535 11.2419 4.8414L10.7551 5.32824C10.6995 5.38386 10.6884 5.4707 10.729 5.53872L11.0648 6.09958C11.0105 6.20653 10.9652 6.31733 10.9292 6.43113L10.2554 6.59755C10.1788 6.6168 10.1249 6.68525 10.1249 6.76439V7.45273C10.1249 7.53188 10.1788 7.60075 10.2554 7.61958L10.9296 7.78514C10.9703 7.91476 11.0238 8.04054 11.0879 8.16161L10.7872 8.66257C10.7465 8.73017 10.7572 8.81701 10.8133 8.87305L11.3001 9.3599C11.3557 9.41551 11.4426 9.42621 11.5106 9.38599C11.5106 9.38599 11.8477 9.18407 12.0129 9.08525C12.1322 9.14899 12.2576 9.20161 12.3863 9.24225L12.5519 9.91605C12.5707 9.99263 12.6396 10.0465 12.7187 10.0465H13.4071C13.4862 10.0465 13.5547 9.99263 13.5739 9.91605L13.7395 9.24225C13.8721 9.20033 14 9.14599 14.1215 9.08011C14.2909 9.18193 14.6315 9.38599 14.6315 9.38599C14.6991 9.42664 14.7859 9.41594 14.8419 9.3599L15.3288 8.87305C15.3844 8.81744 15.3955 8.73059 15.3549 8.66257L15.0456 8.14706C15.1068 8.03113 15.1572 7.91006 15.1966 7.78514L15.8704 7.61958C15.947 7.60033 16.0009 7.53188 16.0009 7.45273V6.76439C16.0009 6.68525 15.947 6.6168 15.8704 6.59755L15.8695 6.59669ZM13.0623 8.31263C12.3979 8.31263 11.8576 7.77188 11.8576 7.10792C11.8576 6.44396 12.3983 5.90321 13.0623 5.90321C13.7262 5.90321 14.267 6.44396 14.267 7.10792C14.267 7.77188 13.7262 8.31263 13.0623 8.31263Z"/>
-                                    </g>
-                                </svg>
-                                <span class="text-left flex flex-col">
-                                    <span class="text-[#0061AF] font-semibold group-hover:text-white">Estagiário SIGEST</span>
-                                    <span class="text-gray-500 text-sm group-hover:text-white group-hover:opacity-80">Estagiário</span>
-                                </span>
-                            </button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 15"
+                                        class="w-5 h-5 fill-[#0061AF] group-hover:fill-white" fill="currentColor">
+                                        <g clip-path="url(#clip0_137_3009)">
+                                            <path
+                                                d="M12.7773 13.8887C12.7773 14.3926 12.3688 14.8012 11.8648 14.8012H0.912513C0.408556 14.8012 0 14.3926 0 13.8887C0 10.8645 2.45176 8.41276 5.47594 8.41276H7.30139C10.3256 8.41276 12.7773 10.8645 12.7773 13.8887ZM6.38845 0.198853C4.37219 0.198853 2.73797 1.83351 2.73797 3.84933C2.73797 5.86516 4.37262 7.49982 6.38845 7.49982C8.40428 7.49982 10.0389 5.86516 10.0389 3.84933C10.0389 1.83351 8.40471 0.198853 6.38845 0.198853Z" />
+                                            <path
+                                                d="M15.8695 6.59669L15.1957 6.43113C15.1551 6.30321 15.1033 6.17958 15.0404 6.06107C15.1418 5.89252 15.3545 5.53829 15.3545 5.53829C15.3951 5.4707 15.3844 5.38386 15.3284 5.32781L14.8415 4.84097C14.7859 4.78493 14.6991 4.77423 14.631 4.81487L14.1074 5.12888C13.9898 5.06642 13.8665 5.01509 13.7395 4.97487L13.5739 4.30107C13.5547 4.2245 13.4858 4.17059 13.4071 4.17059H12.7187C12.6396 4.17059 12.5707 4.2245 12.5519 4.30107C12.5519 4.30107 12.4372 4.77124 12.3863 4.97487C12.2511 5.01765 12.1202 5.07327 11.9957 5.14129L11.4524 4.8153C11.3844 4.77509 11.298 4.78535 11.2419 4.8414L10.7551 5.32824C10.6995 5.38386 10.6884 5.4707 10.729 5.53872L11.0648 6.09958C11.0105 6.20653 10.9652 6.31733 10.9292 6.43113L10.2554 6.59755C10.1788 6.6168 10.1249 6.68525 10.1249 6.76439V7.45273C10.1249 7.53188 10.1788 7.60075 10.2554 7.61958L10.9296 7.78514C10.9703 7.91476 11.0238 8.04054 11.0879 8.16161L10.7872 8.66257C10.7465 8.73017 10.7572 8.81701 10.8133 8.87305L11.3001 9.3599C11.3557 9.41551 11.4426 9.42621 11.5106 9.38599C11.5106 9.38599 11.8477 9.18407 12.0129 9.08525C12.1322 9.14899 12.2576 9.20161 12.3863 9.24225L12.5519 9.91605C12.5707 9.99263 12.6396 10.0465 12.7187 10.0465H13.4071C13.4862 10.0465 13.5547 9.99263 13.5739 9.91605L13.7395 9.24225C13.8721 9.20033 14 9.14599 14.1215 9.08011C14.2909 9.18193 14.6315 9.38599 14.6315 9.38599C14.6991 9.42664 14.7859 9.41594 14.8419 9.3599L15.3288 8.87305C15.3844 8.81744 15.3955 8.73059 15.3549 8.66257L15.0456 8.14706C15.1068 8.03113 15.1572 7.91006 15.1966 7.78514L15.8704 7.61958C15.947 7.60033 16.0009 7.53188 16.0009 7.45273V6.76439C16.0009 6.68525 15.947 6.6168 15.8704 6.59755L15.8695 6.59669ZM13.0623 8.31263C12.3979 8.31263 11.8576 7.77188 11.8576 7.10792C11.8576 6.44396 12.3983 5.90321 13.0623 5.90321C13.7262 5.90321 14.267 6.44396 14.267 7.10792C14.267 7.77188 13.7262 8.31263 13.0623 8.31263Z" />
+                                        </g>
+                                    </svg>
+                                    <span class="text-left flex flex-col">
+                                        <span class="text-[#0061AF] font-semibold group-hover:text-white">Usuário
+                                            SIGEST</span>
+                                        <span
+                                            class="text-gray-500 text-sm group-hover:text-white group-hover:opacity-80">Supervisor/Executor</span>
+                                    </span>
+                                </button>
+                                <button type="button" ng-click="mode = 'updateIntern'"
+                                    class="flex items-center w-full p-2 gap-2 text-[#0061AF] font-medium border border-transparent rounded-sm group hover:bg-[#2563EB] hover:cursor-pointer update-dropdown group">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 15"
+                                        class="w-5 h-5 fill-[#0061AF] group-hover:fill-white" fill="currentColor">
+                                        <g clip-path="url(#clip0_137_3009)">
+                                            <path
+                                                d="M12.7773 13.8887C12.7773 14.3926 12.3688 14.8012 11.8648 14.8012H0.912513C0.408556 14.8012 0 14.3926 0 13.8887C0 10.8645 2.45176 8.41276 5.47594 8.41276H7.30139C10.3256 8.41276 12.7773 10.8645 12.7773 13.8887ZM6.38845 0.198853C4.37219 0.198853 2.73797 1.83351 2.73797 3.84933C2.73797 5.86516 4.37262 7.49982 6.38845 7.49982C8.40428 7.49982 10.0389 5.86516 10.0389 3.84933C10.0389 1.83351 8.40471 0.198853 6.38845 0.198853Z" />
+                                            <path
+                                                d="M15.8695 6.59669L15.1957 6.43113C15.1551 6.30321 15.1033 6.17958 15.0404 6.06107C15.1418 5.89252 15.3545 5.53829 15.3545 5.53829C15.3951 5.4707 15.3844 5.38386 15.3284 5.32781L14.8415 4.84097C14.7859 4.78493 14.6991 4.77423 14.631 4.81487L14.1074 5.12888C13.9898 5.06642 13.8665 5.01509 13.7395 4.97487L13.5739 4.30107C13.5547 4.2245 13.4858 4.17059 13.4071 4.17059H12.7187C12.6396 4.17059 12.5707 4.2245 12.5519 4.30107C12.5519 4.30107 12.4372 4.77124 12.3863 4.97487C12.2511 5.01765 12.1202 5.07327 11.9957 5.14129L11.4524 4.8153C11.3844 4.77509 11.298 4.78535 11.2419 4.8414L10.7551 5.32824C10.6995 5.38386 10.6884 5.4707 10.729 5.53872L11.0648 6.09958C11.0105 6.20653 10.9652 6.31733 10.9292 6.43113L10.2554 6.59755C10.1788 6.6168 10.1249 6.68525 10.1249 6.76439V7.45273C10.1249 7.53188 10.1788 7.60075 10.2554 7.61958L10.9296 7.78514C10.9703 7.91476 11.0238 8.04054 11.0879 8.16161L10.7872 8.66257C10.7465 8.73017 10.7572 8.81701 10.8133 8.87305L11.3001 9.3599C11.3557 9.41551 11.4426 9.42621 11.5106 9.38599C11.5106 9.38599 11.8477 9.18407 12.0129 9.08525C12.1322 9.14899 12.2576 9.20161 12.3863 9.24225L12.5519 9.91605C12.5707 9.99263 12.6396 10.0465 12.7187 10.0465H13.4071C13.4862 10.0465 13.5547 9.99263 13.5739 9.91605L13.7395 9.24225C13.8721 9.20033 14 9.14599 14.1215 9.08011C14.2909 9.18193 14.6315 9.38599 14.6315 9.38599C14.6991 9.42664 14.7859 9.41594 14.8419 9.3599L15.3288 8.87305C15.3844 8.81744 15.3955 8.73059 15.3549 8.66257L15.0456 8.14706C15.1068 8.03113 15.1572 7.91006 15.1966 7.78514L15.8704 7.61958C15.947 7.60033 16.0009 7.53188 16.0009 7.45273V6.76439C16.0009 6.68525 15.947 6.6168 15.8704 6.59755L15.8695 6.59669ZM13.0623 8.31263C12.3979 8.31263 11.8576 7.77188 11.8576 7.10792C11.8576 6.44396 12.3983 5.90321 13.0623 5.90321C13.7262 5.90321 14.267 6.44396 14.267 7.10792C14.267 7.77188 13.7262 8.31263 13.0623 8.31263Z" />
+                                        </g>
+                                    </svg>
+                                    <span class="text-left flex flex-col">
+                                        <span class="text-[#0061AF] font-semibold group-hover:text-white">Estagiário
+                                            SIGEST</span>
+                                        <span
+                                            class="text-gray-500 text-sm group-hover:text-white group-hover:opacity-80">Estagiário</span>
+                                    </span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex space-x-6">
-                <div class="relative flex-1 min-w-[300px]">
-                    <input type="text"
-                           ng-model="_code"
-                           placeholder="Digite o CPF"
-                           class="w-full pl-2 py-2 border border-[#C9C9C9] rounded-sm bg-white focus:outline-none placeholder:text-black placeholder:font-semibold"
-                           uib-typeahead="value as value.name for value in findUsersByCode($viewValue)"
-                           typeahead-on-select="selectUserByCode($item)"
-                           typeahead-loading="loading"
-                           typeahead-min-length="11"
-                           typeahead-popup-template-url="/lowcode/pages/SIGEST/template-typeahead-management-user.html"/>
-                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M0 6.47136C0 7.3634 0.169226 8.20002 0.507678 8.98121C0.84613 9.76246 1.3156 10.4504 1.91608 11.0451C2.51656 11.6398 3.2112 12.1047 4.00001 12.44C4.78882 12.7751 5.63358 12.9427 6.5343 12.9427C7.24396 12.9427 7.92085 12.8346 8.56497 12.6183C9.20915 12.4021 9.79872 12.1047 10.3337 11.7263L14.3624 15.7242C14.4606 15.8162 14.5684 15.8851 14.6858 15.9311C14.8031 15.977 14.9274 16 15.0584 16C15.244 16 15.4077 15.9581 15.5496 15.8743C15.6916 15.7905 15.8021 15.6756 15.8813 15.5297C15.9604 15.3837 16 15.2215 16 15.043C16 14.9133 15.9768 14.7917 15.9304 14.6782C15.884 14.5646 15.8172 14.4646 15.7298 14.3781L11.7257 10.3883C12.146 9.84761 12.4749 9.24478 12.7124 8.57979C12.9498 7.91483 13.0686 7.21202 13.0686 6.47136C13.0686 5.57932 12.8994 4.74269 12.5609 3.96148C12.2225 3.18027 11.753 2.49231 11.1525 1.89762C10.5521 1.30292 9.85742 0.83798 9.06857 0.502787C8.27977 0.167596 7.43502 0 6.5343 0C5.63358 0 4.78882 0.167596 4.00001 0.502787C3.2112 0.83798 2.51656 1.30292 1.91608 1.89762C1.3156 2.49231 0.84613 3.18027 0.507678 3.96148C0.169226 4.74269 0 5.57932 0 6.47136ZM1.40021 6.47136C1.40021 5.76854 1.53258 5.11032 1.79734 4.4967C2.0621 3.88308 2.43057 3.34245 2.90276 2.8748C3.37496 2.40716 3.92085 2.04223 4.54044 1.78002C5.16002 1.51782 5.82464 1.38672 6.5343 1.38672C7.24396 1.38672 7.90858 1.51782 8.52816 1.78002C9.14775 2.04223 9.69226 2.40716 10.1617 2.8748C10.6312 3.34245 10.9997 3.88308 11.2672 4.4967C11.5346 5.11032 11.6684 5.76854 11.6684 6.47136C11.6684 7.17418 11.5346 7.8324 11.2672 8.44601C10.9997 9.05963 10.6312 9.5989 10.1617 10.0638C9.69226 10.5288 9.14775 10.8937 8.52816 11.1586C7.90858 11.4235 7.24396 11.556 6.5343 11.556C5.82464 11.556 5.16002 11.4235 4.54044 11.1586C3.92085 10.8937 3.37496 10.5288 2.90276 10.0638C2.43057 9.5989 2.0621 9.05963 1.79734 8.44601C1.53258 7.8324 1.40021 7.17418 1.40021 6.47136Z"
-                                  fill="#333333"/>
-                        </svg>
+                <div class="flex space-x-6">
+                    <div class="relative flex-1 min-w-[300px]">
+                        <input type="text" ng-model="_code" placeholder="Digite o CPF"
+                            class="w-full pl-2 py-2 border border-[#C9C9C9] rounded-sm bg-white focus:outline-none placeholder:text-black placeholder:font-semibold"
+                            uib-typeahead="value as value.name for value in findUsersByCode($viewValue)"
+                            typeahead-on-select="selectUserByCode($item)" typeahead-loading="loading"
+                            typeahead-min-length="11"
+                            typeahead-popup-template-url="/lowcode/pages/SIGEST/template-typeahead-management-user.html" />
+                        <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                                fill="none">
+                                <path
+                                    d="M0 6.47136C0 7.3634 0.169226 8.20002 0.507678 8.98121C0.84613 9.76246 1.3156 10.4504 1.91608 11.0451C2.51656 11.6398 3.2112 12.1047 4.00001 12.44C4.78882 12.7751 5.63358 12.9427 6.5343 12.9427C7.24396 12.9427 7.92085 12.8346 8.56497 12.6183C9.20915 12.4021 9.79872 12.1047 10.3337 11.7263L14.3624 15.7242C14.4606 15.8162 14.5684 15.8851 14.6858 15.9311C14.8031 15.977 14.9274 16 15.0584 16C15.244 16 15.4077 15.9581 15.5496 15.8743C15.6916 15.7905 15.8021 15.6756 15.8813 15.5297C15.9604 15.3837 16 15.2215 16 15.043C16 14.9133 15.9768 14.7917 15.9304 14.6782C15.884 14.5646 15.8172 14.4646 15.7298 14.3781L11.7257 10.3883C12.146 9.84761 12.4749 9.24478 12.7124 8.57979C12.9498 7.91483 13.0686 7.21202 13.0686 6.47136C13.0686 5.57932 12.8994 4.74269 12.5609 3.96148C12.2225 3.18027 11.753 2.49231 11.1525 1.89762C10.5521 1.30292 9.85742 0.83798 9.06857 0.502787C8.27977 0.167596 7.43502 0 6.5343 0C5.63358 0 4.78882 0.167596 4.00001 0.502787C3.2112 0.83798 2.51656 1.30292 1.91608 1.89762C1.3156 2.49231 0.84613 3.18027 0.507678 3.96148C0.169226 4.74269 0 5.57932 0 6.47136ZM1.40021 6.47136C1.40021 5.76854 1.53258 5.11032 1.79734 4.4967C2.0621 3.88308 2.43057 3.34245 2.90276 2.8748C3.37496 2.40716 3.92085 2.04223 4.54044 1.78002C5.16002 1.51782 5.82464 1.38672 6.5343 1.38672C7.24396 1.38672 7.90858 1.51782 8.52816 1.78002C9.14775 2.04223 9.69226 2.40716 10.1617 2.8748C10.6312 3.34245 10.9997 3.88308 11.2672 4.4967C11.5346 5.11032 11.6684 5.76854 11.6684 6.47136C11.6684 7.17418 11.5346 7.8324 11.2672 8.44601C10.9997 9.05963 10.6312 9.5989 10.1617 10.0638C9.69226 10.5288 9.14775 10.8937 8.52816 11.1586C7.90858 11.4235 7.24396 11.556 6.5343 11.556C5.82464 11.556 5.16002 11.4235 4.54044 11.1586C3.92085 10.8937 3.37496 10.5288 2.90276 10.0638C2.43057 9.5989 2.0621 9.05963 1.79734 8.44601C1.53258 7.8324 1.40021 7.17418 1.40021 6.47136Z"
+                                    fill="#333333" />
+                            </svg>
+                        </div>
                     </div>
-                </div>
-                <div class="relative flex-1 max-w-[250px] min-w-[200px]">
-                    <button type="button"
-                            class="text-white font-medium border border-white rounded-sm flex justify-between items-center p-2 gap-2 department-button w-full whitespace-nowrap overflow-hidden text-ellipsis hover:bg-[#1E4D8A] hover:cursor-pointer group transition-transform duration-200"
+                    <div class="relative flex-1 max-w-[250px] min-w-[200px]">
+                        <button type="button"
+                            class="text-white font-medium bg-[#0080E7] shadow-sm rounded-sm flex justify-between items-center p-2 gap-2 department-button w-full whitespace-nowrap overflow-hidden text-ellipsis hover:bg-[#1E4D8A] hover:cursor-pointer group transition-transform duration-200"
                             ng-click="toggleDepartmentDropdown()">
-                        <span class="overflow-hidden text-ellipsis">{{ selectedDepartment || 'Órgão do Cidadão'
-                            }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                             class="transition duration-200"
-                             ng-class="{'rotate-180': showDepartmentDropdown, 'rotate-0': !showDepartmentDropdown}">
-                            <path d="M5.83331 8.33333L9.99998 12.5L14.1666 8.33333" stroke="white" stroke-width="1.5"
-                                  stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <div class="absolute left-0 mt-2 bg-white shadow-lg transition-opacity duration-200 w-full min-w-[180px] p-2 max-h-[300px] overflow-y-auto"
-                         ng-class="{'opacity-100 visible': showDepartmentDropdown, 'opacity-0 invisible': !showDepartmentDropdown}">
-                        <input type="text" placeholder="Buscar órgão..."
-                               class="w-full p-2 border border-[#C9C9C9] rounded-sm mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                               ng-model="searchQuery">
-                        <div class="flex flex-col items-center">
-                            <button ng-repeat="department in departments | filter:searchQuery"
+                            <span class="overflow-hidden text-ellipsis">
+                                {{ selectedDepartment.name || 'Órgão do Cidadão' }}
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                                fill="none" class="transition duration-200"
+                                ng-class="{'rotate-180': showDepartmentDropdown, 'rotate-0': !showDepartmentDropdown}">
+                                <path d="M5.83331 8.33333L9.99998 12.5L14.1666 8.33333" stroke="white"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <div class="absolute left-0 mt-3 bg-white shadow-lg transition-opacity duration-200 w-full min-w-[180px] p-2 max-h-[300px] overflow-y-auto"
+                            ng-class="{'opacity-100 visible': showDepartmentDropdown, 'opacity-0 invisible': !showDepartmentDropdown}">
+                            <input type="text" placeholder="Buscar órgão..."
+                                class="w-full p-2 border border-[#C9C9C9] rounded-sm mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                ng-model="searchQuery">
+                            <div class="flex flex-col items-center">
+                                <button ng-repeat="department in departments | filter:{ name: searchQuery }"
                                     class="flex items-center w-full p-2 gap-2 text-[#0061AF] font-medium border border-transparent rounded-sm group hover:bg-[#2563EB] hover:cursor-pointer transition"
                                     ng-click="selectDepartment(department)">
-                                <span class="text-left flex flex-col">
-                                    <span class="text-[#0061AF] font-semibold group-hover:text-white">
-                                        {{ department }}
+                                    <span class="text-left flex flex-col">
+                                        <span class="text-[#0061AF] font-semibold group-hover:text-white">
+                                            {{ department.name }}
+                                        </span>
                                     </span>
-                                </span>
-                            </button>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center rounded-lg px-1"
+                        ng-class="selectedDepartment.isLDAP ? 'bg-[#008D36]' : 'bg-[#8B0000]'">
+                        <div class="rounded-lg px-4 py-1 border"
+                            ng-class="selectedDepartment.isLDAP ? 'border-[#B7FDD2]' : 'border-[#FFA3A3]'">
+                            <span class="font-semibold"
+                                ng-class="selectedDepartment.isLDAP ? 'text-[#B7FDD2]' : 'text-[#FFA3A3]'">
+                                {{ selectedDepartment.isLDAP ? 'LDAP' : 'Local' }}
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!--Div com Respostas das Ações -->
-        <div ng-switch="mode">
+            <div ng-switch="mode">
 
-            <!--Div com Logo-->
-            <div ng-switch-when="initial"
-                 class="flex flex-col w-full h-full items-center justify-center p-4">
-                <img src="./imgs/logo-sigest.png"
-                     alt="Logo do SIGEST"
-                     class="w-auto max-w-[90%] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-auto object-contain"/>
-            </div>
+                <div ng-switch-when="initial" class="flex flex-col w-full h-full items-center justify-center p-4">
+                    <img src="./imgs/logo-sigest.png" alt="Logo do SIGEST"
+                        class="w-auto max-w-[90%] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-auto object-contain" />
+                </div>
 
-            <!--Div com Atualização de Estagiário-->
-            <div ng-switch-default>
-                <div class="flex w-full h-full items-center p-4">
-                    <div class="flex flex-col p-4">
-                        <h1 class="text-black font-bold text-2xl">Atualização Cadastral de Estagiário</h1>
-                        <p class="text-gray-500 text-sm">A atualização cadastral abaixo é destinada a estagiários e
-                            impacta diretamente a administração da ferramenta.</p>
+                <div ng-switch-default>
+                    <div class="flex flex-col w-full h-full p-4">
+                        <div class="flex flex-col p-4">
+                            <h1 class="text-black font-bold text-2xl">Atualização Cadastral de Estagiário</h1>
+                            <p class="text-gray-500 text-sm">A atualização cadastral abaixo é destinada a estagiários e
+                                impacta diretamente a administração da ferramenta.</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-4 p-4 shadow rounded bg-white w-full">
+                                <div class="flex flex-col flex-[0.25]">
+                                    <label for="searchType" class="text-black font-semibold">Tipo de Busca</label>
+                                    <select id="searchType"
+                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                        <option value="name">Nome</option>
+                                        <option value="cpf">CPF</option>
+                                    </select>
+                                </div>
+                                <div class="flex flex-col flex-1">
+                                    <label for="name" class="text-black font-semibold">Buscar Usuário</label>
+                                    <input type="text" id="name" placeholder="Digite o nome do usuário"
+                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none w-full h-10">
+                                </div>
+                                <div class="flex self-end">
+                                    <button
+                                        class="bg-blue-600 text-white px-4 py-2 rounded flex items-center justify-center flex-1 max-w-[150px] space-x-2 h-10 self-end hover:bg-blue-700 hover:cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 20 20" fill="none">
+                                            <path
+                                                d="M0 8.0892C0 9.20425 0.211532 10.25 0.634597 11.2265C1.05766 12.2031 1.6445 13.063 2.39509 13.8064C3.14569 14.5497 4.014 15.1309 5.00001 15.5499C5.98602 15.9689 7.04198 16.1784 8.16788 16.1784C9.05494 16.1784 9.90106 16.0432 10.7062 15.7729C11.5114 15.5026 12.2484 15.1309 12.9171 14.6579L17.9529 19.6553C18.0758 19.7702 18.2105 19.8564 18.3572 19.9138C18.5039 19.9713 18.6592 20 18.823 20C19.055 20 19.2597 19.9476 19.4371 19.8428C19.6145 19.7381 19.7526 19.5945 19.8516 19.4121C19.9505 19.2296 20 19.0268 20 18.8038C20 18.6417 19.971 18.4896 19.913 18.3477C19.855 18.2058 19.7714 18.0808 19.6623 17.9727L14.6572 12.9853C15.1825 12.3095 15.5936 11.556 15.8905 10.7247C16.1873 9.89354 16.3357 9.01503 16.3357 8.0892C16.3357 6.97414 16.1242 5.92836 15.7012 4.95185C15.2781 3.97533 14.6913 3.11539 13.9407 2.37202C13.1901 1.62865 12.3218 1.04747 11.3357 0.628484C10.3497 0.209495 9.29377 0 8.16788 0C7.04198 0 5.98602 0.209495 5.00001 0.628484C4.014 1.04747 3.14569 1.62865 2.39509 2.37202C1.6445 3.11539 1.05766 3.97533 0.634597 4.95185C0.211532 5.92836 0 6.97414 0 8.0892ZM1.75026 8.0892C1.75026 7.21067 1.91573 6.3879 2.24667 5.62088C2.57762 4.85386 3.03822 4.17806 3.62846 3.5935C4.2187 3.00895 4.90107 2.55279 5.67555 2.22503C6.45003 1.89727 7.28081 1.7334 8.16788 1.7334C9.05494 1.7334 9.88572 1.89727 10.6602 2.22503C11.4347 2.55279 12.1153 3.00895 12.7021 3.5935C13.289 4.17806 13.7496 4.85386 14.084 5.62088C14.4183 6.3879 14.5855 7.21067 14.5855 8.0892C14.5855 8.96772 14.4183 9.79049 14.084 10.5575C13.7496 11.3245 13.289 11.9986 12.7021 12.5798C12.1153 13.161 11.4347 13.6172 10.6602 13.9483C9.88572 14.2794 9.05494 14.445 8.16788 14.445C7.28081 14.445 6.45003 14.2794 5.67555 13.9483C4.90107 13.6172 4.2187 13.161 3.62846 12.5798C3.03822 11.9986 2.57762 11.3245 2.24667 10.5575C1.91573 9.79049 1.75026 8.96772 1.75026 8.0892Z"
+                                                fill="white" />
+                                        </svg>
+                                        <span>Pesquisar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="h-[1px] self-stretch bg-[#D9D9D9]"></div>
+                        </div>
+                        <div class="text-center w-full h-full p-4">
+                            <p class="text-[#39393999]">O resultado da busca será exibido nessa seção.</p>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
-
     </div>
-</div>
 
 
 </body>
+
 </html>

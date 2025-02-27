@@ -17,9 +17,34 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
     };
 
     $scope.showDepartmentDropdown = false;
-    $scope.selectedDepartment = null;
+    $scope.selectedDepartment = {
+        name: "Central IT",
+        id: 13,
+        isLDAP: false
+    };
     $scope.searchQuery = '';
-    $scope.departments = ["Órgão 1", "Órgão 2", "Órgão 3", "Órgão 4"];
+    $scope.departments = [
+        {
+            name: "Órgão 1",
+            id: 1,
+            isLDAP: false
+        },
+        {
+            name: "Órgão 2",
+            id: 2,
+            isLDAP: true
+        },
+        {
+            name: "Órgão 3",
+            id: 3,
+            isLDAP: false
+        },
+        {
+            name: "Órgão 4",
+            id: 4,
+            isLDAP: true
+        }
+    ];
 
     $scope.toggleDepartmentDropdown = function () {
         $scope.showDepartmentDropdown = !$scope.showDepartmentDropdown;
