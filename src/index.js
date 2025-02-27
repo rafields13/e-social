@@ -63,4 +63,17 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
         $scope.selectedDepartment = department;
         $scope.showDepartmentDropdown = false;
     };
+
+    $scope.users = [
+        {
+            name: "Rafael Marliere de Oliveira",
+            email: "rafael.marliere@centralit.com.br",
+        }
+    ];
+
+    $scope.isAccordionOpen = false;
+
+    $scope.toggleAccordion = function () {
+        $scope.isAccordionOpen = !$scope.isAccordionOpen;
+    };
 });
