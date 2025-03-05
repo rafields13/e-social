@@ -18,7 +18,7 @@
                 <div class="flex space-x-6">
                     <div class="relative">
                         <button type="button"
-                            class="text-white font-medium bg-[#0080E7] shadow-sm rounded-sm flex justify-center items-center p-2 gap-2 hover:bg-[#1E4D8A] hover:cursor-pointer group transition-transform duration-200">
+                            class="text-white font-medium bg-[#0080E7] shadow-sm rounded-sm flex justify-center items-center p-2 gap-2 hover:bg-[#1E4D8A] hover:cursor-pointer group transition-transform duration-200 text-nowrap">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
                                 fill="none" class="transition duration-200 group-hover:rotate-90">
                                 <path d="M10 16.6667V10V16.6667ZM10 10V3.33333V10ZM10 10H16.6667H10ZM10 10H3.33334H10Z"
@@ -31,7 +31,7 @@
                     </div>
                     <div class="relative inline-block">
                         <button type="button"
-                            class="text-white font-medium bg-[#0080E7] shadow-sm rounded-sm flex justify-center items-center p-2 gap-2 update-button hover:bg-[#1E4D8A] group transition-transform duration-200"
+                            class="text-white font-medium bg-[#0080E7] shadow-sm rounded-sm flex justify-center items-center p-2 gap-2 update-button hover:bg-[#1E4D8A] group transition-transform duration-200 text-nowrap"
                             ng-mouseenter="showUpdateMenu = true" ng-mouseleave="checkCloseUpdateDropdown()">
                             <span>Atualização de Usuário</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
@@ -87,7 +87,8 @@
                 </div>
                 <div class="flex space-x-6">
                     <div class="relative flex-1 min-w-[300px]">
-                        <input type="text" ng-model="_code" placeholder="Digite o CPF"
+                        <input type="text" ng-model="_code" placeholder="Digite o CPF" name="inter-search-cpf"
+                            id="inter-search-cpf"
                             class="w-full pl-2 py-2 border border-[#C9C9C9] rounded-sm bg-white focus:outline-none placeholder:text-black placeholder:font-semibold"
                             uib-typeahead="value as value.name for value in findUsersByCode($viewValue)"
                             typeahead-on-select="selectUserByCode($item)" typeahead-loading="loading"
@@ -118,7 +119,8 @@
                         </button>
                         <div class="absolute left-0 mt-3 bg-white shadow-lg transition-opacity duration-200 w-full min-w-[180px] p-2 max-h-[300px] overflow-y-auto"
                             ng-class="{'opacity-100 visible': showDepartmentDropdown, 'opacity-0 invisible': !showDepartmentDropdown}">
-                            <input type="text" placeholder="Buscar órgão..."
+                            <input type="text" placeholder="Buscar órgão..." id="department-search"
+                                name="department-search"
                                 class="w-full p-2 border border-[#C9C9C9] rounded-sm mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 ng-model="searchQuery">
                             <div class="flex flex-col items-center">
@@ -171,6 +173,7 @@
                                 <div class="flex flex-col flex-1">
                                     <label for="name" class="text-black font-semibold">Buscar Usuário</label>
                                     <input type="text" id="name" placeholder="Digite o nome do usuário"
+                                        autocomplete="off"
                                         class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none w-full h-10">
                                 </div>
                                 <div class="flex self-end">
@@ -197,8 +200,9 @@
                                 </p>
                             </div>
                             <div ng-switch-default class="p-4 h-full w-full flex flex-col">
-                                <div class="flex flex-col gap-0 shadow rounded bg-white w-full cursor-pointer">
-                                    <div class="flex items-center justify-between p-4" ng-click="toggleAccordion()">
+                                <div class="flex flex-col gap-0 shadow rounded bg-white w-full">
+                                    <div class="flex items-center justify-between p-4 cursor-pointer"
+                                        ng-click="toggleAccordion()">
                                         <h2 class="font-semibold text-[#2563EB]">Informações do Estagiário</h2>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="11"
                                             viewBox="0 0 26 11" fill="none" ng-class="{'rotate-180': isAccordionOpen}">
@@ -206,11 +210,209 @@
                                                 stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </div>
-                                    <div class="overflow-hidden transition-all duration-300 bg-gray-100"
-                                        ng-style="{'max-height': isAccordionOpen ? '500px' : '0px', 'padding': isAccordionOpen ? '16px' : '0px'}">
-                                        <p class="text-gray-700">
-                                            Detalhes do estagiário aparecerão aqui...
-                                        </p>
+                                    <div class="px-4 overflow-hidden transition-all duration-300"
+                                        ng-class="{'h-[1px] opacity-100': isAccordionOpen, 'h-0 opacity-0': !isAccordionOpen}">
+                                        <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                                    </div>
+
+                                    <div class="overflow-hidden transition-all duration-300"
+                                        ng-style="{'max-height': isAccordionOpen ? '500px' : '0px', 'padding': isAccordionOpen ? '16px' : '0px', 'padding-top': isAccordionOpen ? '32px' : '0px'}">
+                                        <form class="flex flex-col w-full space-y-8">
+                                            <div class="flex flex-row gap-4">
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="intern-name" class="text-black font-semibold">
+                                                        Nome
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <input type="text" id="intern-name" name="intern-name"
+                                                        placeholder="Nome do estagiário"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                </div>
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="cpf" class="text-black font-semibold">
+                                                        CPF
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <input type="text" id="cpf" placeholder="CPF do estagiário"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                </div>
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="gender" class="text-black font-semibold">
+                                                        Sexo
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <select name="gender" id="gender"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                        <option value="M">Masculino</option>
+                                                        <option value="F">Feminino</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="race" class="text-black font-semibold">
+                                                        Raça/Cor
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <select name="race" id="race"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                        <option value="white">Branco</option>
+                                                        <option value="black">Preto</option>
+                                                        <option value="brown">Pardo</option>
+                                                        <option value="indigenous">Indígena</option>
+                                                        <option value="yellow">Amarelo</option>
+                                                        <option value="other">Outro</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="flex flex-row gap-4">
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="marital-status" class="text-black font-semibold">
+                                                        Estado Civil
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <select name="marital-status" id="marital-status"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                        <option value="single">Solteiro(a)</option>
+                                                        <option value="married">Casado(a)</option>
+                                                        <option value="divorced">Divorciado(a)</option>
+                                                        <option value="widower">Viúvo(a)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="education-level"
+                                                        class="text-black font-semibold text-nowrap">
+                                                        Grau de Instrução do Estudante
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <select name="education-level" id="education-level"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                        <option value="elementary">Ensino Fundamental</option>
+                                                        <option value="high-school">Ensino Médio</option>
+                                                        <option value="technical">Ensino Técnico</option>
+                                                        <option value="undergraduate">Graduação</option>
+                                                        <option value="postgraduate">Pós-Graduação</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="social-name" class="text-black font-semibold">
+                                                        Nome Social
+                                                    </label>
+                                                    <input type="text" id="social-name" placeholder="Nome Social"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                </div>
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="birth-date" class="text-black font-semibold">
+                                                        Data de Nascimento
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <input type="date" id="birth-date" placeholder="Data de Nascimento"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                </div>
+                                            </div>
+                                            <div class="flex flex-row gap-4">
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="uf-nascimento" class="text-black font-semibold">
+                                                        UF Nascimento
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <select name="uf-nascimento" id="uf-nascimento"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                        ng-model="selectedUf"
+                                                        ng-options="uf as uf.name for uf in ufs track by uf.id">
+                                                        <option value="">Selecione a UF</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="municipio-nascimento" class="text-black font-semibold">
+                                                        Município Nascimento
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <select name="municipio-nascimento" id="municipio-nascimento"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                        ng-model="selectedCity"
+                                                        ng-options="city as city.name for city in cities track by city.id">
+                                                        <option value="">Selecione o Município</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="naturalidade" class="text-black font-semibold">
+                                                        Naturalidade
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <select name="naturalidade" id="naturalidade"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                        <option value="brazilian">Brasileiro(a)</option>
+                                                        <option value="foreign">Estrangeiro(a)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="nacionalidade" class="text-black font-semibold">
+                                                        Nacionalidade
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <select name="nacionalidade" id="nacionalidade"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                        <option value="brazilian">Brasileiro(a)</option>
+                                                        <option value="foreign">Estrangeiro(a)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="flex flex-row gap-4">
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="main-phone" class="text-black font-semibold">
+                                                        Telefone Principal
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <input type="text" id="main-phone" placeholder="Telefone Principal"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                </div>
+
+                                                <div class="flex flex-col flex-[0.25]">
+                                                    <label for="email" class="text-black font-semibold">
+                                                        E-mail
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <input type="email" id="email" placeholder="E-mail do estagiário"
+                                                        autocomplete="off"
+                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                </div>
+                                            </div>
+                                            <div class="flex flex-row gap-4">
+                                                <div class="flex flex-col">
+                                                    <label class="font-semibold">
+                                                        Possui Alguma Deficiência?
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <div class="flex flex-row gap-4 mt-4">
+                                                        <label class="flex items-center">
+                                                            <input type="checkbox" class="w-5 h-5"
+                                                                ng-model="estagiario.deficienciaFisica">
+                                                            <span class="ml-2 font-semibold">Deficiência Física</span>
+                                                        </label>
+                                                        <label class="flex items-center">
+                                                            <input type="checkbox" class="w-5 h-5"
+                                                                ng-model="estagiario.deficienciaVisual">
+                                                            <span class="ml-2 font-semibold">Deficiência Visual</span>
+                                                        </label>
+                                                        <label class="flex items-center">
+                                                            <input type="checkbox" class="w-5 h-5"
+                                                                ng-model="estagiario.deficienciaAuditiva">
+                                                            <span class="ml-2 font-semibold">Deficiência Auditiva</span>
+                                                        </label>
+                                                        <label class="flex items-center">
+                                                            <input type="checkbox" class="w-5 h-5"
+                                                                ng-model="estagiario.deficienciaMental">
+                                                            <span class="ml-2 font-semibold">Deficiência Mental</span>
+                                                        </label>
+                                                        <label class="flex items-center">
+                                                            <input type="checkbox" class="w-5 h-5"
+                                                                ng-model="estagiario.deficienciaIntelectual">
+                                                            <span class="ml-2 font-semibold">Deficiência
+                                                                Intelectual</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

@@ -1,60 +1,4 @@
 /*! tailwindcss v4.0.3 | MIT License | https://tailwindcss.com */
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url(./files/roboto-cyrillic-ext-400-normal.woff2) format('woff2'), url(./files/roboto-cyrillic-ext-400-normal.woff) format('woff');
-  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url(./files/roboto-cyrillic-400-normal.woff2) format('woff2'), url(./files/roboto-cyrillic-400-normal.woff) format('woff');
-  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url(./files/roboto-greek-ext-400-normal.woff2) format('woff2'), url(./files/roboto-greek-ext-400-normal.woff) format('woff');
-  unicode-range: U+1F00-1FFF;
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url(./files/roboto-greek-400-normal.woff2) format('woff2'), url(./files/roboto-greek-400-normal.woff) format('woff');
-  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url(./files/roboto-vietnamese-400-normal.woff2) format('woff2'), url(./files/roboto-vietnamese-400-normal.woff) format('woff');
-  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url(./files/roboto-latin-ext-400-normal.woff2) format('woff2'), url(./files/roboto-latin-ext-400-normal.woff) format('woff');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url(./files/roboto-latin-400-normal.woff2) format('woff2'), url(./files/roboto-latin-400-normal.woff) format('woff');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -640,9 +584,6 @@
   .end-2 {
     inset-inline-end: calc(var(--spacing) * 2);
   }
-  .top-1 {
-    top: calc(var(--spacing) * 1);
-  }
   .top-1\/2 {
     top: calc(1/2 * 100%);
   }
@@ -763,17 +704,20 @@
       max-width: 96rem !important;
     }
   }
-  .mt-2 {
-    margin-top: calc(var(--spacing) * 2);
-  }
   .mt-3 {
     margin-top: calc(var(--spacing) * 3);
+  }
+  .mt-4 {
+    margin-top: calc(var(--spacing) * 4);
   }
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
   }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
+  }
+  .ml-2 {
+    margin-left: calc(var(--spacing) * 2);
   }
   .box-border {
     box-sizing: border-box;
@@ -862,6 +806,9 @@
   .aspect-square {
     aspect-ratio: 1 / 1;
   }
+  .h-0 {
+    height: calc(var(--spacing) * 0);
+  }
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
@@ -870,9 +817,6 @@
   }
   .h-\[1px\] {
     height: 1px;
-  }
-  .h-\[calc\(100vh-56px\)\] {
-    height: calc(100vh - 56px);
   }
   .h-\[calc\(100vh-58px\)\] {
     height: calc(100vh - 58px);
@@ -897,9 +841,6 @@
   }
   .min-h-screen {
     min-height: 100vh;
-  }
-  .w-1 {
-    width: calc(var(--spacing) * 1);
   }
   .w-1\/2 {
     width: calc(1/2 * 100%);
@@ -946,14 +887,8 @@
   .flex-1 {
     flex: 1;
   }
-  .flex-\[0\.5\] {
-    flex: 0.5;
-  }
   .flex-\[0\.25\] {
     flex: 0.25;
-  }
-  .flex-\[0\.75\] {
-    flex: 0.75;
   }
   .flex-auto {
     flex: auto;
@@ -1035,10 +970,6 @@
   .translate-full {
     --tw-translate-x: 100%;
     --tw-translate-y: 100%;
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
-  .-translate-y-1 {
-    --tw-translate-y: calc(var(--spacing) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
@@ -1377,6 +1308,13 @@
   .gap-4 {
     gap: calc(var(--spacing) * 4);
   }
+  .space-y-8 {
+    :where(& > :not(:last-child)) {
+      --tw-space-y-reverse: 0;
+      margin-block-start: calc(calc(var(--spacing) * 8) * var(--tw-space-y-reverse));
+      margin-block-end: calc(calc(var(--spacing) * 8) * calc(1 - var(--tw-space-y-reverse)));
+    }
+  }
   .space-y-reverse {
     :where(& > :not(:last-child)) {
       --tw-space-y-reverse: 1;
@@ -1638,9 +1576,6 @@
   .bg-\[\#8B0000\] {
     background-color: #8B0000;
   }
-  .bg-\[\#2563EB\] {
-    background-color: #2563EB;
-  }
   .bg-\[\#D9D9D9\] {
     background-color: #D9D9D9;
   }
@@ -1652,9 +1587,6 @@
   }
   .bg-blue-600 {
     background-color: var(--color-blue-600);
-  }
-  .bg-gray-100 {
-    background-color: var(--color-gray-100);
   }
   .bg-red-500 {
     background-color: var(--color-red-500);
@@ -2021,8 +1953,8 @@
   .text-gray-500 {
     color: var(--color-gray-500);
   }
-  .text-gray-700 {
-    color: var(--color-gray-700);
+  .text-red-500 {
+    color: var(--color-red-500);
   }
   .text-white {
     color: var(--color-white);
@@ -2591,6 +2523,62 @@
       max-width: 600px;
     }
   }
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../node_modules/@fontsource/roboto/files/roboto-cyrillic-ext-400-normal.woff2) format('woff2'), url(../node_modules/@fontsource/roboto/files/roboto-cyrillic-ext-400-normal.woff) format('woff');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../node_modules/@fontsource/roboto/files/roboto-cyrillic-400-normal.woff2) format('woff2'), url(../node_modules/@fontsource/roboto/files/roboto-cyrillic-400-normal.woff) format('woff');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../node_modules/@fontsource/roboto/files/roboto-greek-ext-400-normal.woff2) format('woff2'), url(../node_modules/@fontsource/roboto/files/roboto-greek-ext-400-normal.woff) format('woff');
+  unicode-range: U+1F00-1FFF;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../node_modules/@fontsource/roboto/files/roboto-greek-400-normal.woff2) format('woff2'), url(../node_modules/@fontsource/roboto/files/roboto-greek-400-normal.woff) format('woff');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../node_modules/@fontsource/roboto/files/roboto-vietnamese-400-normal.woff2) format('woff2'), url(../node_modules/@fontsource/roboto/files/roboto-vietnamese-400-normal.woff) format('woff');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../node_modules/@fontsource/roboto/files/roboto-latin-ext-400-normal.woff2) format('woff2'), url(../node_modules/@fontsource/roboto/files/roboto-latin-ext-400-normal.woff) format('woff');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../node_modules/@fontsource/roboto/files/roboto-latin-400-normal.woff2) format('woff2'), url(../node_modules/@fontsource/roboto/files/roboto-latin-400-normal.woff) format('woff');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 body {
   font-family: 'Roboto', sans-serif;
