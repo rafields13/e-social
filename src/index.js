@@ -71,9 +71,13 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
         }
     ];
 
-    $scope.isAccordionOpen = false;
+    $scope.isAccordionOpen = {
+        "intern": false,
+        "address": false,
+        "contact": false,
+    };
 
-    $scope.toggleAccordion = function () {
-        $scope.isAccordionOpen = !$scope.isAccordionOpen;
+    $scope.toggleAccordion = function (ref) {
+        $scope.isAccordionOpen[ref] = !$scope.isAccordionOpen[ref];
     };
 });

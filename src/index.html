@@ -199,220 +199,516 @@
                                     O resultado da busca será exibido nessa seção.
                                 </p>
                             </div>
-                            <div ng-switch-default class="p-4 h-full w-full flex flex-col">
+                            <div ng-switch-default class="p-4 gap-6 h-full w-full flex flex-col">
                                 <div class="flex flex-col gap-0 shadow rounded bg-white w-full">
                                     <div class="flex items-center justify-between p-4 cursor-pointer"
-                                        ng-click="toggleAccordion()">
+                                        ng-click="toggleAccordion('intern')">
                                         <h2 class="font-semibold text-[#2563EB]">Informações do Estagiário</h2>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="11"
-                                            viewBox="0 0 26 11" fill="none" ng-class="{'rotate-180': isAccordionOpen}">
+                                            viewBox="0 0 26 11" fill="none"
+                                            ng-class="{'rotate-180': isAccordionOpen['intern']}">
                                             <path d="M5 9L13 0.999999L21 9" stroke="#2563EB" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </div>
                                     <div class="px-4 overflow-hidden transition-all duration-300"
-                                        ng-class="{'h-[1px] opacity-100': isAccordionOpen, 'h-0 opacity-0': !isAccordionOpen}">
+                                        ng-class="{'h-[1px] opacity-100': isAccordionOpen['intern'], 'h-0 opacity-0': !isAccordionOpen['intern']}">
                                         <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
                                     </div>
 
                                     <div class="overflow-hidden transition-all duration-300"
-                                        ng-style="{'max-height': isAccordionOpen ? '500px' : '0px', 'padding': isAccordionOpen ? '16px' : '0px', 'padding-top': isAccordionOpen ? '32px' : '0px'}">
-                                        <form class="flex flex-col w-full space-y-8">
-                                            <div class="flex flex-row gap-4">
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="intern-name" class="text-black font-semibold">
-                                                        Nome
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <input type="text" id="intern-name" name="intern-name"
-                                                        placeholder="Nome do estagiário"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                </div>
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="cpf" class="text-black font-semibold">
-                                                        CPF
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <input type="text" id="cpf" placeholder="CPF do estagiário"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                </div>
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="gender" class="text-black font-semibold">
-                                                        Sexo
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <select name="gender" id="gender"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                        <option value="M">Masculino</option>
-                                                        <option value="F">Feminino</option>
-                                                    </select>
-                                                </div>
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="race" class="text-black font-semibold">
-                                                        Raça/Cor
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <select name="race" id="race"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                        <option value="white">Branco</option>
-                                                        <option value="black">Preto</option>
-                                                        <option value="brown">Pardo</option>
-                                                        <option value="indigenous">Indígena</option>
-                                                        <option value="yellow">Amarelo</option>
-                                                        <option value="other">Outro</option>
-                                                    </select>
-                                                </div>
+                                        ng-style="{'max-height': isAccordionOpen['intern'] ? '500px' : '0px', 'padding': isAccordionOpen['intern'] ? '16px' : '0px', 'padding-top': isAccordionOpen['intern'] ? '32px' : '0px'}">
+                                        <form class="grid grid-cols-4 gap-4 w-full">
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="intern-name" class="text-black font-semibold">
+                                                    Nome
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="intern-name" name="intern-name"
+                                                    placeholder="Nome do estagiário"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                             </div>
-                                            <div class="flex flex-row gap-4">
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="marital-status" class="text-black font-semibold">
-                                                        Estado Civil
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <select name="marital-status" id="marital-status"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                        <option value="single">Solteiro(a)</option>
-                                                        <option value="married">Casado(a)</option>
-                                                        <option value="divorced">Divorciado(a)</option>
-                                                        <option value="widower">Viúvo(a)</option>
-                                                    </select>
-                                                </div>
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="education-level"
-                                                        class="text-black font-semibold text-nowrap">
-                                                        Grau de Instrução do Estudante
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <select name="education-level" id="education-level"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                        <option value="elementary">Ensino Fundamental</option>
-                                                        <option value="high-school">Ensino Médio</option>
-                                                        <option value="technical">Ensino Técnico</option>
-                                                        <option value="undergraduate">Graduação</option>
-                                                        <option value="postgraduate">Pós-Graduação</option>
-                                                    </select>
-                                                </div>
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="social-name" class="text-black font-semibold">
-                                                        Nome Social
-                                                    </label>
-                                                    <input type="text" id="social-name" placeholder="Nome Social"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                </div>
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="birth-date" class="text-black font-semibold">
-                                                        Data de Nascimento
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <input type="date" id="birth-date" placeholder="Data de Nascimento"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="cpf" class="text-black font-semibold">
+                                                    CPF
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="cpf" placeholder="CPF do estagiário"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                             </div>
-                                            <div class="flex flex-row gap-4">
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="uf-nascimento" class="text-black font-semibold">
-                                                        UF Nascimento
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <select name="uf-nascimento" id="uf-nascimento"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                        ng-model="selectedUf"
-                                                        ng-options="uf as uf.name for uf in ufs track by uf.id">
-                                                        <option value="">Selecione a UF</option>
-                                                    </select>
-                                                </div>
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="municipio-nascimento" class="text-black font-semibold">
-                                                        Município Nascimento
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <select name="municipio-nascimento" id="municipio-nascimento"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                        ng-model="selectedCity"
-                                                        ng-options="city as city.name for city in cities track by city.id">
-                                                        <option value="">Selecione o Município</option>
-                                                    </select>
-                                                </div>
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="naturalidade" class="text-black font-semibold">
-                                                        Naturalidade
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <select name="naturalidade" id="naturalidade"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                        <option value="brazilian">Brasileiro(a)</option>
-                                                        <option value="foreign">Estrangeiro(a)</option>
-                                                    </select>
-                                                </div>
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="nacionalidade" class="text-black font-semibold">
-                                                        Nacionalidade
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <select name="nacionalidade" id="nacionalidade"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                        <option value="brazilian">Brasileiro(a)</option>
-                                                        <option value="foreign">Estrangeiro(a)</option>
-                                                    </select>
-                                                </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="gender" class="text-black font-semibold">
+                                                    Sexo
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="gender" id="gender"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="M">Masculino</option>
+                                                    <option value="F">Feminino</option>
+                                                </select>
                                             </div>
-                                            <div class="flex flex-row gap-4">
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="main-phone" class="text-black font-semibold">
-                                                        Telefone Principal
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <input type="text" id="main-phone" placeholder="Telefone Principal"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                </div>
-
-                                                <div class="flex flex-col flex-[0.25]">
-                                                    <label for="email" class="text-black font-semibold">
-                                                        E-mail
-                                                        <span class="text-red-500">*</span>
-                                                    </label>
-                                                    <input type="email" id="email" placeholder="E-mail do estagiário"
-                                                        autocomplete="off"
-                                                        class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="race" class="text-black font-semibold">
+                                                    Raça/Cor
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="race" id="race"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="white">Branco</option>
+                                                    <option value="black">Preto</option>
+                                                    <option value="brown">Pardo</option>
+                                                    <option value="indigenous">Indígena</option>
+                                                    <option value="yellow">Amarelo</option>
+                                                    <option value="other">Outro</option>
+                                                </select>
                                             </div>
-                                            <div class="flex flex-row gap-4">
-                                                <div class="flex flex-col">
-                                                    <label class="font-semibold">
-                                                        Possui Alguma Deficiência?
-                                                        <span class="text-red-500">*</span>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="marital-status" class="text-black font-semibold">
+                                                    Estado Civil
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="marital-status" id="marital-status"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="single">Solteiro(a)</option>
+                                                    <option value="married">Casado(a)</option>
+                                                    <option value="divorced">Divorciado(a)</option>
+                                                    <option value="widower">Viúvo(a)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="education-level"
+                                                    class="text-black font-semibold text-nowrap">
+                                                    Grau de Instrução do Estudante
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="education-level" id="education-level"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="elementary">Ensino Fundamental</option>
+                                                    <option value="high-school">Ensino Médio</option>
+                                                    <option value="technical">Ensino Técnico</option>
+                                                    <option value="undergraduate">Graduação</option>
+                                                    <option value="postgraduate">Pós-Graduação</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="social-name" class="text-black font-semibold">
+                                                    Nome Social
+                                                </label>
+                                                <input type="text" id="social-name" placeholder="Nome Social"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="birth-date" class="text-black font-semibold">
+                                                    Data de Nascimento
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="date" id="birth-date" placeholder="Data de Nascimento"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="uf-nascimento" class="text-black font-semibold">
+                                                    UF Nascimento
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="uf-nascimento" id="uf-nascimento"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                    ng-model="selectedUf"
+                                                    ng-options="uf as uf.name for uf in ufs track by uf.id">
+                                                    <option value="">Selecione a UF</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="municipio-nascimento" class="text-black font-semibold">
+                                                    Município Nascimento
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="municipio-nascimento" id="municipio-nascimento"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                    ng-model="selectedCity"
+                                                    ng-options="city as city.name for city in cities track by city.id">
+                                                    <option value="">Selecione o Município</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="naturalidade" class="text-black font-semibold">
+                                                    Naturalidade
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="naturalidade" id="naturalidade"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="brazilian">Brasileiro(a)</option>
+                                                    <option value="foreign">Estrangeiro(a)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="nacionalidade" class="text-black font-semibold">
+                                                    Nacionalidade
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="nacionalidade" id="nacionalidade"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="brazilian">Brasileiro(a)</option>
+                                                    <option value="foreign">Estrangeiro(a)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="main-phone" class="text-black font-semibold">
+                                                    Telefone Principal
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="main-phone" placeholder="Telefone Principal"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="email" class="text-black font-semibold">
+                                                    E-mail
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="email" id="email" placeholder="E-mail do estagiário"
+                                                    autocomplete="off"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-3 flex flex-col">
+                                                <div class="font-semibold">
+                                                    Possui Alguma Deficiência?
+                                                    <span class="text-red-500">*</span>
+                                                </div>
+                                                <div class="flex flex-row gap-4 mt-4">
+                                                    <label class="flex items-center">
+                                                        <input type="checkbox" class="w-5 h-5"
+                                                            ng-model="estagiario.deficienciaFisica"
+                                                            id="deficienciaFisica" name="deficienciaFisica">
+                                                        <span class="ml-2 font-semibold">Deficiência Física</span>
                                                     </label>
-                                                    <div class="flex flex-row gap-4 mt-4">
-                                                        <label class="flex items-center">
-                                                            <input type="checkbox" class="w-5 h-5"
-                                                                ng-model="estagiario.deficienciaFisica">
-                                                            <span class="ml-2 font-semibold">Deficiência Física</span>
-                                                        </label>
-                                                        <label class="flex items-center">
-                                                            <input type="checkbox" class="w-5 h-5"
-                                                                ng-model="estagiario.deficienciaVisual">
-                                                            <span class="ml-2 font-semibold">Deficiência Visual</span>
-                                                        </label>
-                                                        <label class="flex items-center">
-                                                            <input type="checkbox" class="w-5 h-5"
-                                                                ng-model="estagiario.deficienciaAuditiva">
-                                                            <span class="ml-2 font-semibold">Deficiência Auditiva</span>
-                                                        </label>
-                                                        <label class="flex items-center">
-                                                            <input type="checkbox" class="w-5 h-5"
-                                                                ng-model="estagiario.deficienciaMental">
-                                                            <span class="ml-2 font-semibold">Deficiência Mental</span>
-                                                        </label>
-                                                        <label class="flex items-center">
-                                                            <input type="checkbox" class="w-5 h-5"
-                                                                ng-model="estagiario.deficienciaIntelectual">
-                                                            <span class="ml-2 font-semibold">Deficiência
-                                                                Intelectual</span>
-                                                        </label>
-                                                    </div>
+                                                    <label class="flex items-center">
+                                                        <input type="checkbox" class="w-5 h-5"
+                                                            ng-model="estagiario.deficienciaVisual"
+                                                            id="deficienciaVisual" name="deficienciaVisual">
+                                                        <span class="ml-2 font-semibold">Deficiência Visual</span>
+                                                    </label>
+                                                    <label class="flex items-center">
+                                                        <input type="checkbox" class="w-5 h-5"
+                                                            ng-model="estagiario.deficienciaAuditiva"
+                                                            id="deficienciaAuditiva" name="deficienciaAuditiva">
+                                                        <span class="ml-2 font-semibold">Deficiência Auditiva</span>
+                                                    </label>
+                                                    <label class="flex items-center">
+                                                        <input type="checkbox" class="w-5 h-5"
+                                                            ng-model="estagiario.deficienciaMental"
+                                                            id="deficienciaMental" name="deficienciaMental">
+                                                        <span class="ml-2 font-semibold">Deficiência Mental</span>
+                                                    </label>
+                                                    <label class="flex items-center">
+                                                        <input type="checkbox" class="w-5 h-5"
+                                                            ng-model="estagiario.deficienciaIntelectual"
+                                                            id="deficienciaIntelectual" name="deficienciaIntelectual">
+                                                        <span class="ml-2 font-semibold">Deficiência
+                                                            Intelectual</span>
+                                                    </label>
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-0 shadow rounded bg-white w-full">
+                                    <div class="flex items-center justify-between p-4 cursor-pointer"
+                                        ng-click="toggleAccordion('address')">
+                                        <h2 class="font-semibold text-[#2563EB]">Endereço</h2>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="11"
+                                            viewBox="0 0 26 11" fill="none"
+                                            ng-class="{'rotate-180': isAccordionOpen['address']}">
+                                            <path d="M5 9L13 0.999999L21 9" stroke="#2563EB" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </div>
+                                    <div class="px-4 overflow-hidden transition-all duration-300"
+                                        ng-class="{'h-[1px] opacity-100': isAccordionOpen['address'], 'h-0 opacity-0': !isAccordionOpen['address']}">
+                                        <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                                    </div>
+
+                                    <div class="overflow-hidden transition-all duration-300"
+                                        ng-style="{'max-height': isAccordionOpen['address'] ? '500px' : '0px', 'padding': isAccordionOpen['address'] ? '16px' : '0px', 'padding-top': isAccordionOpen['address'] ? '32px' : '0px'}">
+                                        <form class="grid grid-cols-4 gap-4 w-full">
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="zipCode" class="text-black font-semibold">
+                                                    CEP
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="zipCode" name="zipCode"
+                                                    placeholder="CEP do estagiário"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-2 flex flex-col">
+                                                <label for="addressType" class="text-black font-semibold">
+                                                    Tipo Logradouro
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="addressType" id="addressType"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="area">Área</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="addressDescription" class="text-black font-semibold">
+                                                    Descrição Logradouro
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="addressDescription" name="addressDescription"
+                                                    placeholder="Descrição do logradouro"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="addressNumber" class="text-black font-semibold">
+                                                    Número
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="addressNumber" name="addressNumber"
+                                                    placeholder="Número do endereço"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="addressLocation"
+                                                    class="text-black font-semibold text-nowrap">
+                                                    Bairro
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="addressLocation" id="addressLocation"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="samambaia-norte">Samambaia Norte</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="uf-nascimento" class="text-black font-semibold">
+                                                    UF
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="uf-nascimento" id="uf-nascimento"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                    ng-model="selectedUf"
+                                                    ng-options="uf as uf.name for uf in ufs track by uf.id">
+                                                    <option value="">Selecione a UF</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="municipio-nascimento" class="text-black font-semibold">
+                                                    Município
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="municipio-nascimento" id="municipio-nascimento"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                    ng-model="selectedCity"
+                                                    ng-options="city as city.name for city in cities track by city.id">
+                                                    <option value="">Selecione o Município</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-2 flex flex-col">
+                                                <label for="addressComplement" class="text-black font-semibold">
+                                                    Complemento
+                                                </label>
+                                                <input type="text" id="addressComplement" name="addressComplement"
+                                                    placeholder="Ponto de referencia, número do apto, etc"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-0 shadow rounded bg-white w-full">
+                                    <div class="flex items-center justify-between p-4 cursor-pointer"
+                                        ng-click="toggleAccordion('contract')">
+                                        <h2 class="font-semibold text-[#2563EB]">Informações do Contrato</h2>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="11"
+                                            viewBox="0 0 26 11" fill="none"
+                                            ng-class="{'rotate-180': isAccordionOpen['contract']}">
+                                            <path d="M5 9L13 0.999999L21 9" stroke="#2563EB" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </div>
+                                    <div class="px-4 overflow-hidden transition-all duration-300"
+                                        ng-class="{'h-[1px] opacity-100': isAccordionOpen['contract'], 'h-0 opacity-0': !isAccordionOpen['contract']}">
+                                        <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                                    </div>
+
+                                    <div class="overflow-hidden transition-all duration-300"
+                                        ng-style="{'max-height': isAccordionOpen['contract'] ? '500px' : '0px', 'padding': isAccordionOpen['contract'] ? '16px' : '0px', 'padding-top': isAccordionOpen['contract'] ? '32px' : '0px'}">
+                                        <form class="grid grid-cols-4 gap-4 w-full">
+                                            <div class="col-span-1 flex flex-col">
+                                                <div class="text-black font-semibold">
+                                                    Estagiário Ativo
+                                                    <span class="text-red-500">*</span>
+                                                </div>
+                                                <div class="flex gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10">
+                                                    <label class="flex items-center gap-2 font-semibold">
+                                                        <input type="radio" name="activeInternYes" id="activeInternYes"
+                                                            value="yes" class="w-5 h-5">
+                                                        SIM
+                                                    </label>
+                                                    <label class="flex items-center gap-2 font-semibold">
+                                                        <input type="radio" name="activeInternNo" id="activeInternNo"
+                                                            value="no" class="w-5 h-5">
+                                                        NÃO
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="grantorCnpj" class="text-black font-semibold">
+                                                    CNPJ Concedente
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="grantorCnpj" name="grantorCnpj"
+                                                    placeholder="CNPJ Concedente"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="educationalInstitutionRegistration"
+                                                    class="text-black font-semibold">
+                                                    Matrícula Instituição de Ensino
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="educationalInstitutionRegistration"
+                                                    name="educationalInstitutionRegistration"
+                                                    placeholder="Matrícula da instituição de ensino"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="internshipStartDate" class="text-black font-semibold">
+                                                    Data de Início do Estágio
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="date" id="internshipStartDate" name="internshipStartDate"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="initialRegistration" class="text-black font-semibold">
+                                                    Cadastro Inicial
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="initialRegistration" name="initialRegistration"
+                                                    placeholder="Cadastro Inicial"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="internshipNature" class="text-black font-semibold">
+                                                    Natureza do Estágio
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="internshipNature" id="internshipNature"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="obrigatorio">Obrigatório</option>
+                                                    <option value="nao-obrigatorio">Não Obrigatório</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="internshipLevel" class="text-black font-semibold">
+                                                    Nível do Estágio
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="internshipLevel" id="internshipLevel"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="fundamental">Ensino Fundamental</option>
+                                                    <option value="medio">Ensino Médio</option>
+                                                    <option value="tecnico">Ensino Técnico</option>
+                                                    <option value="graduacao">Graduação</option>
+                                                    <option value="pos-graduacao">Pós-Graduação</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="internshipArea" class="text-black font-semibold">
+                                                    Área de Atuação do Estágio
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <select name="internshipArea" id="internshipArea"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                    <option value="administracao">Administração</option>
+                                                    <option value="agronomia">Agronomia</option>
+                                                    <option value="arquitetura">Arquitetura</option>
+                                                    <option value="biologia">Biologia</option>
+                                                    <option value="ciencias-contabeis">Ciências Contábeis</option>
+                                                    <option value="ciencias-da-computacao">Ciências da Computação
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="insurancePolicyNumber" class="text-black font-semibold">
+                                                    Número de Apólice do Seguro
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="insurancePolicyNumber"
+                                                    name="insurancePolicyNumber"
+                                                    placeholder="Número de Apólice do Seguro"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="internshipContractNumber" class="text-black font-semibold">
+                                                    Número de Contrato do Estágio
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="internshipContractNumber"
+                                                    name="internshipContractNumber"
+                                                    placeholder="Número de Contrato do Estágio"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="internshipEndDateForecast" class="text-black font-semibold">
+                                                    Data Prevista para o Término do Estágio
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="date" id="internshipEndDateForecast"
+                                                    name="internshipEndDateForecast"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="educationalInstitutionCnpj"
+                                                    class="text-black font-semibold">
+                                                    CNPJ da Instituição de Ensino
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="educationalInstitutionCnpj"
+                                                    name="educationalInstitutionCnpj"
+                                                    placeholder="CNPJ da Instituição de Ensino"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="integratorAgentCnpj" class="text-black font-semibold">
+                                                    CNPJ do Agente Integrador
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="integratorAgentCnpj" name="integratorAgentCnpj"
+                                                    placeholder="CNPJ do Agente Integrador"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="supervisorCpf" class="text-black font-semibold">
+                                                    CPF do Supervisor
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" id="supervisorCpf" name="supervisorCpf"
+                                                    placeholder="CPF do Supervisor"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                            <div class="col-span-1 flex flex-col">
+                                                <label for="internshipEndDate" class="text-black font-semibold">
+                                                    Data Fim de Desligamento do Estágio
+                                                    <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="date" id="internshipEndDate" name="internshipEndDate"
+                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            </div>
+                                        </form>
+                                        <div class="flex items-end justify-between my-4">
+                                            <h3 class="font-semibold text-lg">Documentos</h3>
+                                            <button type="button"
+                                                class="flex items-center bg-blue-600 gap-2 px-4 py-2 text-white rounded h-10 hover:bg-blue-700 hover:cursor-pointer">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 20 20" fill="none">
+                                                    <path
+                                                        d="M11.6665 0C12.7716 0 13.8314 0.438987 14.6128 1.22039C15.3942 2.00179 15.8332 3.0616 15.8332 4.16667V14.1667C15.8332 14.9327 15.6823 15.6913 15.3891 16.399C15.096 17.1067 14.6663 17.7498 14.1246 18.2915C13.583 18.8331 12.9399 19.2628 12.2322 19.556C11.5244 19.8491 10.7659 20 9.99984 20C9.23379 20 8.47525 19.8491 7.76752 19.556C7.05978 19.2628 6.41672 18.8331 5.87505 18.2915C5.33337 17.7498 4.90369 17.1067 4.61054 16.399C4.31739 15.6913 4.1665 14.9327 4.1665 14.1667V7.5H5.83317V14.1667C5.83317 15.2717 6.27216 16.3315 7.05356 17.1129C7.83496 17.8943 8.89477 18.3333 9.99984 18.3333C11.1049 18.3333 12.1647 17.8943 12.9461 17.1129C13.7275 16.3315 14.1665 15.2717 14.1665 14.1667V4.16667C14.1665 3.83836 14.1018 3.51327 13.9762 3.20996C13.8506 2.90664 13.6664 2.63105 13.4343 2.3989C13.2021 2.16675 12.9265 1.9826 12.6232 1.85697C12.3199 1.73133 11.9948 1.66667 11.6665 1.66667C11.3382 1.66667 11.0131 1.73133 10.7098 1.85697C10.4065 1.9826 10.1309 2.16675 9.89874 2.3989C9.66659 2.63105 9.48244 2.90664 9.3568 3.20996C9.23117 3.51327 9.1665 3.83836 9.1665 4.16667V14.1667C9.1665 14.3877 9.2543 14.5996 9.41058 14.7559C9.56686 14.9122 9.77882 15 9.99984 15C10.2209 15 10.4328 14.9122 10.5891 14.7559C10.7454 14.5996 10.8332 14.3877 10.8332 14.1667V5H12.4998V14.1667C12.4998 14.8297 12.2364 15.4656 11.7676 15.9344C11.2988 16.4033 10.6629 16.6667 9.99984 16.6667C9.3368 16.6667 8.70091 16.4033 8.23207 15.9344C7.76323 15.4656 7.49984 14.8297 7.49984 14.1667V4.16667C7.49984 3.0616 7.93882 2.00179 8.72023 1.22039C9.50163 0.438987 10.5614 0 11.6665 0V0Z"
+                                                        fill="white" />
+                                                </svg>
+                                                <span>Anexar Arquivo</span>
+                                            </button>
+                                        </div>
+                                        <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                                        <!-- container com documentos anexados como se fosse uma tabela com campos Nome, Arquivo, Tamanho Tipo e Ação -->
                                     </div>
                                 </div>
                             </div>
