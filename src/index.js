@@ -80,4 +80,30 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
     $scope.toggleAccordion = function (ref) {
         $scope.isAccordionOpen[ref] = !$scope.isAccordionOpen[ref];
     };
+
+    $scope.openModal = function (id) {
+        let modal = document.getElementById(id);
+        let content = document.getElementById(id + "Content");
+
+        modal.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+        modal.classList.add("opacity-100", "scale-100", "pointer-events-auto");
+
+        requestAnimationFrame(() => {
+            content.classList.remove("opacity-0", "scale-95");
+            content.classList.add("opacity-100", "scale-100");
+        });
+    };
+
+    $scope.closeModal = function (id) {
+        let modal = document.getElementById(id);
+        let content = document.getElementById(id + "Content");
+
+        content.classList.remove("opacity-100", "scale-100");
+        content.classList.add("opacity-0", "scale-95");
+
+        setTimeout(() => {
+            modal.classList.remove("opacity-100", "scale-100", "pointer-events-auto");
+            modal.classList.add("opacity-0", "scale-95", "pointer-events-none");
+        }, 300);
+    };
 });
