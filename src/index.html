@@ -12,8 +12,8 @@
 </head>
 
 <body ng-controller="MyCtrl">
-    <div class="grid grid-rows-[auto_1fr] h-screen">
-        <div class="h-screen">
+    <div class="grid grid-rows-[auto_1fr]">
+        <div class="h-screen" ng-class="{'overflow-hidden': mode === 'initial'}">
             <div class="flex justify-between items-center px-4 py-2 bg-[#0061AF]">
                 <div class="flex space-x-6">
                     <div class="relative">
@@ -63,7 +63,7 @@
                                             class="text-gray-500 text-sm group-hover:text-white group-hover:opacity-80">Supervisor/Executor</span>
                                     </span>
                                 </button>
-                                <button type="button" ng-click="mode = 'updateIntern'"
+                                <button type="button" ng-click="switchMenu('updateIntern')"
                                     class="flex items-center w-full p-2 gap-2 text-[#0061AF] font-medium border border-transparent rounded-sm group hover:bg-[#2563EB] hover:cursor-pointer update-dropdown group">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 15"
                                         class="w-5 h-5 fill-[#0061AF] group-hover:fill-white" fill="currentColor">
@@ -149,12 +149,11 @@
                 </div>
             </div>
             <div ng-switch="mode">
-                <div ng-switch-when="initial" class="flex flex-col w-full h-full items-center justify-center p-4">
+                <div ng-switch-when="initial" class="flex flex-col items-center justify-center h-screen p-4">
                     <img src="./imgs/logo-sigest.png" alt="Logo do SIGEST"
                         class="w-auto max-w-[90%] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-auto object-contain" />
                 </div>
-                <div ng-switch-default class="h-full">
-                    <!-- class="h-[calc(100vh-58px)]" -->
+                <div ng-switch-when="updateIntern" class="h-full">
                     <div class="flex flex-col w-full h-full p-4">
                         <div class="flex flex-col p-4">
                             <h1 class="text-black font-bold text-2xl mb-1">Atualização Cadastral de Estagiário</h1>
@@ -819,6 +818,23 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="flex items-center justify-end gap-4">
+                                    <button type="button"
+                                        class="px-4 py-2 bg-white rounded shadow-[0px_0px_3px_1px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-gray-100"
+                                        ng-click="switchMenu('initial')">
+                                        Cancelar
+                                    </button>
+                                    <button type="button"
+                                        class="flex items-center gap-2 bg-[#28A745] text-white px-4 py-2 rounded-md hover:bg-[#218838] hover:cursor-pointer shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]">
+                                        <span>Salvar Cadastro</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 20 20" fill="none">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M2.90783 5.19725C3.04601 4.01577 4.04704 3.125 5.23657 3.125H14.1888C14.3406 3.125 14.4871 3.18022 14.6012 3.28035L16.9016 5.30017C17.4187 5.75426 17.7044 6.41674 17.6797 7.10453L17.3931 15.0823C17.3488 16.3151 16.3365 17.2917 15.1029 17.2917H5.09432C3.9863 17.2917 3.05086 16.4683 2.91016 15.3693C2.49641 12.1375 2.47859 8.86722 2.85709 5.63106L2.90783 5.19725ZM5.23657 4.375C4.68122 4.375 4.21388 4.79087 4.14936 5.34246L4.09862 5.77627C3.73194 8.91142 3.74921 12.0796 4.15004 15.2106C4.21087 15.6857 4.61529 16.0417 5.09432 16.0417H5.62523V12.5C5.62523 11.6946 6.27815 11.0417 7.08357 11.0417H12.9169C13.7223 11.0417 14.3752 11.6946 14.3752 12.5V16.0417H15.1029C15.6636 16.0417 16.1237 15.5978 16.1439 15.0374L16.4305 7.05964C16.4418 6.74701 16.3119 6.44588 16.0768 6.23947L13.9586 4.37958V6.33331C13.9586 7.13873 13.3056 7.79165 12.5002 7.79165H7.50023C6.69482 7.79165 6.0419 7.13873 6.0419 6.33331V4.375H5.23657ZM7.2919 4.375V6.33331C7.2919 6.44837 7.38517 6.54165 7.50023 6.54165H12.5002C12.6153 6.54165 12.7086 6.44837 12.7086 6.33331V4.375H7.2919ZM13.1252 16.0417H6.87523V12.5C6.87523 12.3849 6.96851 12.2917 7.08357 12.2917H12.9169C13.032 12.2917 13.1252 12.3849 13.1252 12.5V16.0417Z"
+                                                fill="white" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -827,16 +843,106 @@
             <div id="uploadDocument"
                 class="fixed inset-0 flex items-center justify-center bg-black/50 opacity-0 scale-95 pointer-events-none transition-all duration-300"
                 ng-click="closeModal('uploadDocument')">
-
                 <div id="uploadDocumentContent"
-                    class="bg-white p-6 rounded-lg shadow-lg w-1/3 opacity-0 scale-95 transition-all duration-300"
+                    class="bg-white rounded-lg shadow-lg opacity-0 scale-95 transition-all duration-300 w-[800px] h-[480px]"
                     ng-click="$event.stopPropagation()">
-
-                    <h2 class="text-xl font-semibold">Modal 1</h2>
-                    <p class="mt-2">Conteúdo da Modal 1...</p>
-                    <div class="flex justify-end gap-2 mt-4">
-                        <button class="px-4 py-2 bg-gray-300 rounded" ng-click="closeModal('uploadDocument')">
-                            Fechar
+                    <div class="px-8 py-4 flex items-center justify-between">
+                        <h2 class="text-xl font-semibold">Novo Arquivo</h2>
+                        <button type="button" ng-click="closeModal('uploadDocument')"
+                            class="group transition-transform duration-200 hover:cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                                fill="none" class="group-hover:rotate-180 transform transition-transform duration-200">
+                                <path d="M2 2L18 18" stroke="#0F7BC2" stroke-width="3" stroke-linecap="round" />
+                                <path d="M18 2L2 18" stroke="#0F7BC2" stroke-width="3" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                    <div class="flex flex-col p-6 gap-4">
+                        <div
+                            class="flex flex-col gap-0 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white w-full">
+                            <div class="flex items-center justify-between p-4">
+                                <h2 class="font-semibold text-[#2563EB]">Informações do Documento</h2>
+                            </div>
+                            <div class="px-4 h-[1px]">
+                                <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                            </div>
+                            <div class="max-h-[800px] p-4">
+                                <form class="grid grid-cols-12 gap-x-4 gap-y-8 w-full">
+                                    <div class="col-span-8 flex flex-col">
+                                        <label for="documentDescription" class="text-black font-semibold">
+                                            Descrição Documento
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="documentDescription" name="documentDescription"
+                                            placeholder="Descrição Documento"
+                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                    </div>
+                                    <div class="col-span-4 flex flex-col">
+                                        <label for="documentType" class="text-black font-semibold">
+                                            Tipo Documento
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select name="documentType" id="documentType"
+                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            <option value="contrato">Contrato</option>
+                                            <option value="termo">Termo</option>
+                                            <option value="declaracao">Declaração</option>
+                                            <option value="outro">Outro</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col gap-0 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white w-full">
+                            <div class="flex items-center justify-between p-4">
+                                <h2 class="font-semibold text-[#2563EB]">Documento</h2>
+                            </div>
+                            <div class="px-4 h-[1px]">
+                                <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                            </div>
+                            <div class="max-h-[800px] p-4">
+                                <form class="flex gap-x-4 gap-y-8 w-full text-nowrap">
+                                    <input type="file" id="file" name="file" class="hidden" />
+                                    <label for="file"
+                                        class="flex items-center justify-center gap-2 bg-[#2563EB] text-white rounded-md p-4 cursor-pointer hover:bg-[#0F7BC2] h-10">
+                                        <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M9.25 13H6.75C6.3125 13 6 12.6875 6 12.25V7H3.25C2.6875 7 2.40625 6.34375 2.8125 5.9375L7.5625 1.1875C7.78125 0.96875 8.1875 0.96875 8.40625 1.1875L13.1562 5.9375C13.5625 6.34375 13.2812 7 12.7188 7H10V12.25C10 12.6875 9.65625 13 9.25 13ZM16 12.75V16.25C16 16.6875 15.6562 17 15.25 17H0.75C0.3125 17 0 16.6875 0 16.25V12.75C0 12.3438 0.3125 12 0.75 12H5V12.25C5 13.2188 5.78125 14 6.75 14H9.25C10.1875 14 11 13.2188 11 12.25V12H15.25C15.6562 12 16 12.3438 16 12.75ZM12.125 15.5C12.125 15.1562 11.8438 14.875 11.5 14.875C11.1562 14.875 10.875 15.1562 10.875 15.5C10.875 15.8438 11.1562 16.125 11.5 16.125C11.8438 16.125 12.125 15.8438 12.125 15.5ZM14.125 15.5C14.125 15.1562 13.8438 14.875 13.5 14.875C13.1562 14.875 12.875 15.1562 12.875 15.5C12.875 15.8438 13.1562 16.125 13.5 16.125C13.8438 16.125 14.125 15.8438 14.125 15.5Z"
+                                                fill="white" />
+                                        </svg>
+                                        <span>Escolher Arquivo</span>
+                                    </label>
+                                    <div class="flex relative group">
+                                        <div
+                                            class="flex items-center gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10 relative">
+                                            <span
+                                                class="text-[#2563EB] underline whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40 block cursor-pointer">
+                                                contrato_manuel_rafael_barros_5484728.pdf
+                                            </span>
+                                            <span
+                                                class="absolute left-0 bottom-full mb-1 hidden w-max max-w-xs rounded bg-gray-900 px-2 py-1 text-white text-xs group-hover:block">
+                                                contrato_manuel_rafael_barros_5484728.pdf
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                    <div class="flex justify-end gap-4 p-4">
+                        <button
+                            class="px-4 py-2 bg-white rounded shadow-[0px_0px_3px_1px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-gray-100"
+                            ng-click="closeModal('uploadDocument')">
+                            Cancelar
+                        </button>
+                        <button
+                            class="text-white px-4 py-2 bg-[#2563EB] rounded shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-[#0F7BC2]"
+                            ng-click="closeModal('uploadDocument')">
+                            Concluir
                         </button>
                     </div>
                 </div>

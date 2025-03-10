@@ -1,7 +1,11 @@
 var app = angular.module("myApp", []);
 
 app.controller("MyCtrl", function ($scope, $timeout, $document) {
-    $scope.mode = "home";
+    $scope.mode = "initial";
+
+    $scope.switchMenu = function (mode) {
+        $scope.mode = mode;
+    };
 
     $scope.showUpdateMenu = false;
 
