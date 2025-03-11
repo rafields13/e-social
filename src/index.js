@@ -1,4 +1,4 @@
-var app = angular.module("myApp", []);
+var app = angular.module("myApp", ['ui.utils.masks']);
 
 app.controller("MyCtrl", function ($scope, $timeout, $document) {
     $scope.mode = "initial";
@@ -47,6 +47,11 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
             name: "Órgão 4",
             id: 4,
             isLDAP: true
+        },
+        {
+            name: "Central IT",
+            id: 13,
+            isLDAP: false
         }
     ];
 
@@ -123,5 +128,50 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
         event.preventDefault();
         console.log("Form submitted");
         console.log(event);
+    };
+}).directive('cpfValidator', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, ctrl) {
+            ctrl.$parsers.push(function (value) {
+                if (!value) {
+                    ctrl.$setValidity('cpf', false);
+                    element[0].setCustomValidity("O CPF é obrigatório");
+                    return value;
+                }
+
+                let cpf = value.replace(/\D/g, '');
+
+                if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+                    ctrl.$setValidity('cpf', false);
+                    element[0].setCustomValidity("CPF inválido! Verifique o número digitado.");
+                    return value;
+                }
+
+                let sum = 0, remainder;
+                for (let i = 1; i <= 9; i++) sum += parseInt(cpf[i - 1]) * (11 - i);
+                remainder = (sum * 10) % 11;
+                if (remainder === 10 || remainder === 11) remainder = 0;
+                if (remainder !== parseInt(cpf[9])) {
+                    ctrl.$setValidity('cpf', false);
+                    element[0].setCustomValidity("CPF inválido! Verifique o número digitado.");
+                    return value;
+                }
+
+                sum = 0;
+                for (let i = 1; i <= 10; i++) sum += parseInt(cpf[i - 1]) * (12 - i);
+                remainder = (sum * 10) % 11;
+                if (remainder === 10 || remainder === 11) remainder = 0;
+                if (remainder !== parseInt(cpf[10])) {
+                    ctrl.$setValidity('cpf', false);
+                    element[0].setCustomValidity("CPF inválido! Verifique o número digitado.");
+                    return value;
+                }
+
+                ctrl.$setValidity('cpf', true);
+                element[0].setCustomValidity("");
+                return value;
+            });
+        }
     };
 });

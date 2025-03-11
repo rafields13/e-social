@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="pt-BR">
     <link href="./output.css" rel="stylesheet">
     <title>E-Social</title>
 
     <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../node_modules/angular-input-masks/releases/angular-input-masks-standalone.min.js"></script>
     <script src="index.js"></script>
 </head>
 
@@ -93,7 +95,7 @@
                         <div class="relative flex-1 min-w-[300px]">
                             <input type="text" ng-model="search.cpf" placeholder="Digite o CPF" name="searchCpf"
                                 id="searchCpf"
-                                class="w-full pl-2 py-2 border border-[#C9C9C9] rounded-sm bg-white focus:outline-none placeholder:text-black placeholder:font-semibold"
+                                class="w-full pl-2 py-2 border border-[#C9C9C9] rounded-sm bg-white focus:outline-none placeholder:text-[#39393999] placeholder:opacity-60"
                                 uib-typeahead="value as value.name for value in findUsersByCode($viewValue)"
                                 typeahead-on-select="selectUserByCode($item)" typeahead-loading="loading"
                                 typeahead-min-length="11"
@@ -175,6 +177,7 @@
                                             Busca</label>
                                         <select id="searchType"
                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                            <option value="" disabled selected>Selecione</option>
                                             <option value="name">Nome</option>
                                             <option value="cpf">CPF</option>
                                         </select>
@@ -182,7 +185,7 @@
                                     <div class="flex flex-col flex-1">
                                         <label for="name" class="text-black font-semibold">Buscar Usuário</label>
                                         <input type="text" id="searchName" name="searchName"
-                                            placeholder="Digite o nome do usuário" autocomplete="off"
+                                            placeholder="rafael.marliere" autocomplete="off"
                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none w-full h-10">
                                     </div>
                                     <div class="flex self-end">
@@ -209,7 +212,7 @@
                                         O resultado da busca será exibido nessa seção.
                                     </p>
                                 </div>
-                                <form class="h-full w-full flex" ng-submit="submitForm($event)">
+                                <form name="updateUserForm" class="h-full w-full flex" ng-submit="submitForm($event)">
                                     <div ng-switch-default class="p-4 gap-6 h-full w-full flex flex-col">
                                         <div
                                             class="flex flex-col gap-0 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white w-full">
@@ -236,13 +239,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="name" name="name"
-                                                            placeholder="Nome Estagiário" autocomplete="off"
+                                                            placeholder="Rafael Marliere de Oliveira" autocomplete="off"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ng-model="user.name" ng-required="mandatory">
-                                                        <div class="text-red-500 text-sm"
-                                                            ng-show="form.$submitted && form.name.$error.required">
-                                                            Campo obrigatório
-                                                        </div>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="cpf" class="text-black font-semibold">
@@ -250,9 +249,10 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="cpf" name="cpf"
-                                                            placeholder="CPF Estagiário"
+                                                            placeholder="066.364.751-70"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-model="user.cpf" ng-required="mandatory">
+                                                            ng-model="user.cpf" ng-required="mandatory" cpf-validator
+                                                            ui-br-cpf-mask>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="gender" class="text-black font-semibold">
@@ -262,6 +262,7 @@
                                                         <select name="gender" id="gender" ng-model="user.gender"
                                                             ng-required="mandatory"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="M">Masculino</option>
                                                             <option value="F">Feminino</option>
                                                         </select>
@@ -272,7 +273,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="race" id="race" ng-model="user.race"
+                                                            ng-required="mandatory"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="white">Branco</option>
                                                             <option value="black">Preto</option>
                                                             <option value="brown">Pardo</option>
@@ -287,8 +290,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="maritalStatus" id="maritalStatus"
-                                                            ng-model="user.maritalStatus"
+                                                            ng-required="mandatory" ng-model="user.maritalStatus"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="single">Solteiro(a)</option>
                                                             <option value="married">Casado(a)</option>
                                                             <option value="divorced">Divorciado(a)</option>
@@ -302,8 +306,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="educationLevel" id="educationLevel"
-                                                            ng-model="user.educationLevel"
+                                                            ng-required="mandatory" ng-model="user.educationLevel"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="elementary">Ensino Fundamental</option>
                                                             <option value="high-school">Ensino Médio</option>
                                                             <option value="technical">Ensino Técnico</option>
@@ -316,7 +321,7 @@
                                                             Nome Social
                                                         </label>
                                                         <input type="text" id="socialName" name="socialName"
-                                                            placeholder="Nome Social" ng-model="user.socialName"
+                                                            placeholder="Rafael" ng-model="user.socialName"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -325,7 +330,8 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="date" id="birthDate" name="birthDate"
-                                                            placeholder="Data Nascimento" ng-model="user.birthDate"
+                                                            ng-required="mandatory" placeholder="Data Nascimento"
+                                                            ng-model="user.birthDate"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -334,10 +340,11 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="birthState" id="birthState"
+                                                            ng-required="mandatory"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ng-model="user.birthState"
                                                             ng-options="uf as uf.name for uf in ufs track by uf.id">
-                                                            <option value="">Selecione a UF</option>
+                                                            <option value="" disabled selected>Selecione</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -345,11 +352,11 @@
                                                             Município Nascimento
                                                             <span class="text-red-500">*</span>
                                                         </label>
-                                                        <select name="birthCity" id="birthCity"
+                                                        <select name="birthCity" id="birthCity" ng-required="mandatory"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ng-model="user.birthCity"
                                                             ng-options="city as city.name for city in cities track by city.id">
-                                                            <option value="">Selecione o Município</option>
+                                                            <option value="" disabled selected>Selecione</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -358,8 +365,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="naturalness" id="naturalness"
-                                                            ng-model="user.naturalness"
+                                                            ng-required="mandatory" ng-model="user.naturalness"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="brazilian">Brasileiro(a)</option>
                                                             <option value="foreign">Estrangeiro(a)</option>
                                                         </select>
@@ -370,8 +378,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="nationality" id="nationality"
-                                                            ng-model="user.nationality"
+                                                            ng-required="mandatory" ng-model="user.nationality"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="brazilian">Brasileiro(a)</option>
                                                             <option value="foreign">Estrangeiro(a)</option>
                                                         </select>
@@ -382,8 +391,10 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="mainPhone" name="mainPhone"
-                                                            ng-model="user.mainPhone" placeholder="Telefone Principal"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            ng-required="mandatory" ng-model="user.mainPhone"
+                                                            placeholder="(61) 99519-0667"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ui-br-phone-number-mask="areaCode">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="email" class="text-black font-semibold">
@@ -391,14 +402,13 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="email" id="email" name="email"
-                                                            ng-model="user.email" placeholder="E-mail Estagiário"
-                                                            autocomplete="off"
+                                                            ng-required="mandatory" ng-model="user.email"
+                                                            placeholder="rafaelmarliere033@gmail.com" autocomplete="off"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-3 flex flex-col">
                                                         <div class="font-semibold">
                                                             Possui Alguma Deficiência?
-                                                            <span class="text-red-500">*</span>
                                                         </div>
                                                         <div class="flex flex-row gap-4 mt-4">
                                                             <label class="flex items-center">
@@ -468,8 +478,10 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="zipCode" name="zipCode"
-                                                            ng-model="user.zipCode" placeholder="CEP Estagiário"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            ng-required="mandatory" ng-model="user.zipCode"
+                                                            placeholder="70744-070"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ui-br-cep-mask>
                                                     </div>
                                                     <div class="col-span-2 flex flex-col">
                                                         <label for="streetType" class="text-black font-semibold">
@@ -477,8 +489,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="streetType" id="streetType"
-                                                            ng-model="user.streetType"
+                                                            ng-required="mandatory" ng-model="user.streetType"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="area">Área</option>
                                                         </select>
                                                     </div>
@@ -488,8 +501,8 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="streetDescription"
-                                                            name="streetDescription" ng-model="user.streetDescription"
-                                                            placeholder="Descrição Logradouro"
+                                                            ng-required="mandatory" name="streetDescription"
+                                                            ng-model="user.streetDescription" placeholder="Plano Piloto"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -498,7 +511,8 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="houseNumber" name="houseNumber"
-                                                            ng-model="user.houseNumber" placeholder="Número Endereço"
+                                                            ng-required="mandatory" ng-model="user.houseNumber"
+                                                            placeholder="607"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -508,8 +522,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="neighborhood" id="neighborhood"
-                                                            ng-model="user.neighborhood"
+                                                            ng-required="mandatory" ng-model="user.neighborhood"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="samambaia-norte">Samambaia Norte</option>
                                                         </select>
                                                     </div>
@@ -520,9 +535,9 @@
                                                         </label>
                                                         <select name="state" id="state"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-model="user.state"
+                                                            ng-required="mandatory" ng-model="user.state"
                                                             ng-options="uf as uf.name for uf in ufs track by uf.id">
-                                                            <option value="">Selecione a UF</option>
+                                                            <option value="" disabled selected>Selecione</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -532,9 +547,9 @@
                                                         </label>
                                                         <select name="city" id="city"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-model="user.city"
+                                                            ng-required="mandatory" ng-model="user.city"
                                                             ng-options="city as city.name for city in cities track by city.id">
-                                                            <option value="">Selecione o Município</option>
+                                                            <option value="" disabled selected>Selecione</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-2 flex flex-col">
@@ -543,7 +558,7 @@
                                                         </label>
                                                         <input type="text" id="addressComplement"
                                                             name="addressComplement" ng-model="user.addressComplement"
-                                                            placeholder="Ponto de referencia, número do apto, etc"
+                                                            placeholder="Ponto de referência, casa, apartamento, etc"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                 </div>
@@ -577,12 +592,14 @@
                                                             class="flex gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10">
                                                             <label class="flex items-center gap-2 font-semibold">
                                                                 <input type="radio" name="active" id="active"
-                                                                    ng-model="user.active" class="w-5 h-5">
+                                                                    ng-model="user.active" ng-required="mandatory"
+                                                                    ng-value="true" class="w-5 h-5">
                                                                 SIM
                                                             </label>
                                                             <label class="flex items-center gap-2 font-semibold">
                                                                 <input type="radio" name="inactive" id="inactive"
-                                                                    ng-model="user.inactive" class="w-5 h-5">
+                                                                    ng-model="user.active" ng-required="mandatory"
+                                                                    ng-value="false" class="w-5 h-5">
                                                                 NÃO
                                                             </label>
                                                         </div>
@@ -593,8 +610,10 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="grantorCnpj" name="grantorCnpj"
-                                                            ng-model="user.grantorCnpj" placeholder="CNPJ Concedente"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            ng-required="mandatory" ng-model="user.grantorCnpj"
+                                                            placeholder="24.541.522/0001-69"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ui-br-cnpj-mask>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="educationalInstitutionRegistration"
@@ -603,9 +622,10 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="educationalInstitutionRegistration"
+                                                            ng-required="mandatory"
                                                             name="educationalInstitutionRegistration"
                                                             ng-model="user.educationalInstitutionRegistration"
-                                                            placeholder="Matrícula Instituição Ensino"
+                                                            placeholder="22309617"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -615,7 +635,7 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="date" id="internshipStartDate"
-                                                            name="internshipStartDate"
+                                                            ng-required="mandatory" name="internshipStartDate"
                                                             ng-model="user.internshipStartDate"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
@@ -627,8 +647,8 @@
                                                         </label>
                                                         <input type="text" id="initialRegistration"
                                                             name="initialRegistration"
-                                                            ng-model="user.initialRegistration"
-                                                            placeholder="Cadastro Inicial"
+                                                            ng-model="user.initialRegistration" ng-required="mandatory"
+                                                            placeholder="NÃO"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -637,8 +657,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="internshipNature" id="internshipNature"
-                                                            ng-model="user.internshipNature"
+                                                            ng-required="mandatory" ng-model="user.internshipNature"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="obrigatorio">Obrigatório</option>
                                                             <option value="nao-obrigatorio">Não Obrigatório</option>
                                                         </select>
@@ -649,8 +670,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="internshipLevel" id="internshipLevel"
-                                                            ng-model="user.internshipLevel"
+                                                            ng-required="mandatory" ng-model="user.internshipLevel"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="fundamental">Ensino Fundamental</option>
                                                             <option value="medio">Ensino Médio</option>
                                                             <option value="tecnico">Ensino Técnico</option>
@@ -664,8 +686,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <select name="internshipArea" id="internshipArea"
-                                                            ng-model="user.internshipArea"
+                                                            ng-required="mandatory" ng-model="user.internshipArea"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            <option value="" disabled selected>Selecione</option>
                                                             <option value="administracao">Administração</option>
                                                             <option value="agronomia">Agronomia</option>
                                                             <option value="arquitetura">Arquitetura</option>
@@ -684,9 +707,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="insurancePolicyNumber"
-                                                            name="insurancePolicyNumber"
+                                                            ng-required="mandatory" name="insurancePolicyNumber"
                                                             ng-model="user.insurancePolicyNumber"
-                                                            placeholder="Número Apólice Seguro"
+                                                            placeholder="0378/2020 09.0982.001.52213"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col text-nowrap">
@@ -696,9 +719,9 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="internshipContractNumber"
-                                                            name="internshipContractNumber"
+                                                            name="internshipContractNumber" ng-required="mandatory"
                                                             ng-model="user.internshipContractNumber"
-                                                            placeholder="Número Contrato Estágio"
+                                                            placeholder="TCE-2025-004157"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -708,7 +731,7 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="date" id="internshipEndDateForecast"
-                                                            name="internshipEndDateForecast"
+                                                            name="internshipEndDateForecast" ng-required="mandatory"
                                                             ng-model="user.internshipEndDateForecast"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
@@ -719,10 +742,11 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="educationalInstitutionCnpj"
-                                                            name="educationalInstitutionCnpj"
+                                                            name="educationalInstitutionCnpj" ng-required="mandatory"
                                                             ng-model="user.educationalInstitutionCnpj"
-                                                            placeholder="CNPJ Instituição Ensino"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            placeholder="19.994.303/0001-03"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ui-br-cnpj-mask>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="integratorAgentCnpj"
@@ -731,10 +755,11 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="integratorAgentCnpj"
-                                                            name="integratorAgentCnpj"
+                                                            name="integratorAgentCnpj" ng-required="mandatory"
                                                             ng-model="user.integratorAgentCnpj"
-                                                            placeholder="CNPJ Agente Integrador"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            placeholder="26.300.225/0001-57"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ui-br-cnpj-mask>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="supervisorCpf" class="text-black font-semibold">
@@ -742,8 +767,10 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="supervisorCpf" name="supervisorCpf"
-                                                            ng-model="user.supervisorCpf" placeholder="CPF Supervisor"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            ng-required="mandatory" ng-model="user.supervisorCpf"
+                                                            placeholder="896.384.720-90"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ui-br-cpf-mask>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="internshipEndDate" class="text-black font-semibold">
@@ -751,7 +778,8 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="date" id="internshipEndDate"
-                                                            name="internshipEndDate" ng-model="user.internshipEndDate"
+                                                            ng-required="mandatory" name="internshipEndDate"
+                                                            ng-model="user.internshipEndDate"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                 </div>
@@ -879,7 +907,6 @@
                                                 ng-click="switchMode('initial')">
                                                 Cancelar
                                             </button>
-                                            <!-- ng-click="updateInternInfo(user)" -->
                                             <button type="submit"
                                                 class="flex items-center gap-2 bg-[#28A745] text-white px-4 py-2 rounded-md hover:bg-[#218838] hover:cursor-pointer shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]">
                                                 <span>Salvar Cadastro</span>
@@ -933,7 +960,7 @@
                                                                 <input type="text" id="documentDescription"
                                                                     name="documentDescription"
                                                                     ng-model="user.documentDescription"
-                                                                    placeholder="Descrição Documento"
+                                                                    placeholder="Contrato de Estágio"
                                                                     class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                             </div>
                                                             <div class="col-span-4 flex flex-col">
@@ -945,6 +972,8 @@
                                                                 <select name="documentType" id="documentType"
                                                                     ng-model="user.documentType"
                                                                     class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                                    <option value="" disabled selected>Selecione
+                                                                    </option>
                                                                     <option value="contrato">Contrato</option>
                                                                     <option value="termo">Termo</option>
                                                                     <option value="declaracao">Declaração</option>
