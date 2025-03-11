@@ -3,7 +3,7 @@ var app = angular.module("myApp", []);
 app.controller("MyCtrl", function ($scope, $timeout, $document) {
     $scope.mode = "initial";
 
-    $scope.switchMenu = function (mode) {
+    $scope.switchMode = function (mode) {
         $scope.mode = mode;
     };
 
@@ -26,7 +26,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
         id: 13,
         isLDAP: false
     };
-    $scope.searchQuery = '';
+    $scope.searchDepartment = '';
     $scope.departments = [
         {
             name: "Órgão 1",
@@ -109,5 +109,9 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
             modal.classList.remove("opacity-100", "scale-100", "pointer-events-auto");
             modal.classList.add("opacity-0", "scale-95", "pointer-events-none");
         }, 300);
+    };
+
+    $scope.updateInternInfo = function (user) {
+        console.log(user);
     };
 });
