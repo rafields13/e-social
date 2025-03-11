@@ -86,8 +86,11 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
     };
 
     $scope.openModal = function (id) {
+        let body = document.querySelector("body");
         let modal = document.getElementById(id);
         let content = document.getElementById(id + "Content");
+
+        body.classList.add("overflow-hidden");
 
         modal.classList.remove("opacity-0", "scale-95", "pointer-events-none");
         modal.classList.add("opacity-100", "scale-100", "pointer-events-auto");
@@ -99,8 +102,11 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
     };
 
     $scope.closeModal = function (id) {
+        let body = document.querySelector("body");
         let modal = document.getElementById(id);
         let content = document.getElementById(id + "Content");
+
+        body.classList.remove("overflow-hidden");
 
         content.classList.remove("opacity-100", "scale-100");
         content.classList.add("opacity-0", "scale-95");
@@ -111,7 +117,11 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
         }, 300);
     };
 
-    $scope.updateInternInfo = function (user) {
-        console.log(user);
+    $scope.mandatory = true;
+
+    $scope.submitForm = function (event) {
+        event.preventDefault();
+        console.log("Form submitted");
+        console.log(event);
     };
 });
