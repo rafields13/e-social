@@ -96,6 +96,7 @@
                             <input type="text" ng-model="search.cpf" placeholder="Digite o CPF" name="searchCpf"
                                 id="searchCpf"
                                 class="w-full pl-2 py-2 border border-[#C9C9C9] rounded-sm bg-white focus:outline-none placeholder:text-[#39393999] placeholder:opacity-60"
+                                ui-br-cpf-mask
                                 uib-typeahead="value as value.name for value in findUsersByCode($viewValue)"
                                 typeahead-on-select="selectUserByCode($item)" typeahead-loading="loading"
                                 typeahead-min-length="11"
@@ -239,9 +240,10 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="name" name="name"
-                                                            placeholder="Rafael Marliere de Oliveira" autocomplete="off"
+                                                            placeholder="Digite o nome completo" autocomplete="off"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-model="user.name" ng-required="mandatory">
+                                                            ng-model="user.name" ng-required="mandatory"
+                                                            ng-minlength="2" ng-maxlength="70">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="cpf" class="text-black font-semibold">
@@ -249,7 +251,7 @@
                                                             <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" id="cpf" name="cpf"
-                                                            placeholder="066.364.751-70"
+                                                            placeholder="xxx.xxx.xxx-xx"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ng-model="user.cpf" ng-required="mandatory" cpf-validator
                                                             ui-br-cpf-mask>
@@ -262,7 +264,7 @@
                                                         <select name="gender" id="gender" ng-model="user.gender"
                                                             ng-required="mandatory"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione</option>
+                                                            <option value="" disabled selected>Selecione o sexo</option>
                                                             <option value="M">Masculino</option>
                                                             <option value="F">Feminino</option>
                                                         </select>
@@ -275,13 +277,14 @@
                                                         <select name="race" id="race" ng-model="user.race"
                                                             ng-required="mandatory"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione</option>
-                                                            <option value="white">Branco</option>
-                                                            <option value="black">Preto</option>
-                                                            <option value="brown">Pardo</option>
-                                                            <option value="indigenous">Indígena</option>
-                                                            <option value="yellow">Amarelo</option>
-                                                            <option value="other">Outro</option>
+                                                            <option value="" disabled selected>Selecione a raça/cor
+                                                            </option>
+                                                            <option value="1">Branca</option>
+                                                            <option value="2">Preta</option>
+                                                            <option value="3">Parda</option>
+                                                            <option value="4">Amarela</option>
+                                                            <option value="5">Indígena</option>
+                                                            <option value="6">Não Informado</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -292,11 +295,13 @@
                                                         <select name="maritalStatus" id="maritalStatus"
                                                             ng-required="mandatory" ng-model="user.maritalStatus"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione</option>
-                                                            <option value="single">Solteiro(a)</option>
-                                                            <option value="married">Casado(a)</option>
-                                                            <option value="divorced">Divorciado(a)</option>
-                                                            <option value="widower">Viúvo(a)</option>
+                                                            <option value="" disabled selected>Selecione o estado civil
+                                                            </option>
+                                                            <option value="1">Solteiro</option>
+                                                            <option value="2">Casado</option>
+                                                            <option value="3">Divorciado</option>
+                                                            <option value="4">Separado</option>
+                                                            <option value="5">Viúvo</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -308,12 +313,25 @@
                                                         <select name="educationLevel" id="educationLevel"
                                                             ng-required="mandatory" ng-model="user.educationLevel"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione</option>
-                                                            <option value="elementary">Ensino Fundamental</option>
-                                                            <option value="high-school">Ensino Médio</option>
-                                                            <option value="technical">Ensino Técnico</option>
-                                                            <option value="undergraduate">Graduação</option>
-                                                            <option value="postgraduate">Pós-Graduação</option>
+                                                            <option value="" disabled selected>Selecione o grau de
+                                                                instrução de estudante</option>
+                                                            <option value="1">Analfabeto, inclusive o que, embora
+                                                                tenha recebido instrução, não se alfabetizou</option>
+                                                            <option value="2">Até o 5º ano incompleto do ensino
+                                                                fundamental (antiga 4ª série) ou que se tenha
+                                                                alfabetizado sem ter frequentado escola regular</option>
+                                                            <option value="3">5º ano completo do ensino fundamental
+                                                            </option>
+                                                            <option value="4">Do 6º ao 9º ano do ensino fundamental
+                                                                incompleto (antiga 5ª a 8ª série)</option>
+                                                            <option value="5">Ensino fundamental completo</option>
+                                                            <option value="6">Ensino médio incompleto</option>
+                                                            <option value="7">Ensino médio completo</option>
+                                                            <option value="8">Educação superior incompleta</option>
+                                                            <option value="9">Educação superior completa</option>
+                                                            <option value="10">Pós-graduação completa</option>
+                                                            <option value="11">Mestrado completo</option>
+                                                            <option value="12">Doutorado completo</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -321,8 +339,10 @@
                                                             Nome Social
                                                         </label>
                                                         <input type="text" id="socialName" name="socialName"
-                                                            placeholder="Rafael" ng-model="user.socialName"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            placeholder="Digite o nome social"
+                                                            ng-model="user.socialName"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ng-minlength="2" ng-maxlength="70">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="birthDate" class="text-black font-semibold">
@@ -339,25 +359,20 @@
                                                             UF Nascimento
                                                             <span class="text-red-500">*</span>
                                                         </label>
-                                                        <select name="birthState" id="birthState"
-                                                            ng-required="mandatory"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-model="user.birthState"
-                                                            ng-options="uf as uf.name for uf in ufs track by uf.id">
-                                                            <option value="" disabled selected>Selecione</option>
-                                                        </select>
+                                                        <searchable-dropdown options="states" selected="user.birthState"
+                                                            placeholder="Selecione a uf de nascimento" required="true"
+                                                            form-id="birthState" form-name="birthState">
+                                                        </searchable-dropdown>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="birthCity" class="text-black font-semibold">
                                                             Município Nascimento
                                                             <span class="text-red-500">*</span>
                                                         </label>
-                                                        <select name="birthCity" id="birthCity" ng-required="mandatory"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-model="user.birthCity"
-                                                            ng-options="city as city.name for city in cities track by city.id">
-                                                            <option value="" disabled selected>Selecione</option>
-                                                        </select>
+                                                        <searchable-dropdown options="cities" selected="user.birthCity"
+                                                            placeholder="Selecione o município de nascimento"
+                                                            required="true" form-id="birthCity" form-name="birthCity">
+                                                        </searchable-dropdown>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="naturalness" class="text-black font-semibold">
@@ -368,8 +383,9 @@
                                                             ng-required="mandatory" ng-model="user.naturalness"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                             <option value="" disabled selected>Selecione</option>
-                                                            <option value="brazilian">Brasileiro(a)</option>
-                                                            <option value="foreign">Estrangeiro(a)</option>
+                                                            <option value="105">{{ user.birthCity.nome + ' - ' +
+                                                                user.birthState.sigla }}</option>
+                                                            <option value="-1">Estrangeiro</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -481,7 +497,7 @@
                                                             ng-required="mandatory" ng-model="user.zipCode"
                                                             placeholder="70744-070"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ui-br-cep-mask>
+                                                            ui-br-cep-mask ng-keyup="getCEP(user.zipCode)">
                                                     </div>
                                                     <div class="col-span-2 flex flex-col">
                                                         <label for="streetType" class="text-black font-semibold">
@@ -613,7 +629,7 @@
                                                             ng-required="mandatory" ng-model="user.grantorCnpj"
                                                             placeholder="24.541.522/0001-69"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ui-br-cnpj-mask>
+                                                            ui-br-cnpj-mask cnpj-validator>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="educationalInstitutionRegistration"
@@ -746,7 +762,7 @@
                                                             ng-model="user.educationalInstitutionCnpj"
                                                             placeholder="19.994.303/0001-03"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ui-br-cnpj-mask>
+                                                            ui-br-cnpj-mask cnpj-validator>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="integratorAgentCnpj"
@@ -759,7 +775,7 @@
                                                             ng-model="user.integratorAgentCnpj"
                                                             placeholder="26.300.225/0001-57"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ui-br-cnpj-mask>
+                                                            ui-br-cnpj-mask cnpj-validator>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="supervisorCpf" class="text-black font-semibold">
@@ -770,7 +786,7 @@
                                                             ng-required="mandatory" ng-model="user.supervisorCpf"
                                                             placeholder="896.384.720-90"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ui-br-cpf-mask>
+                                                            cpf-validator ui-br-cpf-mask>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="internshipEndDate" class="text-black font-semibold">
