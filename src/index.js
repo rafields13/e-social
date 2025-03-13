@@ -1,6 +1,7 @@
 var app = angular.module("myApp", ['ui.utils.masks']);
 
-app.controller("MyCtrl", function ($scope, $timeout, $document) {
+app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService) {
+    $scope._ = _; // lodash library
     $scope.mode = "initial";
 
     $scope.switchMode = function (mode) {
@@ -200,19 +201,35 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
         birthCity: {},
     };
 
+    $scope.countries = [];
     $scope.states = [];
     $scope.cities = [];
 
     $timeout(async function () {
         $scope.states = await getStates();
-        $scope.states.push({ id: -1, nome: "Estrangeiro" });
+        $scope.countries = CountriesService.getCountries();
     });
 
     $scope.$watch("user.birthState", async function (newState) {
         if (newState) {
             $scope.cities = await getCities(newState.id);
-            $scope.cities.push({ id: -1, nome: "Estrangeiro" });
             $scope.user.birthCity = {};
+        }
+    });
+
+    $scope.$watch("user.nationality", function (newVal) {
+        if (newVal && newVal.id !== 105) {
+            $scope.user.birthCity = {
+                id: -1,
+                nome: "Estrangeiro"
+            };
+            $scope.user.birthState = {
+                id: -1,
+                nome: "Estrangeiro"
+            };
+        } else {
+            $scope.user.birthCity = {};
+            $scope.user.birthState = {};
         }
     });
 }).directive('cpfValidator', function () {
@@ -308,7 +325,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
             placeholder: '@',
             required: '@',
             formId: '@',
-            formName: '@'
+            formName: '@',
         },
         template: `
             <div class="relative w-full">
@@ -360,5 +377,1697 @@ app.controller("MyCtrl", function ($scope, $timeout, $document) {
                 }
             };
         }
+    };
+}).service('CountriesService', function () {
+    this.getCountries = function () {
+        return [
+            {
+                "id": 8,
+                "nome": "Abu Dhabi",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 9,
+                "nome": "Dirce",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 13,
+                "nome": "Afeganistão",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 15,
+                "nome": "Aland, Ilhas",
+                "creationDate": "2015-12-07",
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 17,
+                "nome": "Albânia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 20,
+                "nome": "Alboran-Perejil, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 23,
+                "nome": "Alemanha",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 25,
+                "nome": "Alemanha, República Democrática",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 31,
+                "nome": "Burkina Faso",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 37,
+                "nome": "Andorra",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 40,
+                "nome": "Angola",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 41,
+                "nome": "Anguilla",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 42,
+                "nome": "Antártica",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 43,
+                "nome": "Antígua e Barbuda",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 47,
+                "nome": "Antilhas Holandesas",
+                "creationDate": null,
+                "extinctionDate": "2018-04-30"
+            },
+            {
+                "id": 53,
+                "nome": "Arábia Saudita",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 59,
+                "nome": "Argélia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 63,
+                "nome": "Argentina",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 64,
+                "nome": "Armênia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 65,
+                "nome": "Aruba",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 69,
+                "nome": "Austrália",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 72,
+                "nome": "Áustria",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 73,
+                "nome": "Azerbaijão, República do",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 77,
+                "nome": "Bahamas, Ilhas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 80,
+                "nome": "Bahrein, Ilhas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 81,
+                "nome": "Bangladesh",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 83,
+                "nome": "Barbados",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 85,
+                "nome": "Belarus, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 87,
+                "nome": "Bélgica",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 88,
+                "nome": "Belize",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 90,
+                "nome": "Bermudas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 93,
+                "nome": "Mianmar (Birmânia)",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 97,
+                "nome": "Bolívia, Estado Plurinacional da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 98,
+                "nome": "Bósnia-Herzegovina, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 99,
+                "nome": "Bonaire, Saint Eustatius e Saba",
+                "creationDate": "2015-12-07",
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 100,
+                "nome": "Int. Z. F. Manaus",
+                "creationDate": "1991-12-01",
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 101,
+                "nome": "Botsuana",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 102,
+                "nome": "Bouvet, Ilha",
+                "creationDate": "2015-12-07",
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 105,
+                "nome": "Brasil",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 106,
+                "nome": "Fretado p\/ Brasil",
+                "creationDate": "1991-12-01",
+                "extinctionDate": "1996-11-14"
+            },
+            {
+                "id": 108,
+                "nome": "Brunei",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 111,
+                "nome": "Bulgária, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 115,
+                "nome": "Burundi",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 119,
+                "nome": "Butão",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 127,
+                "nome": "Cabo Verde, República de",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 131,
+                "nome": "Cachemira",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 137,
+                "nome": "Cayman, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 141,
+                "nome": "Camboja",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 145,
+                "nome": "Camarões",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 149,
+                "nome": "Canadá",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 150,
+                "nome": "Ilhas do Canal (Jersey e Guernsey)",
+                "creationDate": null,
+                "extinctionDate": "2018-04-30"
+            },
+            {
+                "id": 151,
+                "nome": "Canárias, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2018-04-30"
+            },
+            {
+                "id": 152,
+                "nome": "Canal, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 153,
+                "nome": "Cazaquistão, República do",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 154,
+                "nome": "Catar",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 158,
+                "nome": "Chile",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 160,
+                "nome": "China, República Popular da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 161,
+                "nome": "Formosa (Taiwan)",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 163,
+                "nome": "Chipre",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 165,
+                "nome": "Cocos (Keeling), Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 169,
+                "nome": "Colômbia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 173,
+                "nome": "Comores, Ilhas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 177,
+                "nome": "Congo",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 183,
+                "nome": "Cook, Ilhas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 187,
+                "nome": "Coreia (do Norte), Rep. Pop. Democrática da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 190,
+                "nome": "Coreia (do Sul), República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 193,
+                "nome": "Costa do Marfim",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 195,
+                "nome": "Croácia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 196,
+                "nome": "Costa Rica",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 198,
+                "nome": "Kuwait",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 199,
+                "nome": "Cuba",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 200,
+                "nome": "Curacao",
+                "creationDate": "2015-12-07",
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 229,
+                "nome": "Benim",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 232,
+                "nome": "Dinamarca",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 235,
+                "nome": "Dominica, Ilha",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 237,
+                "nome": "Dubai",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 239,
+                "nome": "Equador",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 240,
+                "nome": "Egito",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 243,
+                "nome": "Eritreia",
+                "creationDate": "2006-07-17",
+                "extinctionDate": null
+            },
+            {
+                "id": 244,
+                "nome": "Emirados Árabes Unidos",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 245,
+                "nome": "Espanha",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 246,
+                "nome": "Eslovênia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 247,
+                "nome": "Eslovaca, República",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 249,
+                "nome": "Estados Unidos",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 251,
+                "nome": "Estônia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 253,
+                "nome": "Etiópia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 255,
+                "nome": "Falkland (Ilhas Malvinas)",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 259,
+                "nome": "Feroe, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 263,
+                "nome": "Fezzan",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 267,
+                "nome": "Filipinas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 271,
+                "nome": "Finlândia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 275,
+                "nome": "França",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 281,
+                "nome": "Gabão",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 285,
+                "nome": "Gâmbia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 289,
+                "nome": "Gana",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 291,
+                "nome": "Geórgia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 292,
+                "nome": "Geórgia do Sul e Sandwich do Sul, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 293,
+                "nome": "Gibraltar",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 297,
+                "nome": "Granada",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 301,
+                "nome": "Grécia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 305,
+                "nome": "Groenlândia",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 309,
+                "nome": "Guadalupe",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 313,
+                "nome": "Guam",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 317,
+                "nome": "Guatemala",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 321,
+                "nome": "Guernsey",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 325,
+                "nome": "Guiana Francesa",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 329,
+                "nome": "Guiné",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 331,
+                "nome": "Guiné Equatorial",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 334,
+                "nome": "Guiné-Bissau",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 337,
+                "nome": "Guiana",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 341,
+                "nome": "Haiti",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 343,
+                "nome": "Heard e Ilhas McDonald, Ilha",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 345,
+                "nome": "Honduras",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 351,
+                "nome": "Hong Kong",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 355,
+                "nome": "Hungria, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 357,
+                "nome": "Iêmen",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 358,
+                "nome": "Iêmen do Sul",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 359,
+                "nome": "Man, Ilha de",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 361,
+                "nome": "Índia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 365,
+                "nome": "Indonésia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 367,
+                "nome": "Inglaterra",
+                "creationDate": null,
+                "extinctionDate": "1997-03-18"
+            },
+            {
+                "id": 369,
+                "nome": "Iraque",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 372,
+                "nome": "Irã, República Islâmica do",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 375,
+                "nome": "Irlanda",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 379,
+                "nome": "Islândia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 383,
+                "nome": "Israel",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 386,
+                "nome": "Itália",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 388,
+                "nome": "Sérvia e Montenegro",
+                "creationDate": null,
+                "extinctionDate": "2013-11-21"
+            },
+            {
+                "id": 391,
+                "nome": "Jamaica",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 393,
+                "nome": "Jersey",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 395,
+                "nome": "Jammu",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 396,
+                "nome": "Johnston, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2018-04-30"
+            },
+            {
+                "id": 399,
+                "nome": "Japão",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 403,
+                "nome": "Jordânia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 411,
+                "nome": "Kiribati",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 420,
+                "nome": "Laos, Rep. Pop. Democrática do",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 423,
+                "nome": "Lebuan, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2018-04-30"
+            },
+            {
+                "id": 426,
+                "nome": "Lesoto",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 427,
+                "nome": "Letônia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 431,
+                "nome": "Líbano",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 434,
+                "nome": "Libéria",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 438,
+                "nome": "Líbia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 440,
+                "nome": "Liechtenstein",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 442,
+                "nome": "Lituânia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 445,
+                "nome": "Luxemburgo",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 447,
+                "nome": "Macau",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 449,
+                "nome": "Macedônia do Norte",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 450,
+                "nome": "Madagascar",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 452,
+                "nome": "Ilha da Madeira",
+                "creationDate": null,
+                "extinctionDate": "2018-04-30"
+            },
+            {
+                "id": 455,
+                "nome": "Malásia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 458,
+                "nome": "Malavi",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 461,
+                "nome": "Maldivas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 464,
+                "nome": "Mali",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 467,
+                "nome": "Malta",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 472,
+                "nome": "Marianas do Norte",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 474,
+                "nome": "Marrocos",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 476,
+                "nome": "Marshall, Ilhas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 477,
+                "nome": "Martinica",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 485,
+                "nome": "Maurício",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 488,
+                "nome": "Mauritânia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 489,
+                "nome": "Mayotte",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 490,
+                "nome": "Midway, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2018-04-30"
+            },
+            {
+                "id": 493,
+                "nome": "México",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 494,
+                "nome": "Moldávia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 495,
+                "nome": "Mônaco",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 497,
+                "nome": "Mongólia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 498,
+                "nome": "Montenegro",
+                "creationDate": "2006-06-03",
+                "extinctionDate": null
+            },
+            {
+                "id": 499,
+                "nome": "Micronésia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 501,
+                "nome": "Montserrat, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 505,
+                "nome": "Moçambique",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 507,
+                "nome": "Namíbia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 508,
+                "nome": "Nauru",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 511,
+                "nome": "Christmas, Ilha (Navidad)",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 517,
+                "nome": "Nepal",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 521,
+                "nome": "Nicarágua",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 525,
+                "nome": "Níger",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 528,
+                "nome": "Nigéria",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 531,
+                "nome": "Niue, Ilha",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 535,
+                "nome": "Norfolk, Ilha",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 538,
+                "nome": "Noruega",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 542,
+                "nome": "Nova Caledônia",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 545,
+                "nome": "Papua Nova Guiné",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 548,
+                "nome": "Nova Zelândia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 551,
+                "nome": "Vanuatu",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 556,
+                "nome": "Omã",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 563,
+                "nome": "Pacífico, Ilhas do (Administração dos EUA)",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 566,
+                "nome": "Pacífico, Ilhas do (Possessão dos EUA)",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 569,
+                "nome": "Pacífico, Ilhas do (Território em Fideicomisso dos)",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 573,
+                "nome": "Países Baixos (Holanda)",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 575,
+                "nome": "Palau",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 576,
+                "nome": "Paquistão",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 578,
+                "nome": "Palestina",
+                "creationDate": "2011-01-25",
+                "extinctionDate": null
+            },
+            {
+                "id": 580,
+                "nome": "Panamá",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 583,
+                "nome": "Papua Nova Guiné",
+                "creationDate": "1991-12-01",
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 586,
+                "nome": "Paraguai",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 589,
+                "nome": "Peru",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 593,
+                "nome": "Pitcairn, Ilha",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 599,
+                "nome": "Polinésia Francesa",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 603,
+                "nome": "Polônia, República da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 607,
+                "nome": "Portugal",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 611,
+                "nome": "Porto Rico",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 623,
+                "nome": "Quênia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 625,
+                "nome": "Quirguiz, República",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 628,
+                "nome": "Reino Unido",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 640,
+                "nome": "República Centro-Africana",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 647,
+                "nome": "República Dominicana",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 660,
+                "nome": "Reunião, Ilha",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 665,
+                "nome": "Zimbábue",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 670,
+                "nome": "Romênia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 675,
+                "nome": "Ruanda",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 676,
+                "nome": "Rússia, Federação da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 677,
+                "nome": "Salomão, Ilhas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 678,
+                "nome": "Saint Kitts e Nevis",
+                "creationDate": null,
+                "extinctionDate": "2016-06-27"
+            },
+            {
+                "id": 685,
+                "nome": "Saara Ocidental",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 687,
+                "nome": "El Salvador",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 690,
+                "nome": "Samoa",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 691,
+                "nome": "Samoa Americana",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 693,
+                "nome": "São Bartolomeu",
+                "creationDate": "2015-12-07",
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 695,
+                "nome": "São Cristóvão e Neves, Ilhas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 697,
+                "nome": "San Marino",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 698,
+                "nome": "São Martinho, Ilha de (Parte Francesa)",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 699,
+                "nome": "São Martinho, Ilha de (Parte Holandesa)",
+                "creationDate": "2015-12-07",
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 700,
+                "nome": "São Pedro e Miquelon",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 705,
+                "nome": "São Vicente e Granadinas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 710,
+                "nome": "Santa Helena",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 715,
+                "nome": "Santa Lúcia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 720,
+                "nome": "São Tomé e Príncipe, Ilhas",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 728,
+                "nome": "Senegal",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 731,
+                "nome": "Seychelles",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 735,
+                "nome": "Serra Leoa",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 737,
+                "nome": "Sérvia",
+                "creationDate": "2006-06-03",
+                "extinctionDate": null
+            },
+            {
+                "id": 738,
+                "nome": "Sikkim",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 741,
+                "nome": "Singapura",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 744,
+                "nome": "Síria, República Árabe da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 748,
+                "nome": "Somália",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 750,
+                "nome": "Sri Lanka",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 754,
+                "nome": "eSwatini (Essuatíni, Suazilândia)",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 755,
+                "nome": "Svalbard e Jan Mayen",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 756,
+                "nome": "África do Sul",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 759,
+                "nome": "Sudão",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 760,
+                "nome": "Sudão do Sul",
+                "creationDate": "2013-05-27",
+                "extinctionDate": null
+            },
+            {
+                "id": 764,
+                "nome": "Suécia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 767,
+                "nome": "Suíça",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 770,
+                "nome": "Suriname",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 772,
+                "nome": "Tadjiquistão, República do",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 776,
+                "nome": "Tailândia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 780,
+                "nome": "Tanzânia, República Unida da",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 781,
+                "nome": "Terras Austrais Francesas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 782,
+                "nome": "Território Brit. Oc. Índico",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 783,
+                "nome": "Djibuti",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 785,
+                "nome": "Território da Alta Comissão do Pacífico Ocidental",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 788,
+                "nome": "Chade",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 790,
+                "nome": "Tchecoslováquia",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 791,
+                "nome": "Tcheca, República",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 795,
+                "nome": "Timor Leste",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 800,
+                "nome": "Togo",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 805,
+                "nome": "Toquelau, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 810,
+                "nome": "Tonga",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 815,
+                "nome": "Trinidad e Tobago",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 820,
+                "nome": "Tunísia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 823,
+                "nome": "Turcas e Caicos, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 824,
+                "nome": "Turcomenistão, República do",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 827,
+                "nome": "Turquia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 828,
+                "nome": "Tuvalu",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 831,
+                "nome": "Ucrânia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 833,
+                "nome": "Uganda",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 840,
+                "nome": "Uniao das Repúblicas Socialistas Soviéticas",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 845,
+                "nome": "Uruguai",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 847,
+                "nome": "Uzbequistão, República do",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 848,
+                "nome": "Vaticano, Estado da Cidade do",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 850,
+                "nome": "Venezuela",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 855,
+                "nome": "Vietname Norte",
+                "creationDate": null,
+                "extinctionDate": "1996-12-13"
+            },
+            {
+                "id": 858,
+                "nome": "Vietnã",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 863,
+                "nome": "Virgens, Ilhas (Britânicas)",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 866,
+                "nome": "Virgens, Ilhas (EUA)",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 870,
+                "nome": "Fiji",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 873,
+                "nome": "Wake, Ilha",
+                "creationDate": null,
+                "extinctionDate": "2018-04-30"
+            },
+            {
+                "id": 875,
+                "nome": "Wallis e Futuna, Ilhas",
+                "creationDate": null,
+                "extinctionDate": "2022-11-20"
+            },
+            {
+                "id": 888,
+                "nome": "Congo, República Democrática do",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 890,
+                "nome": "Zâmbia",
+                "creationDate": null,
+                "extinctionDate": null
+            },
+            {
+                "id": 895,
+                "nome": "Zona do Canal do Panamá",
+                "creationDate": null,
+                "extinctionDate": "2016-06-27"
+            }
+        ]
+
     };
 });

@@ -10,6 +10,7 @@
 
     <script src="../node_modules/angular/angular.min.js"></script>
     <script src="../node_modules/angular-input-masks/releases/angular-input-masks-standalone.min.js"></script>
+    <script src="../node_modules/lodash/lodash.min.js"></script>
     <script src="index.js"></script>
 </head>
 
@@ -355,6 +356,16 @@
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
+                                                        <label for="nationality" class="text-black font-semibold">
+                                                            Nacionalidade
+                                                            <span class="text-red-500">*</span>
+                                                        </label>
+                                                        <searchable-dropdown options="countries" selected="user.nationality"
+                                                            placeholder="Selecione a nacionalidade" required="true"
+                                                            form-id="nationality" form-name="nationality">
+                                                        </searchable-dropdown>
+                                                    </div>
+                                                    <div class="col-span-1 flex flex-col">
                                                         <label for="birthState" class="text-black font-semibold">
                                                             UF Nascimento
                                                             <span class="text-red-500">*</span>
@@ -383,22 +394,12 @@
                                                             ng-required="mandatory" ng-model="user.naturalness"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                             <option value="" disabled selected>Selecione</option>
-                                                            <option value="105">{{ user.birthCity.nome + ' - ' +
-                                                                user.birthState.sigla }}</option>
-                                                            <option value="-1">Estrangeiro</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="nationality" class="text-black font-semibold">
-                                                            Nacionalidade
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <select name="nationality" id="nationality"
-                                                            ng-required="mandatory" ng-model="user.nationality"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione</option>
-                                                            <option value="brazilian">Brasileiro(a)</option>
-                                                            <option value="foreign">Estrangeiro(a)</option>
+                                                            <option
+                                                                ng-show="!_.isEmpty(user.birthCity) && !_.isEmpty(user.birthState)"
+                                                                value="105">
+                                                                {{ user.birthCity.nome + ' - ' + user.birthState.sigla
+                                                                }}
+                                                            </option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
