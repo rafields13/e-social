@@ -246,7 +246,7 @@
                                                             ng-model="user.name" ng-required="mandatory"
                                                             ng-minlength="2" ng-maxlength="70">
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col">
+                                                    <div class="col-span-1 flex flex-col relative">
                                                         <label for="cpf" class="text-black font-semibold">
                                                             CPF
                                                             <span class="text-red-500">*</span>
@@ -256,6 +256,28 @@
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ng-model="user.cpf" ng-required="mandatory" cpf-validator
                                                             ui-br-cpf-mask>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="!(updateUserForm.cpf.$invalid && updateUserForm.cpf.$dirty) && user.cpf.length === 11">
+                                                            <rect width="16" height="16" rx="8" fill="#00B359" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
+                                                            <path
+                                                                d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
+                                                                stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="(updateUserForm.cpf.$invalid && updateUserForm.cpf.$dirty)">
+                                                            <rect width="16" height="16" rx="8" fill="#FF0000" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
+                                                            <path d="M4 4L12 12" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                            <path d="M4 12L12 4" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="gender" class="text-black font-semibold">
@@ -357,50 +379,44 @@
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="nationality" class="text-black font-semibold">
-                                                            Nacionalidade
-                                                            <span class="text-red-500">*</span>
+                                                            Nacionalidade <span class="text-red-500">*</span>
                                                         </label>
-                                                        <searchable-dropdown options="countries" selected="user.nationality"
-                                                            placeholder="Selecione a nacionalidade" required="true"
-                                                            form-id="nationality" form-name="nationality">
+                                                        <searchable-dropdown options="countries"
+                                                            selected="user.nationality"
+                                                            placeholder="Selecione a nacionalidade"
+                                                            form-required="mandatory" form-id="nationality"
+                                                            form-name="nationality">
                                                         </searchable-dropdown>
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col">
+                                                    <div class="col-span-1 flex flex-col" ng-show="!hideBirthStateCity">
                                                         <label for="birthState" class="text-black font-semibold">
-                                                            UF Nascimento
-                                                            <span class="text-red-500">*</span>
+                                                            UF Nascimento <span class="text-red-500">*</span>
                                                         </label>
                                                         <searchable-dropdown options="states" selected="user.birthState"
-                                                            placeholder="Selecione a uf de nascimento" required="true"
-                                                            form-id="birthState" form-name="birthState">
+                                                            placeholder="Selecione a UF de nascimento"
+                                                            form-required="mandatory" form-id="birthState"
+                                                            form-name="birthState">
                                                         </searchable-dropdown>
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col">
+                                                    <div class="col-span-1 flex flex-col" ng-show="!hideBirthStateCity">
                                                         <label for="birthCity" class="text-black font-semibold">
-                                                            Município Nascimento
-                                                            <span class="text-red-500">*</span>
+                                                            Município Nascimento <span class="text-red-500">*</span>
                                                         </label>
                                                         <searchable-dropdown options="cities" selected="user.birthCity"
                                                             placeholder="Selecione o município de nascimento"
-                                                            required="true" form-id="birthCity" form-name="birthCity">
+                                                            form-required="mandatory" form-id="birthCity"
+                                                            form-name="birthCity">
                                                         </searchable-dropdown>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="naturalness" class="text-black font-semibold">
-                                                            Naturalidade
-                                                            <span class="text-red-500">*</span>
+                                                            Naturalidade <span class="text-red-500">*</span>
                                                         </label>
-                                                        <select name="naturalness" id="naturalness"
+                                                        <input type="text" name="naturalness" id="naturalness"
                                                             ng-required="mandatory" ng-model="user.naturalness"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione</option>
-                                                            <option
-                                                                ng-show="!_.isEmpty(user.birthCity) && !_.isEmpty(user.birthState)"
-                                                                value="105">
-                                                                {{ user.birthCity.nome + ' - ' + user.birthState.sigla
-                                                                }}
-                                                            </option>
-                                                        </select>
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
+                                                            ng-readonly="true" ng-disabled="true"
+                                                            placeholder="Selecione a nacionalidade, uf de nascimento e município de nascimento">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="mainPhone" class="text-black font-semibold">
@@ -409,7 +425,7 @@
                                                         </label>
                                                         <input type="text" id="mainPhone" name="mainPhone"
                                                             ng-required="mandatory" ng-model="user.mainPhone"
-                                                            placeholder="(61) 99519-0667"
+                                                            placeholder="(xx) xxxxx-xxxx"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ui-br-phone-number-mask="areaCode">
                                                     </div>
@@ -420,12 +436,35 @@
                                                         </label>
                                                         <input type="email" id="email" name="email"
                                                             ng-required="mandatory" ng-model="user.email"
-                                                            placeholder="rafaelmarliere033@gmail.com" autocomplete="off"
+                                                            placeholder="email.teste@exemplo.com" autocomplete="off"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
-                                                    <div class="col-span-3 flex flex-col">
+                                                    <div class="col-span-1 flex flex-col">
+                                                        <div class="text-black font-semibold">
+                                                            Possui algum Tipo de Deficiência?
+                                                            <span class="text-red-500">*</span>
+                                                        </div>
+                                                        <div
+                                                            class="flex gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10">
+                                                            <label class="flex items-center gap-2 font-semibold">
+                                                                <input type="radio" name="pwd" id="pwd"
+                                                                    ng-model="user.isPwd" ng-required="mandatory"
+                                                                    ng-value="true" class="w-5 h-5">
+                                                                SIM
+                                                            </label>
+                                                            <label class="flex items-center gap-2 font-semibold">
+                                                                <input type="radio" name="noPwd" id="noPwd"
+                                                                    ng-model="user.isPwd" ng-required="mandatory"
+                                                                    ng-value="false" class="w-5 h-5">
+                                                                NÃO
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-span-3 flex flex-col"
+                                                        ng-show="user.isPwd && user.isPwd == true">
                                                         <div class="font-semibold">
-                                                            Possui Alguma Deficiência?
+                                                            Tipo de Deficiência
+                                                            <span class="text-red-500">*</span>
                                                         </div>
                                                         <div class="flex flex-row gap-4 mt-4">
                                                             <label class="flex items-center">
@@ -621,7 +660,7 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col">
+                                                    <div class="col-span-1 flex flex-col relative">
                                                         <label for="grantorCnpj" class="text-black font-semibold">
                                                             CNPJ Concedente
                                                             <span class="text-red-500">*</span>
@@ -631,6 +670,28 @@
                                                             placeholder="24.541.522/0001-69"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ui-br-cnpj-mask cnpj-validator>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="!(updateUserForm.grantorCnpj.$invalid && updateUserForm.grantorCnpj.$dirty) && user.grantorCnpj.length === 14">
+                                                            <rect width="16" height="16" rx="8" fill="#00B359" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
+                                                            <path
+                                                                d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
+                                                                stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="(updateUserForm.grantorCnpj.$invalid && updateUserForm.grantorCnpj.$dirty)">
+                                                            <rect width="16" height="16" rx="8" fill="#FF0000" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
+                                                            <path d="M4 4L12 12" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                            <path d="M4 12L12 4" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="educationalInstitutionRegistration"
@@ -752,7 +813,7 @@
                                                             ng-model="user.internshipEndDateForecast"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col">
+                                                    <div class="col-span-1 flex flex-col relative">
                                                         <label for="educationalInstitutionCnpj"
                                                             class="text-black font-semibold">
                                                             CNPJ Instituição Ensino
@@ -764,8 +825,30 @@
                                                             placeholder="19.994.303/0001-03"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ui-br-cnpj-mask cnpj-validator>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="!(updateUserForm.educationalInstitutionCnpj.$invalid && updateUserForm.educationalInstitutionCnpj.$dirty) && user.educationalInstitutionCnpj.length === 14">
+                                                            <rect width="16" height="16" rx="8" fill="#00B359" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
+                                                            <path
+                                                                d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
+                                                                stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="(updateUserForm.educationalInstitutionCnpj.$invalid && updateUserForm.educationalInstitutionCnpj.$dirty)">
+                                                            <rect width="16" height="16" rx="8" fill="#FF0000" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
+                                                            <path d="M4 4L12 12" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                            <path d="M4 12L12 4" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col">
+                                                    <div class="col-span-1 flex flex-col relative">
                                                         <label for="integratorAgentCnpj"
                                                             class="text-black font-semibold">
                                                             CNPJ Agente Integrador
@@ -777,8 +860,30 @@
                                                             placeholder="26.300.225/0001-57"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ui-br-cnpj-mask cnpj-validator>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="!(updateUserForm.integratorAgentCnpj.$invalid && updateUserForm.integratorAgentCnpj.$dirty) && user.integratorAgentCnpj.length === 14">
+                                                            <rect width="16" height="16" rx="8" fill="#00B359" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
+                                                            <path
+                                                                d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
+                                                                stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="(updateUserForm.integratorAgentCnpj.$invalid && updateUserForm.integratorAgentCnpj.$dirty)">
+                                                            <rect width="16" height="16" rx="8" fill="#FF0000" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
+                                                            <path d="M4 4L12 12" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                            <path d="M4 12L12 4" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col">
+                                                    <div class="col-span-1 flex flex-col relative">
                                                         <label for="supervisorCpf" class="text-black font-semibold">
                                                             CPF Supervisor
                                                             <span class="text-red-500">*</span>
@@ -788,6 +893,28 @@
                                                             placeholder="896.384.720-90"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             cpf-validator ui-br-cpf-mask>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="!(updateUserForm.supervisorCpf.$invalid && updateUserForm.supervisorCpf.$dirty) && user.supervisorCpf.length === 11">
+                                                            <rect width="16" height="16" rx="8" fill="#00B359" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
+                                                            <path
+                                                                d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
+                                                                stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 16 16" fill="none"
+                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                            ng-show="(updateUserForm.supervisorCpf.$invalid && updateUserForm.supervisorCpf.$dirty)">
+                                                            <rect width="16" height="16" rx="8" fill="#FF0000" />
+                                                            <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
+                                                            <path d="M4 4L12 12" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                            <path d="M4 12L12 4" stroke="white" stroke-width="2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="internshipEndDate" class="text-black font-semibold">

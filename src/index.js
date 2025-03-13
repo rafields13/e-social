@@ -199,6 +199,9 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
     $scope.user = {
         birthState: {},
         birthCity: {},
+        naturalness: '',
+        nationality: {},
+        grantorCnpj: '',
     };
 
     $scope.countries = [];
@@ -210,6 +213,22 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         $scope.countries = CountriesService.getCountries();
     });
 
+    $scope.$watch("user.nationality", function (newNationality) {
+        if (
+            _.isObject(newNationality)
+            && !_.isEmpty(newNationality)
+            && newNationality.id !== 105
+        ) {
+            $scope.user.birthState = {};
+            $scope.user.birthCity = {};
+            $scope.hideBirthStateCity = true;
+            $scope.user.naturalness = "Estrangeiro";
+        } else {
+            $scope.hideBirthStateCity = false;
+            $scope.user.naturalness = '';
+        }
+    });
+
     $scope.$watch("user.birthState", async function (newState) {
         if (newState) {
             $scope.cities = await getCities(newState.id);
@@ -217,19 +236,21 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         }
     });
 
-    $scope.$watch("user.nationality", function (newVal) {
-        if (newVal && newVal.id !== 105) {
-            $scope.user.birthCity = {
-                id: -1,
-                nome: "Estrangeiro"
-            };
-            $scope.user.birthState = {
-                id: -1,
-                nome: "Estrangeiro"
-            };
-        } else {
-            $scope.user.birthCity = {};
-            $scope.user.birthState = {};
+    $scope.$watch("user.birthCity", function (newCity) {
+        if (
+            _.isObject(newCity)
+            && !_.isEmpty(newCity)
+            && _.isObject($scope.user.birthState)
+            && !_.isEmpty($scope.user.birthState)
+        ) {
+            $scope.user.naturalness = `${newCity.nome} - ${$scope.user.birthState.sigla}`;
+        }
+    });
+
+    $scope.$watch("user.grantorCnpj", function (newCnpj) {
+        if (newCnpj) {
+            console.log(newCnpj);
+            console.log(newCnpj.length);
         }
     });
 }).directive('cpfValidator', function () {
@@ -296,23 +317,28 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                     return value;
                 }
 
-                let sum = 0, remainder;
-                let weights = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-                for (let i = 0; i < 12; i++) sum += parseInt(cnpj[i]) * weights[i];
-                remainder = sum % 11;
-                if (remainder < 2) {
-                    if (parseInt(cnpj[12]) !== 0) {
-                        ctrl.$setValidity('cnpj', false);
-                        element[0].setCustomValidity("CNPJ inválido! Verifique o número digitado.");
-                        return value;
+                function validarDigito(cnpj, weights, position) {
+                    let sum = 0;
+                    for (let i = 0; i < weights.length; i++) {
+                        sum += parseInt(cnpj[i]) * weights[i];
                     }
-                } else {
-                    if (parseInt(cnpj[12]) !== 11 - remainder) {
-                        ctrl.$setValidity('cnpj', false);
-                        element[0].setCustomValidity("CNPJ inválido! Verifique o número digitado.");
-                        return value;
-                    }
+                    let remainder = sum % 11;
+                    let digit = remainder < 2 ? 0 : 11 - remainder;
+                    return parseInt(cnpj[position]) === digit;
                 }
+
+                let weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                let weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+
+                if (!validarDigito(cnpj, weights1, 12) || !validarDigito(cnpj, weights2, 13)) {
+                    ctrl.$setValidity('cnpj', false);
+                    element[0].setCustomValidity("CNPJ inválido! Verifique o número digitado.");
+                    return value;
+                }
+
+                ctrl.$setValidity('cnpj', true);
+                element[0].setCustomValidity("");
+                return value;
             });
         }
     };
@@ -323,7 +349,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             options: '=',
             selected: '=',
             placeholder: '@',
-            required: '@',
+            formRequired: '=',
             formId: '@',
             formName: '@',
         },
@@ -334,7 +360,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                     name="{{ formName }}"
                     class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 w-full pr-8"
                     placeholder="{{ placeholder }}"
-                    ng-required="required"
+                    ng-required="formRequired"
                     ng-focus="showDropdown = true"
                     ng-blur="hideDropdown()"
                     ng-keydown="onKeydown($event)" />
@@ -343,7 +369,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                     <path d="M5.83331 8.33333L9.99998 12.5L14.1666 8.33333" 
                         stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
-                <div class="absolute z-10 bg-white border border-gray-300 w-full mt-1 max-h-40 overflow-y-auto rounded-sm"
+                <div class="absolute z-10 bg-white border border-gray-300 w-full max-h-40 mt-1 overflow-y-auto rounded-sm"
                     ng-show="showDropdown">
                     <div ng-repeat="option in filteredOptions = (options | filter:searchText) track by option.id"
                         ng-click="selectOption(option)"
