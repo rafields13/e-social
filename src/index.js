@@ -1,6 +1,6 @@
 var app = angular.module("myApp", ['ui.utils.masks']);
 
-app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService) {
+app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService, StreetTypeService) {
     $scope._ = _; // lodash library
     $scope.mode = "initial";
 
@@ -159,11 +159,11 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                 //     "siafi": "9701"
                 // }
 
-                // $scope.user.streetDescription = data.logradouro;
-                // $scope.user.neighborhood = data.bairro;
-                // $scope.user.city = data.localidade;
-                // $scope.user.state = data.uf;
-
+                $scope.user.streetDescription = data.logradouro;
+                $scope.user.neighborhood = data.bairro;
+                $scope.user.city = data.localidade;
+                $scope.user.state = data.uf;
+                $scope.$applyAsync();
             }
         }
     }
@@ -207,10 +207,12 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
     $scope.countries = [];
     $scope.states = [];
     $scope.cities = [];
+    $scope.streetTypes = [];
 
     $timeout(async function () {
         $scope.states = await getStates();
         $scope.countries = CountriesService.getCountries();
+        $scope.streetTypes = StreetTypeService.getStreetTypes();
     });
 
     $scope.$watch("user.nationality", function (newNationality) {
@@ -337,6 +339,31 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                 }
 
                 ctrl.$setValidity('cnpj', true);
+                element[0].setCustomValidity("");
+                return value;
+            });
+        }
+    };
+}).directive('cepValidator', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, ctrl) {
+            ctrl.$parsers.push(function (value) {
+                if (!value) {
+                    ctrl.$setValidity('cep', false);
+                    element[0].setCustomValidity("O CEP é obrigatório");
+                    return value;
+                }
+
+                let cep = value.replace(/\D/g, '');
+
+                if (cep.length !== 8) {
+                    ctrl.$setValidity('cep', false);
+                    element[0].setCustomValidity("CEP inválido! Verifique o número digitado.");
+                    return value;
+                }
+
+                ctrl.$setValidity('cep', true);
                 element[0].setCustomValidity("");
                 return value;
             });
@@ -2095,5 +2122,738 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             }
         ]
 
+    };
+}).service('StreetTypeService', function () {
+    this.getStreetTypes = function () {
+        return [
+            {
+                "id": "A",
+                "nome": "Área"
+            },
+            {
+                "id": "AC",
+                "nome": "Acesso"
+            },
+            {
+                "id": "ACA",
+                "nome": "Acampamento"
+            },
+            {
+                "id": "ACL",
+                "nome": "Acesso Local"
+            },
+            {
+                "id": "AD",
+                "nome": "Adro"
+            },
+            {
+                "id": "AE",
+                "nome": "Área Especial"
+            },
+            {
+                "id": "AER",
+                "nome": "Aeroporto"
+            },
+            {
+                "id": "AL",
+                "nome": "Alameda"
+            },
+            {
+                "id": "ALD",
+                "nome": "Aldeia"
+            },
+            {
+                "id": "AMD",
+                "nome": "Avenida Marginal Direita"
+            },
+            {
+                "id": "AME",
+                "nome": "Avenida Marginal Esquerda"
+            },
+            {
+                "id": "AN",
+                "nome": "Anel Viário"
+            },
+            {
+                "id": "ANT",
+                "nome": "Antiga Estrada"
+            },
+            {
+                "id": "ART",
+                "nome": "Artéria"
+            },
+            {
+                "id": "AT",
+                "nome": "Alto"
+            },
+            {
+                "id": "ATL",
+                "nome": "Atalho"
+            },
+            {
+                "id": "A V",
+                "nome": "Área Verde"
+            },
+            {
+                "id": "AV",
+                "nome": "Avenida"
+            },
+            {
+                "id": "AVC",
+                "nome": "Avenida Contorno"
+            },
+            {
+                "id": "AVM",
+                "nome": "Avenida Marginal"
+            },
+            {
+                "id": "AVV",
+                "nome": "Avenida Velha"
+            },
+            {
+                "id": "BAL",
+                "nome": "Balneário"
+            },
+            {
+                "id": "BC",
+                "nome": "Beco"
+            },
+            {
+                "id": "BCO",
+                "nome": "Buraco"
+            },
+            {
+                "id": "BEL",
+                "nome": "Belvedere"
+            },
+            {
+                "id": "BL",
+                "nome": "Bloco"
+            },
+            {
+                "id": "BLO",
+                "nome": "Balão"
+            },
+            {
+                "id": "BLS",
+                "nome": "Blocos"
+            },
+            {
+                "id": "BLV",
+                "nome": "Bulevar"
+            },
+            {
+                "id": "BSQ",
+                "nome": "Bosque"
+            },
+            {
+                "id": "BVD",
+                "nome": "Boulevard"
+            },
+            {
+                "id": "BX",
+                "nome": "Baixa"
+            },
+            {
+                "id": "C",
+                "nome": "Cais"
+            },
+            {
+                "id": "CAL",
+                "nome": "Calçada"
+            },
+            {
+                "id": "CAM",
+                "nome": "Caminho"
+            },
+            {
+                "id": "CAN",
+                "nome": "Canal"
+            },
+            {
+                "id": "CH",
+                "nome": "Chácara"
+            },
+            {
+                "id": "CHA",
+                "nome": "Chapadão"
+            },
+            {
+                "id": "CIC",
+                "nome": "Ciclovia"
+            },
+            {
+                "id": "CIR",
+                "nome": "Circular"
+            },
+            {
+                "id": "CJ",
+                "nome": "Conjunto"
+            },
+            {
+                "id": "CJM",
+                "nome": "Conjunto Mutirão"
+            },
+            {
+                "id": "CMP",
+                "nome": "Complexo Viário"
+            },
+            {
+                "id": "COL",
+                "nome": "Colônia"
+            },
+            {
+                "id": "COM",
+                "nome": "Comunidade"
+            },
+            {
+                "id": "CON",
+                "nome": "Condomínio"
+            },
+            {
+                "id": "COND",
+                "nome": "Condomínio"
+            },
+            {
+                "id": "COR",
+                "nome": "Corredor"
+            },
+            {
+                "id": "CPO",
+                "nome": "Campo"
+            },
+            {
+                "id": "CRG",
+                "nome": "Córrego"
+            },
+            {
+                "id": "CTN",
+                "nome": "Contorno"
+            },
+            {
+                "id": "DSC",
+                "nome": "Descida"
+            },
+            {
+                "id": "DSV",
+                "nome": "Desvio"
+            },
+            {
+                "id": "DT",
+                "nome": "Distrito"
+            },
+            {
+                "id": "EB",
+                "nome": "Entre Bloco"
+            },
+            {
+                "id": "EIM",
+                "nome": "Estrada Intermunicipal"
+            },
+            {
+                "id": "ENS",
+                "nome": "Enseada"
+            },
+            {
+                "id": "ENT",
+                "nome": "Entrada Particular"
+            },
+            {
+                "id": "EQ",
+                "nome": "Entre Quadra"
+            },
+            {
+                "id": "ESC",
+                "nome": "Escada"
+            },
+            {
+                "id": "ESD",
+                "nome": "Escadaria"
+            },
+            {
+                "id": "ESE",
+                "nome": "Estrada Estadual"
+            },
+            {
+                "id": "ESI",
+                "nome": "Estrada Vicinal"
+            },
+            {
+                "id": "ESL",
+                "nome": "Estrada de Ligação"
+            },
+            {
+                "id": "ESM",
+                "nome": "Estrada Municipal"
+            },
+            {
+                "id": "ESP",
+                "nome": "Esplanada"
+            },
+            {
+                "id": "ESS",
+                "nome": "Estrada de Servidão"
+            },
+            {
+                "id": "EST",
+                "nome": "Estrada"
+            },
+            {
+                "id": "ESV",
+                "nome": "Estrada Velha"
+            },
+            {
+                "id": "ETA",
+                "nome": "Estrada Antiga"
+            },
+            {
+                "id": "ETC",
+                "nome": "Estação"
+            },
+            {
+                "id": "ETD",
+                "nome": "Estádio"
+            },
+            {
+                "id": "ETN",
+                "nome": "Estância"
+            },
+            {
+                "id": "ETP",
+                "nome": "Estrada Particular"
+            },
+            {
+                "id": "ETT",
+                "nome": "Estacionamento"
+            },
+            {
+                "id": "EVA",
+                "nome": "Evangélica"
+            },
+            {
+                "id": "EVD",
+                "nome": "Elevada"
+            },
+            {
+                "id": "EX",
+                "nome": "Eixo Industrial"
+            },
+            {
+                "id": "FAV",
+                "nome": "Favela"
+            },
+            {
+                "id": "FAZ",
+                "nome": "Fazenda"
+            },
+            {
+                "id": "FER",
+                "nome": "Ferrovia"
+            },
+            {
+                "id": "FNT",
+                "nome": "Fonte"
+            },
+            {
+                "id": "FRA",
+                "nome": "Feira"
+            },
+            {
+                "id": "FTE",
+                "nome": "Forte"
+            },
+            {
+                "id": "GAL",
+                "nome": "Galeria"
+            },
+            {
+                "id": "GJA",
+                "nome": "Granja"
+            },
+            {
+                "id": "HAB",
+                "nome": "Núcleo Habitacional"
+            },
+            {
+                "id": "IA",
+                "nome": "Ilha"
+            },
+            {
+                "id": "IGP",
+                "nome": "Igarapé"
+            },
+            {
+                "id": "IND",
+                "nome": "Indeterminado"
+            },
+            {
+                "id": "IOA",
+                "nome": "Ilhota"
+            },
+            {
+                "id": "JD",
+                "nome": "Jardim"
+            },
+            {
+                "id": "JDE",
+                "nome": "Jardinete"
+            },
+            {
+                "id": "LD",
+                "nome": "Ladeira"
+            },
+            {
+                "id": "LGA",
+                "nome": "Lagoa"
+            },
+            {
+                "id": "LGO",
+                "nome": "Lago"
+            },
+            {
+                "id": "LOT",
+                "nome": "Loteamento"
+            },
+            {
+                "id": "LRG",
+                "nome": "Largo"
+            },
+            {
+                "id": "LT",
+                "nome": "Lote"
+            },
+            {
+                "id": "MER",
+                "nome": "Mercado"
+            },
+            {
+                "id": "MNA",
+                "nome": "Marina"
+            },
+            {
+                "id": "MOD",
+                "nome": "Modulo"
+            },
+            {
+                "id": "MRG",
+                "nome": "Projeção"
+            },
+            {
+                "id": "MRO",
+                "nome": "Morro"
+            },
+            {
+                "id": "MTE",
+                "nome": "Monte"
+            },
+            {
+                "id": "NUC",
+                "nome": "Núcleo"
+            },
+            {
+                "id": "NUR",
+                "nome": "Núcleo Rural"
+            },
+            {
+                "id": "O",
+                "nome": "Outros"
+            },
+            {
+                "id": "OUT",
+                "nome": "Outeiro"
+            },
+            {
+                "id": "PAR",
+                "nome": "Paralela"
+            },
+            {
+                "id": "PAS",
+                "nome": "Passeio"
+            },
+            {
+                "id": "PAT",
+                "nome": "Pátio"
+            },
+            {
+                "id": "PC",
+                "nome": "Praça"
+            },
+            {
+                "id": "PCE",
+                "nome": "Praça de Esportes"
+            },
+            {
+                "id": "PDA",
+                "nome": "Parada"
+            },
+            {
+                "id": "PDO",
+                "nome": "Paradouro"
+            },
+            {
+                "id": "PNT",
+                "nome": "Ponta"
+            },
+            {
+                "id": "PR",
+                "nome": "Praia"
+            },
+            {
+                "id": "PRL",
+                "nome": "Prolongamento"
+            },
+            {
+                "id": "PRM",
+                "nome": "Parque Municipal"
+            },
+            {
+                "id": "PRQ",
+                "nome": "Parque"
+            },
+            {
+                "id": "PRR",
+                "nome": "Parque Residencial"
+            },
+            {
+                "id": "PSA",
+                "nome": "Passarela"
+            },
+            {
+                "id": "PSG",
+                "nome": "Passagem"
+            },
+            {
+                "id": "PSP",
+                "nome": "Passagem de Pedestre"
+            },
+            {
+                "id": "PSS",
+                "nome": "Passagem Subterrânea"
+            },
+            {
+                "id": "PTE",
+                "nome": "Ponte"
+            },
+            {
+                "id": "PTO",
+                "nome": "Porto"
+            },
+            {
+                "id": "Q",
+                "nome": "Quadra"
+            },
+            {
+                "id": "QTA",
+                "nome": "Quinta"
+            },
+            {
+                "id": "QTS",
+                "nome": "Quintas"
+            },
+            {
+                "id": "R",
+                "nome": "Rua"
+            },
+            {
+                "id": "R I",
+                "nome": "Rua Integração"
+            },
+            {
+                "id": "R L",
+                "nome": "Rua de Ligação"
+            },
+            {
+                "id": "R P",
+                "nome": "Rua Particular"
+            },
+            {
+                "id": "R V",
+                "nome": "Rua Velha"
+            },
+            {
+                "id": "RAM",
+                "nome": "Ramal"
+            },
+            {
+                "id": "RCR",
+                "nome": "Recreio"
+            },
+            {
+                "id": "REC",
+                "nome": "Recanto"
+            },
+            {
+                "id": "RER",
+                "nome": "Retiro"
+            },
+            {
+                "id": "RES",
+                "nome": "Residencial"
+            },
+            {
+                "id": "RET",
+                "nome": "Reta"
+            },
+            {
+                "id": "RLA",
+                "nome": "Ruela"
+            },
+            {
+                "id": "RMP",
+                "nome": "Rampa"
+            },
+            {
+                "id": "ROA",
+                "nome": "Rodo Anel"
+            },
+            {
+                "id": "ROD",
+                "nome": "Rodovia"
+            },
+            {
+                "id": "ROT",
+                "nome": "Rotula"
+            },
+            {
+                "id": "RPE",
+                "nome": "Rua de Pedestre"
+            },
+            {
+                "id": "RPR",
+                "nome": "Margem"
+            },
+            {
+                "id": "RTN",
+                "nome": "Retorno"
+            },
+            {
+                "id": "RTT",
+                "nome": "Rotatória"
+            },
+            {
+                "id": "SEG",
+                "nome": "Segunda Avenida"
+            },
+            {
+                "id": "SIT",
+                "nome": "Sitio"
+            },
+            {
+                "id": "SRV",
+                "nome": "Servidão"
+            },
+            {
+                "id": "ST",
+                "nome": "Setor"
+            },
+            {
+                "id": "SUB",
+                "nome": "Subida"
+            },
+            {
+                "id": "TCH",
+                "nome": "Trincheira"
+            },
+            {
+                "id": "TER",
+                "nome": "Terminal"
+            },
+            {
+                "id": "TR",
+                "nome": "Trecho"
+            },
+            {
+                "id": "TRV",
+                "nome": "Trevo"
+            },
+            {
+                "id": "TUN",
+                "nome": "Túnel"
+            },
+            {
+                "id": "TV",
+                "nome": "Travessa"
+            },
+            {
+                "id": "TVP",
+                "nome": "Travessa Particular"
+            },
+            {
+                "id": "TVV",
+                "nome": "Travessa Velha"
+            },
+            {
+                "id": "UNI",
+                "nome": "Unidade"
+            },
+            {
+                "id": "V",
+                "nome": "Via"
+            },
+            {
+                "id": "V C",
+                "nome": "Via Coletora"
+            },
+            {
+                "id": "V L",
+                "nome": "Via Local"
+            },
+            {
+                "id": "VAC",
+                "nome": "Via de Acesso"
+            },
+            {
+                "id": "VAL",
+                "nome": "Vala"
+            },
+            {
+                "id": "VCO",
+                "nome": "Via Costeira"
+            },
+            {
+                "id": "VD",
+                "nome": "Viaduto"
+            },
+            {
+                "id": "V-E",
+                "nome": "Via Expressa"
+            },
+            {
+                "id": "VER",
+                "nome": "Vereda"
+            },
+            {
+                "id": "VEV",
+                "nome": "Via Elevado"
+            },
+            {
+                "id": "VL",
+                "nome": "Vila"
+            },
+            {
+                "id": "VLA",
+                "nome": "Viela"
+            },
+            {
+                "id": "VLE",
+                "nome": "Vale"
+            },
+            {
+                "id": "VLT",
+                "nome": "Via Litorânea"
+            },
+            {
+                "id": "VPE",
+                "nome": "Via de Pedestre"
+            },
+            {
+                "id": "VRT",
+                "nome": "Variante"
+            },
+            {
+                "id": "ZIG",
+                "nome": "Zigue-Zague"
+            }
+        ]
     };
 });
