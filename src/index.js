@@ -142,28 +142,21 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             const data = await res.json();
 
             if (res.status === 200 && !data.erro) {
-                // console.log(data);
-                // data = {
-                //     "cep": "70744-070",
-                //     "logradouro": "Quadra SQN 108 Bloco G",
-                //     "complemento": "",
-                //     "unidade": "",
-                //     "bairro": "Asa Norte",
-                //     "localidade": "Brasília",
-                //     "uf": "DF",
-                //     "estado": "Distrito Federal",
-                //     "regiao": "Centro-Oeste",
-                //     "ibge": "5300108",
-                //     "gia": "",
-                //     "ddd": "61",
-                //     "siafi": "9701"
-                // }
+                let stateAcronym = data.uf;
+                let cityName = data.localidade;
 
                 $scope.user.streetDescription = data.logradouro;
                 $scope.user.neighborhood = data.bairro;
-                $scope.user.city = data.localidade;
-                $scope.user.state = data.uf;
-                $scope.$applyAsync();
+                $scope.user.state = $scope.states.find(
+                    s => s.sigla === stateAcronym
+                );
+                getCities($scope.user.state.id).then(cities => {
+                    $scope.user.city = cities.find(
+                        c => c.nome === cityName
+                    );
+
+                    $scope.$applyAsync();
+                });
             }
         }
     }
@@ -197,11 +190,14 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
     }
 
     $scope.user = {
+        isPwd: true,
         birthState: {},
         birthCity: {},
         naturalness: '',
         nationality: {},
         grantorCnpj: '',
+        state: {},
+        city: {},
     };
 
     $scope.countries = [];
@@ -216,27 +212,27 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
     });
 
     $scope.$watch("user.nationality", function (newNationality) {
-        if (
-            _.isObject(newNationality)
-            && !_.isEmpty(newNationality)
-            && newNationality.id !== 105
-        ) {
+        if (_.isObject(newNationality) && !_.isEmpty(newNationality)) {
             $scope.user.birthState = {};
             $scope.user.birthCity = {};
-            $scope.hideBirthStateCity = true;
-            $scope.user.naturalness = "Estrangeiro";
-        } else {
-            $scope.hideBirthStateCity = false;
             $scope.user.naturalness = '';
+
+            if (newNationality.id !== 105) {
+                $scope.hideBirthStateCity = true;
+                $scope.user.naturalness = "Estrangeiro";
+            } else {
+                $scope.hideBirthStateCity = false;
+            }
         }
-    });
+    }, true);
 
     $scope.$watch("user.birthState", async function (newState) {
-        if (newState) {
-            $scope.cities = await getCities(newState.id);
+        if (_.isObject(newState) && !_.isEmpty(newState)) {
             $scope.user.birthCity = {};
+            $scope.user.naturalness = '';
+            $scope.cities = await getCities(newState.id);
         }
-    });
+    }, true);
 
     $scope.$watch("user.birthCity", function (newCity) {
         if (
@@ -247,14 +243,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         ) {
             $scope.user.naturalness = `${newCity.nome} - ${$scope.user.birthState.sigla}`;
         }
-    });
-
-    $scope.$watch("user.grantorCnpj", function (newCnpj) {
-        if (newCnpj) {
-            console.log(newCnpj);
-            console.log(newCnpj.length);
-        }
-    });
+    }, true);
 }).directive('cpfValidator', function () {
     return {
         require: 'ngModel',
@@ -429,6 +418,12 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                     scope.showDropdown = false;
                 }
             };
+
+            scope.$watch("selected", function (newSelected) {
+                if (newSelected && Object.keys(newSelected).length === 0) {
+                    scope.searchText = '';
+                }
+            }, true);
         }
     };
 }).service('CountriesService', function () {

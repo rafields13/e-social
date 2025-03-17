@@ -408,15 +408,16 @@
                                                             form-name="birthCity">
                                                         </searchable-dropdown>
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col">
+                                                    <div class="col-span-1 flex flex-col relative group">
                                                         <label for="naturalness" class="text-black font-semibold">
                                                             Naturalidade <span class="text-red-500">*</span>
                                                         </label>
                                                         <input type="text" name="naturalness" id="naturalness"
                                                             ng-required="mandatory" ng-model="user.naturalness"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
-                                                            ng-readonly="true" ng-disabled="true"
-                                                            placeholder="Selecione a nacionalidade, uf de nascimento e município de nascimento">
+                                                            ng-readonly="hideBirthStateCity"
+                                                            ng-disabled="hideBirthStateCity"
+                                                            placeholder="Informe sua nacionalidade, estado e cidade de nascimento">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="mainPhone" class="text-black font-semibold">
@@ -579,16 +580,10 @@
                                                             Descrição Logradouro
                                                             <span class="text-red-500">*</span>
                                                         </label>
-                                                        <!-- <input type="text" id="streetDescription"
-                                                            ng-required="mandatory" name="streetDescription"
-                                                            ng-model="user.streetDescription"
-                                                            placeholder="Digite a descrição do logradouro"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"> -->
                                                         <input type="text" name="streetDescription"
                                                             id="streetDescription" ng-required="mandatory"
                                                             ng-model="user.streetDescription"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
-                                                            ng-readonly="true" ng-disabled="true"
                                                             placeholder="Digite o CEP para buscar o logradouro">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -607,17 +602,9 @@
                                                             Bairro
                                                             <span class="text-red-500">*</span>
                                                         </label>
-                                                        <!-- <select name="neighborhood" id="neighborhood"
-                                                            ng-required="mandatory" ng-model="user.neighborhood"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione o bairro
-                                                            </option>
-                                                            <option value="samambaia-norte">Samambaia Norte</option>
-                                                        </select> -->
                                                         <input type="text" name="neighborhood" id="neighborhood"
                                                             ng-required="mandatory" ng-model="user.neighborhood"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
-                                                            ng-readonly="true" ng-disabled="true"
                                                             placeholder="Digite o CEP para buscar o bairro">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -625,18 +612,9 @@
                                                             UF
                                                             <span class="text-red-500">*</span>
                                                         </label>
-                                                        <!-- <select name="state" id="state"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-required="mandatory" ng-model="user.state"
-                                                            ng-options="uf as uf.name for uf in ufs track by uf.id">
-                                                            <option value="" disabled selected>Selecione a UF</option>
-                                                        </select> -->
-                                                        <!-- <searchable-dropdown options="states" selected="user.state"
-                                                            placeholder="Selecione a UF" form-required="mandatory"
-                                                            form-id="state" form-name="state">
-                                                        </searchable-dropdown> -->
                                                         <input type="text" name="state" id="state"
                                                             ng-required="mandatory" ng-model="user.state"
+                                                            ng-value="_.isObject(user.state) && !_.isEmpty(user.state) ? (user.state.sigla + ' - ' + user.state.nome) : ''"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
                                                             ng-readonly="true" ng-disabled="true"
                                                             placeholder="Digite o CEP para buscar a UF">
@@ -646,19 +624,8 @@
                                                             Município
                                                             <span class="text-red-500">*</span>
                                                         </label>
-                                                        <!-- <select name="city" id="city"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-required="mandatory" ng-model="user.city"
-                                                            ng-options="city as city.name for city in cities track by city.id">
-                                                            <option value="" disabled selected>Selecione o município
-                                                            </option>
-                                                        </select> -->
-                                                        <!-- <searchable-dropdown options="cities" selected="user.city"
-                                                            placeholder="Selecione o município"
-                                                            form-required="mandatory" form-id="city" form-name="city">
-                                                        </searchable-dropdown> -->
                                                         <input type="text" name="city" id="city" ng-required="mandatory"
-                                                            ng-model="user.city"
+                                                            ng-model="user.city" ng-value="user.city.nome"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
                                                             ng-readonly="true" ng-disabled="true"
                                                             placeholder="Digite o CEP para buscar o município">
