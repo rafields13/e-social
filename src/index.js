@@ -1,26 +1,40 @@
 var app = angular.module("myApp", ['ui.utils.masks']);
 
 app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService, StreetTypeService) {
+    // page initialization
+    $timeout(async function () {
+        $scope.states = await getStates();
+        $scope.countries = CountriesService.getCountries();
+        $scope.streetTypes = StreetTypeService.getStreetTypes();
+    });
+
+    // vars initialization
+    $scope.mandatory = false;
+    $scope.user = {
+        isPwd: true,
+        birthState: {},
+        birthCity: {},
+        naturalness: '',
+        nationality: {},
+        state: {},
+        city: {},
+        contracts: [
+            {
+                grantorCnpj: "00394684000153",
+                initialRegistration: '',
+                internshipStartDate: '',
+                internshipNature: 'N',
+                requestId: "98041",
+            }
+        ],
+    };
+    $scope.countries = [];
+    $scope.states = [];
+    $scope.cities = [];
+    $scope.streetTypes = [];
     $scope._ = _; // lodash library
     $scope.mode = "initial";
-
-    $scope.switchMode = function (mode) {
-        $scope.mode = mode;
-    };
-
     $scope.showUpdateMenu = false;
-
-    $scope.checkCloseUpdateDropdown = function () {
-        $timeout(function () {
-            var isMouseOverButton = document.querySelector('.update-button:hover');
-            var isMouseOverMenu = document.querySelector('.update-dropdown:hover');
-
-            if (!isMouseOverButton && !isMouseOverMenu) {
-                $scope.showUpdateMenu = false;
-            }
-        }, 100);
-    };
-
     $scope.showDepartmentDropdown = false;
     $scope.selectedDepartment = {
         name: "Central IT",
@@ -55,6 +69,32 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             isLDAP: false
         }
     ];
+    $scope.users = [
+        {
+            name: "Rafael Marliere de Oliveira",
+            email: "rafael.marliere@centralit.com.br",
+        }
+    ];
+    $scope.isAccordionOpen = {
+        "intern": false,
+        "address": false,
+        "contact": false,
+    };
+
+    $scope.switchMode = function (mode) {
+        $scope.mode = mode;
+    };
+
+    $scope.checkCloseUpdateDropdown = function () {
+        $timeout(function () {
+            var isMouseOverButton = document.querySelector('.update-button:hover');
+            var isMouseOverMenu = document.querySelector('.update-dropdown:hover');
+
+            if (!isMouseOverButton && !isMouseOverMenu) {
+                $scope.showUpdateMenu = false;
+            }
+        }, 100);
+    };
 
     $scope.toggleDepartmentDropdown = function () {
         $scope.showDepartmentDropdown = !$scope.showDepartmentDropdown;
@@ -72,19 +112,6 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
     $scope.selectDepartment = function (department) {
         $scope.selectedDepartment = department;
         $scope.showDepartmentDropdown = false;
-    };
-
-    $scope.users = [
-        {
-            name: "Rafael Marliere de Oliveira",
-            email: "rafael.marliere@centralit.com.br",
-        }
-    ];
-
-    $scope.isAccordionOpen = {
-        "intern": false,
-        "address": false,
-        "contact": false,
     };
 
     $scope.toggleAccordion = function (ref) {
@@ -122,8 +149,6 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             modal.classList.add("opacity-0", "scale-95", "pointer-events-none");
         }, 300);
     };
-
-    $scope.mandatory = false;
 
     $scope.submitForm = function (event) {
         event.preventDefault();
@@ -189,32 +214,6 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         }
     }
 
-    $scope.user = {
-        isPwd: true,
-        birthState: {},
-        birthCity: {},
-        naturalness: '',
-        nationality: {},
-        grantorCnpj: '',
-        state: {},
-        city: {},
-        grantorCnpj: "00394684000153",
-        initialRegistration: '',
-        internshipStartDate: '',
-        internshipNature: 'N',
-    };
-
-    $scope.countries = [];
-    $scope.states = [];
-    $scope.cities = [];
-    $scope.streetTypes = [];
-
-    $timeout(async function () {
-        $scope.states = await getStates();
-        $scope.countries = CountriesService.getCountries();
-        $scope.streetTypes = StreetTypeService.getStreetTypes();
-    });
-
     $scope.$watch("user.nationality", function (newNationality) {
         if (_.isObject(newNationality) && !_.isEmpty(newNationality)) {
             $scope.user.birthState = {};
@@ -249,6 +248,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         }
     }, true);
 
+    // todo fix this watch to work with multiple contracts
     $scope.$watch("user.internshipStartDate", function (newDate) {
         if (_.isDate(newDate)) {
             const initialRegistrationDate = new Date("2024-10-01");

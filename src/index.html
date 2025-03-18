@@ -446,7 +446,7 @@
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <div class="text-black font-semibold">
-                                                            Possui algum Tipo de Deficiência?
+                                                            Pessoa com Deficiência?
                                                             <span class="text-red-500">*</span>
                                                         </div>
                                                         <div
@@ -665,424 +665,608 @@
                                             </div>
                                             <div class="overflow-hidden transition-all duration-300"
                                                 ng-style="{'max-height': isAccordionOpen['contract'] ? '800px' : '0px', 'padding': isAccordionOpen['contract'] ? '16px' : '0px', 'padding-top': isAccordionOpen['contract'] ? '32px' : '0px'}">
-                                                <div class="grid grid-cols-4 gap-x-4 gap-y-8 w-full">
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <div class="text-black font-semibold">
-                                                            Estagiário Ativo
-                                                            <span class="text-red-500">*</span>
-                                                        </div>
-                                                        <div
-                                                            class="flex gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10">
-                                                            <label class="flex items-center gap-2 font-semibold">
-                                                                <input type="radio" name="active" id="active"
-                                                                    ng-model="user.active" ng-required="mandatory"
-                                                                    ng-value="true" class="w-5 h-5">
-                                                                SIM
+                                                <div ng-repeat="contract in user.contracts track by $index">
+                                                    <div class="grid grid-cols-4 gap-x-4 gap-y-8 w-full">
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="requestId{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Número Solicitação
+                                                                <span class="text-red-500">*</span>
                                                             </label>
-                                                            <label class="flex items-center gap-2 font-semibold">
-                                                                <input type="radio" name="inactive" id="inactive"
-                                                                    ng-model="user.active" ng-required="mandatory"
-                                                                    ng-value="false" class="w-5 h-5">
-                                                                NÃO
+                                                            <input type="text" id="requestId{{ $index }}"
+                                                                name="requestId{{ $index }}" ng-required="mandatory"
+                                                                ng-model="contract.requestId"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
+                                                                ng-readonly="true" ng-disabled="true">
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <div class="text-black font-semibold">
+                                                                Estagiário Ativo
+                                                                <span class="text-red-500">*</span>
+                                                            </div>
+                                                            <div
+                                                                class="flex gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10">
+                                                                <label class="flex items-center gap-2 font-semibold">
+                                                                    <input type="radio" name="active{{ $index }}"
+                                                                        id="active{{ $index }}"
+                                                                        ng-model="contract.active"
+                                                                        ng-required="mandatory" ng-value="true"
+                                                                        class="w-5 h-5">
+                                                                    SIM
+                                                                </label>
+                                                                <label class="flex items-center gap-2 font-semibold">
+                                                                    <input type="radio" name="inactive{{ $index }}"
+                                                                        id="inactive{{ $index }}"
+                                                                        ng-model="contract.active"
+                                                                        ng-required="mandatory" ng-value="false"
+                                                                        class="w-5 h-5">
+                                                                    NÃO
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col relative">
+                                                            <label for="grantorCnpj{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                CNPJ Concedente
+                                                                <span class="text-red-500">*</span>
                                                             </label>
+                                                            <input type="text" id="grantorCnpj{{ $index }}"
+                                                                name="grantorCnpj{{ $index }}" ng-required="mandatory"
+                                                                ng-model="contract.grantorCnpj"
+                                                                placeholder="xx.xxx.xxx/xxxx-xx"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
+                                                                ng-readonly="true" ng-disabled="true" ui-br-cnpj-mask
+                                                                cnpj-validator>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" viewBox="0 0 16 16" fill="none"
+                                                                class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                                ng-show="!(updateUserForm['grantorCnpj' + $index].$invalid && updateUserForm['grantorCnpj' + $index].$dirty) && contract.grantorCnpj.length === 14">
+                                                                <rect width="16" height="16" rx="8" fill="#00B359" />
+                                                                <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
+                                                                <path
+                                                                    d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
+                                                                    stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                            </svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" viewBox="0 0 16 16" fill="none"
+                                                                class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                                ng-show="updateUserForm['grantorCnpj' + $index].$invalid && updateUserForm['grantorCnpj' + $index].$dirty">
+                                                                <rect width="16" height="16" rx="8" fill="#FF0000" />
+                                                                <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
+                                                                <path d="M4 4L12 12" stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                                <path d="M4 12L12 4" stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="educationalInstitutionRegistration{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Matrícula Instituição Ensino
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="text"
+                                                                id="educationalInstitutionRegistration{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                name="educationalInstitutionRegistration{{ $index }}"
+                                                                ng-model="contract.educationalInstitutionRegistration"
+                                                                placeholder="Digite a matrícula da instituição de ensino"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                                ng-minlength="1" ng-maxlength="30"
+                                                                ng-keypress="lettersAndSpacesPattern($event, false)">
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="internshipStartDate{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Data Início Estágio
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="date" id="internshipStartDate{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                name="internshipStartDate{{ $index }}"
+                                                                ng-model="contract.internshipStartDate"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="initialRegistration{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Cadastro Inicial
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <select name="initialRegistration{{ $index }}"
+                                                                id="initialRegistration{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                ng-model="contract.initialRegistration"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
+                                                                ng-disabled="true" ng-readonly="true">
+                                                                <option value="" disabled selected>Informe a data de
+                                                                    início
+                                                                    do estágio</option>
+                                                                <option value="S">SIM</option>
+                                                                <option value="N">NÃO</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="internshipNature{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Natureza Estágio
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <select name="internshipNature{{ $index }}"
+                                                                id="internshipNature{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                ng-model="contract.internshipNature"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                                <option value="" disabled>Selecione a natureza do
+                                                                    estágio
+                                                                </option>
+                                                                <option value="N">Não Obrigatório</option>
+                                                                <option value="O">Obrigatório</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="internshipLevel{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Nível Estágio
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <select name="internshipLevel{{ $index }}"
+                                                                id="internshipLevel{{ $index }}" ng-required="mandatory"
+                                                                ng-model="contract.internshipLevel"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                                <option value="" disabled selected>Selecione o nível do
+                                                                    estágio</option>
+                                                                <option value="2">Curso Técnico</option>
+                                                                <option value="2">Nível Médio</option>
+                                                                <option value="4">Nível Superior</option>
+                                                                <option value="2">Acadêmico Não Remunerado (Ensino
+                                                                    Médio/Técnico)</option>
+                                                                <option value="4">Acadêmico Não Remunerado (Ensino
+                                                                    Superior)
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="internshipArea{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Área Atuação Estágio
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <select name="internshipArea{{ $index }}"
+                                                                id="internshipArea{{ $index }}" ng-required="mandatory"
+                                                                ng-model="contract.internshipArea"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                                <option value="" disabled selected>Selecione a área de
+                                                                    atuação do estágio</option>
+                                                                <option value="administracao">Administração</option>
+                                                                <option value="agronomia">Agronomia</option>
+                                                                <option value="arquitetura">Arquitetura</option>
+                                                                <option value="biologia">Biologia</option>
+                                                                <option value="ciencias-contabeis">Ciências Contábeis
+                                                                </option>
+                                                                <option value="ciencias-da-computacao">Ciências da
+                                                                    Computação
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="insurancePolicyNumber{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Número Apólice Seguro
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="text" id="insurancePolicyNumber{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                name="insurancePolicyNumber{{ $index }}"
+                                                                ng-model="contract.insurancePolicyNumber"
+                                                                placeholder="Digite o número da apólice do seguro"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                                ng-minlength="1" ng-maxlength="30"
+                                                                ng-keypress="lettersAndSpacesPattern($event, false)">
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col text-nowrap">
+                                                            <label for="internshipContractNumber{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Número Contrato Estágio
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="text" id="internshipContractNumber{{ $index }}"
+                                                                name="internshipContractNumber{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                ng-model="contract.internshipContractNumber"
+                                                                placeholder="Digite o número do contrato do estágio"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                                ng-minlength="1" ng-maxlength="40"
+                                                                ng-keypress="lettersAndSpacesPattern($event, true)">
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="internshipEndDateForecast{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Data Prevista Término Estágio
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="date"
+                                                                id="internshipEndDateForecast{{ $index }}"
+                                                                name="internshipEndDateForecast{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                ng-model="contract.internshipEndDateForecast"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col relative">
+                                                            <label for="educationalInstitutionCnpj{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                CNPJ Instituição Ensino
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="text"
+                                                                id="educationalInstitutionCnpj{{ $index }}"
+                                                                name="educationalInstitutionCnpj{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                ng-model="contract.educationalInstitutionCnpj"
+                                                                placeholder="xx.xxx.xxx/xxxx-xx"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                                ui-br-cnpj-mask cnpj-validator>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" viewBox="0 0 16 16" fill="none"
+                                                                class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                                ng-show="!(updateUserForm['educationalInstitutionCnpj' + $index].$invalid && updateUserForm['educationalInstitutionCnpj' + $index].$dirty) && contract.educationalInstitutionCnpj.length === 14">
+                                                                <rect width="16" height="16" rx="8" fill="#00B359" />
+                                                                <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
+                                                                <path
+                                                                    d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
+                                                                    stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                            </svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" viewBox="0 0 16 16" fill="none"
+                                                                class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                                ng-show="updateUserForm['educationalInstitutionCnpj' + $index].$invalid && updateUserForm['educationalInstitutionCnpj' + $index].$dirty">
+                                                                <rect width="16" height="16" rx="8" fill="#FF0000" />
+                                                                <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
+                                                                <path d="M4 4L12 12" stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                                <path d="M4 12L12 4" stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col relative">
+                                                            <label for="integratorAgentCnpj{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                CNPJ Agente Integrador
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="text" id="integratorAgentCnpj{{ $index }}"
+                                                                name="integratorAgentCnpj{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                ng-model="contract.integratorAgentCnpj"
+                                                                placeholder="xx.xxx.xxx/xxxx-xx"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                                ui-br-cnpj-mask cnpj-validator>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" viewBox="0 0 16 16" fill="none"
+                                                                class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                                ng-show="!(updateUserForm['integratorAgentCnpj' + $index].$invalid && updateUserForm['integratorAgentCnpj' + $index].$dirty) && contract.integratorAgentCnpj.length === 14">
+                                                                <rect width="16" height="16" rx="8" fill="#00B359" />
+                                                                <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
+                                                                <path
+                                                                    d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
+                                                                    stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                            </svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" viewBox="0 0 16 16" fill="none"
+                                                                class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                                ng-show="updateUserForm['integratorAgentCnpj' + $index].$invalid && updateUserForm['integratorAgentCnpj' + $index].$dirty">
+                                                                <rect width="16" height="16" rx="8" fill="#FF0000" />
+                                                                <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
+                                                                <path d="M4 4L12 12" stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                                <path d="M4 12L12 4" stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col relative">
+                                                            <label for="supervisorCpf{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                CPF Supervisor
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="text" id="supervisorCpf{{ $index }}"
+                                                                name="supervisorCpf{{ $index }}" ng-required="mandatory"
+                                                                ng-model="contract.supervisorCpf"
+                                                                placeholder="xxx.xxx.xxx-xx"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                                cpf-validator ui-br-cpf-mask>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" viewBox="0 0 16 16" fill="none"
+                                                                class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                                ng-show="!(updateUserForm['supervisorCpf' + $index].$invalid && updateUserForm['supervisorCpf' + $index].$dirty) && contract.supervisorCpf.length === 11">
+                                                                <rect width="16" height="16" rx="8" fill="#00B359" />
+                                                                <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
+                                                                <path
+                                                                    d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
+                                                                    stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                            </svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" viewBox="0 0 16 16" fill="none"
+                                                                class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
+                                                                ng-show="updateUserForm['supervisorCpf' + $index].$invalid && updateUserForm['supervisorCpf' + $index].$dirty">
+                                                                <rect width="16" height="16" rx="8" fill="#FF0000" />
+                                                                <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
+                                                                <path d="M4 4L12 12" stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                                <path d="M4 12L12 4" stroke="white" stroke-width="2"
+                                                                    stroke-linecap="round" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="col-span-1 flex flex-col">
+                                                            <label for="internshipEndDate{{ $index }}"
+                                                                class="text-black font-semibold">
+                                                                Data Fim Desligamento Estágio
+                                                                <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="date" id="internshipEndDate{{ $index }}"
+                                                                ng-required="mandatory"
+                                                                name="internshipEndDate{{ $index }}"
+                                                                ng-model="contract.internshipEndDate"
+                                                                class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                         </div>
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col relative">
-                                                        <label for="grantorCnpj" class="text-black font-semibold">
-                                                            CNPJ Concedente
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="text" id="grantorCnpj" name="grantorCnpj"
-                                                            ng-required="mandatory" ng-model="user.grantorCnpj"
-                                                            placeholder="xx.xxx.xxx/xxxx-xx"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
-                                                            ng-readonly="true" ng-disabled="true" ui-br-cnpj-mask
-                                                            cnpj-validator>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            viewBox="0 0 16 16" fill="none"
-                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                            ng-show="!(updateUserForm.grantorCnpj.$invalid && updateUserForm.grantorCnpj.$dirty) && user.grantorCnpj.length === 14">
-                                                            <rect width="16" height="16" rx="8" fill="#00B359" />
-                                                            <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
-                                                            <path
-                                                                d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
-                                                                stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                        </svg>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            viewBox="0 0 16 16" fill="none"
-                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                            ng-show="(updateUserForm.grantorCnpj.$invalid && updateUserForm.grantorCnpj.$dirty)">
-                                                            <rect width="16" height="16" rx="8" fill="#FF0000" />
-                                                            <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
-                                                            <path d="M4 4L12 12" stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                            <path d="M4 12L12 4" stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                        </svg>
+                                                    <div class="flex items-end justify-between mt-8">
+                                                        <h3 class="font-semibold text-lg">Documentos</h3>
+                                                        <button type="button"
+                                                            ng-click="openModal('uploadDocumentModal')"
+                                                            class="flex items-center bg-blue-600 gap-2 px-4 py-2 text-white rounded h-10 hover:bg-blue-700 hover:cursor-pointer">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" viewBox="0 0 20 20" fill="none">
+                                                                <path
+                                                                    d="M11.6665 0C12.7716 0 13.8314 0.438987 14.6128 1.22039C15.3942 2.00179 15.8332 3.0616 15.8332 4.16667V14.1667C15.8332 14.9327 15.6823 15.6913 15.3891 16.399C15.096 17.1067 14.6663 17.7498 14.1246 18.2915C13.583 18.8331 12.9399 19.2628 12.2322 19.556C11.5244 19.8491 10.7659 20 9.99984 20C9.23379 20 8.47525 19.8491 7.76752 19.556C7.05978 19.2628 6.41672 18.8331 5.87505 18.2915C5.33337 17.7498 4.90369 17.1067 4.61054 16.399C4.31739 15.6913 4.1665 14.9327 4.1665 14.1667V7.5H5.83317V14.1667C5.83317 15.2717 6.27216 16.3315 7.05356 17.1129C7.83496 17.8943 8.89477 18.3333 9.99984 18.3333C11.1049 18.3333 12.1647 17.8943 12.9461 17.1129C13.7275 16.3315 14.1665 15.2717 14.1665 14.1667V4.16667C14.1665 3.83836 14.1018 3.51327 13.9762 3.20996C13.8506 2.90664 13.6664 2.63105 13.4343 2.3989C13.2021 2.16675 12.9265 1.9826 12.6232 1.85697C12.3199 1.73133 11.9948 1.66667 11.6665 1.66667C11.3382 1.66667 11.0131 1.73133 10.7098 1.85697C10.4065 1.9826 10.1309 2.16675 9.89874 2.3989C9.66659 2.63105 9.48244 2.90664 9.3568 3.20996C9.23117 3.51327 9.1665 3.83836 9.1665 4.16667V14.1667C9.1665 14.3877 9.2543 14.5996 9.41058 14.7559C9.56686 14.9122 9.77882 15 9.99984 15C10.2209 15 10.4328 14.9122 10.5891 14.7559C10.7454 14.5996 10.8332 14.3877 10.8332 14.1667V5H12.4998V14.1667C12.4998 14.8297 12.2364 15.4656 11.7676 15.9344C11.2988 16.4033 10.6629 16.6667 9.99984 16.6667C9.3368 16.6667 8.70091 16.4033 8.23207 15.9344C7.76323 15.4656 7.49984 14.8297 7.49984 14.1667V4.16667C7.49984 3.0616 7.93882 2.00179 8.72023 1.22039C9.50163 0.438987 10.5614 0 11.6665 0V0Z"
+                                                                    fill="white" />
+                                                            </svg>
+                                                            <span>Anexar Arquivo</span>
+                                                        </button>
                                                     </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="educationalInstitutionRegistration"
-                                                            class="text-black font-semibold">
-                                                            Matrícula Instituição Ensino
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="text" id="educationalInstitutionRegistration"
-                                                            ng-required="mandatory"
-                                                            name="educationalInstitutionRegistration"
-                                                            ng-model="user.educationalInstitutionRegistration"
-                                                            placeholder="Digite a matrícula da instituição de ensino"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-minlength="1" ng-maxlength="30"
-                                                            ng-keypress="lettersAndSpacesPattern($event, false)">
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="internshipStartDate"
-                                                            class="text-black font-semibold">
-                                                            Data Início Estágio
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="date" id="internshipStartDate"
-                                                            ng-required="mandatory" name="internshipStartDate"
-                                                            ng-model="user.internshipStartDate"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="initialRegistration"
-                                                            class="text-black font-semibold">
-                                                            Cadastro Inicial
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <select name="initialRegistration" id="initialRegistration"
-                                                            ng-required="mandatory" ng-model="user.initialRegistration"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
-                                                            ng-disabled="true" ng-readonly="true">
-                                                            <option value="" disabled selected>Informe a data de início
-                                                                do estágio</option>
-                                                            <option value="S">SIM</option>
-                                                            <option value="N">NÃO</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="internshipNature" class="text-black font-semibold">
-                                                            Natureza Estágio
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <select name="internshipNature" id="internshipNature"
-                                                            ng-required="mandatory" ng-model="user.internshipNature"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled>Selecione a natureza do estágio
-                                                            </option>
-                                                            <option value="N">Não Obrigatório</option>
-                                                            <option value="O">Obrigatório</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="internshipLevel" class="text-black font-semibold">
-                                                            Nível Estágio
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <select name="internshipLevel" id="internshipLevel"
-                                                            ng-required="mandatory" ng-model="user.internshipLevel"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione o nível do
-                                                                estágio</option>
-                                                            <option value="2">Curso Técnico</option>
-                                                            <option value="2">Nível Médio</option>
-                                                            <option value="4">Nível Superior</option>
-                                                            <option value="2">Acadêmico Não Remunerado (Ensino
-                                                                Médio/Técnico)</option>
-                                                            <option value="4">Acadêmico Não Remunerado (Ensino Superior)
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="internshipArea" class="text-black font-semibold">
-                                                            Área Atuação Estágio
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <select name="internshipArea" id="internshipArea"
-                                                            ng-required="mandatory" ng-model="user.internshipArea"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione a área de
-                                                                atuação do estágio</option>
-                                                            <option value="administracao">Administração</option>
-                                                            <option value="agronomia">Agronomia</option>
-                                                            <option value="arquitetura">Arquitetura</option>
-                                                            <option value="biologia">Biologia</option>
-                                                            <option value="ciencias-contabeis">Ciências Contábeis
-                                                            </option>
-                                                            <option value="ciencias-da-computacao">Ciências da
-                                                                Computação
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="insurancePolicyNumber"
-                                                            class="text-black font-semibold">
-                                                            Número Apólice Seguro
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="text" id="insurancePolicyNumber"
-                                                            ng-required="mandatory" name="insurancePolicyNumber"
-                                                            ng-model="user.insurancePolicyNumber"
-                                                            placeholder="Digite o número da apólice do seguro"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-minlength="1" ng-maxlength="30"
-                                                            ng-keypress="lettersAndSpacesPattern($event, false)">
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col text-nowrap">
-                                                        <label for="internshipContractNumber"
-                                                            class="text-black font-semibold">
-                                                            Número Contrato Estágio
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="text" id="internshipContractNumber"
-                                                            name="internshipContractNumber" ng-required="mandatory"
-                                                            ng-model="user.internshipContractNumber"
-                                                            placeholder="Digite o número do contrato do estágio"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-minlength="1" ng-maxlength="40"
-                                                            ng-keypress="lettersAndSpacesPattern($event, true)">
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="internshipEndDateForecast"
-                                                            class="text-black font-semibold">
-                                                            Data Prevista Término Estágio
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="date" id="internshipEndDateForecast"
-                                                            name="internshipEndDateForecast" ng-required="mandatory"
-                                                            ng-model="user.internshipEndDateForecast"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col relative">
-                                                        <label for="educationalInstitutionCnpj"
-                                                            class="text-black font-semibold">
-                                                            CNPJ Instituição Ensino
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="text" id="educationalInstitutionCnpj"
-                                                            name="educationalInstitutionCnpj" ng-required="mandatory"
-                                                            ng-model="user.educationalInstitutionCnpj"
-                                                            placeholder="xx.xxx.xxx/xxxx-xx"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ui-br-cnpj-mask cnpj-validator>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            viewBox="0 0 16 16" fill="none"
-                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                            ng-show="!(updateUserForm.educationalInstitutionCnpj.$invalid && updateUserForm.educationalInstitutionCnpj.$dirty) && user.educationalInstitutionCnpj.length === 14">
-                                                            <rect width="16" height="16" rx="8" fill="#00B359" />
-                                                            <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
-                                                            <path
-                                                                d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
-                                                                stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                        </svg>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            viewBox="0 0 16 16" fill="none"
-                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                            ng-show="(updateUserForm.educationalInstitutionCnpj.$invalid && updateUserForm.educationalInstitutionCnpj.$dirty)">
-                                                            <rect width="16" height="16" rx="8" fill="#FF0000" />
-                                                            <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
-                                                            <path d="M4 4L12 12" stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                            <path d="M4 12L12 4" stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col relative">
-                                                        <label for="integratorAgentCnpj"
-                                                            class="text-black font-semibold">
-                                                            CNPJ Agente Integrador
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="text" id="integratorAgentCnpj"
-                                                            name="integratorAgentCnpj" ng-required="mandatory"
-                                                            ng-model="user.integratorAgentCnpj"
-                                                            placeholder="xx.xxx.xxx/xxxx-xx"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ui-br-cnpj-mask cnpj-validator>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            viewBox="0 0 16 16" fill="none"
-                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                            ng-show="!(updateUserForm.integratorAgentCnpj.$invalid && updateUserForm.integratorAgentCnpj.$dirty) && user.integratorAgentCnpj.length === 14">
-                                                            <rect width="16" height="16" rx="8" fill="#00B359" />
-                                                            <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
-                                                            <path
-                                                                d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
-                                                                stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                        </svg>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            viewBox="0 0 16 16" fill="none"
-                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                            ng-show="(updateUserForm.integratorAgentCnpj.$invalid && updateUserForm.integratorAgentCnpj.$dirty)">
-                                                            <rect width="16" height="16" rx="8" fill="#FF0000" />
-                                                            <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
-                                                            <path d="M4 4L12 12" stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                            <path d="M4 12L12 4" stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col relative">
-                                                        <label for="supervisorCpf" class="text-black font-semibold">
-                                                            CPF Supervisor
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="text" id="supervisorCpf" name="supervisorCpf"
-                                                            ng-required="mandatory" ng-model="user.supervisorCpf"
-                                                            placeholder="xxx.xxx.xxx-xx"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            cpf-validator ui-br-cpf-mask>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            viewBox="0 0 16 16" fill="none"
-                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                            ng-show="!(updateUserForm.supervisorCpf.$invalid && updateUserForm.supervisorCpf.$dirty) && user.supervisorCpf.length === 11">
-                                                            <rect width="16" height="16" rx="8" fill="#00B359" />
-                                                            <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
-                                                            <path
-                                                                d="M4.45947 7.73844L6.74823 10.0272C6.95275 10.2317 7.28761 10.2206 7.47807 10.0029L11.7928 5.07178"
-                                                                stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                        </svg>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            viewBox="0 0 16 16" fill="none"
-                                                            class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                            ng-show="(updateUserForm.supervisorCpf.$invalid && updateUserForm.supervisorCpf.$dirty)">
-                                                            <rect width="16" height="16" rx="8" fill="#FF0000" />
-                                                            <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
-                                                            <path d="M4 4L12 12" stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                            <path d="M4 12L12 4" stroke="white" stroke-width="2"
-                                                                stroke-linecap="round" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="col-span-1 flex flex-col">
-                                                        <label for="internshipEndDate" class="text-black font-semibold">
-                                                            Data Fim Desligamento Estágio
-                                                            <span class="text-red-500">*</span>
-                                                        </label>
-                                                        <input type="date" id="internshipEndDate"
-                                                            ng-required="mandatory" name="internshipEndDate"
-                                                            ng-model="user.internshipEndDate"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                    </div>
-                                                </div>
-                                                <div class="flex items-end justify-between mt-8">
-                                                    <h3 class="font-semibold text-lg">Documentos</h3>
-                                                    <button type="button" ng-click="openModal('uploadDocumentModal')"
-                                                        class="flex items-center bg-blue-600 gap-2 px-4 py-2 text-white rounded h-10 hover:bg-blue-700 hover:cursor-pointer">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                            viewBox="0 0 20 20" fill="none">
-                                                            <path
-                                                                d="M11.6665 0C12.7716 0 13.8314 0.438987 14.6128 1.22039C15.3942 2.00179 15.8332 3.0616 15.8332 4.16667V14.1667C15.8332 14.9327 15.6823 15.6913 15.3891 16.399C15.096 17.1067 14.6663 17.7498 14.1246 18.2915C13.583 18.8331 12.9399 19.2628 12.2322 19.556C11.5244 19.8491 10.7659 20 9.99984 20C9.23379 20 8.47525 19.8491 7.76752 19.556C7.05978 19.2628 6.41672 18.8331 5.87505 18.2915C5.33337 17.7498 4.90369 17.1067 4.61054 16.399C4.31739 15.6913 4.1665 14.9327 4.1665 14.1667V7.5H5.83317V14.1667C5.83317 15.2717 6.27216 16.3315 7.05356 17.1129C7.83496 17.8943 8.89477 18.3333 9.99984 18.3333C11.1049 18.3333 12.1647 17.8943 12.9461 17.1129C13.7275 16.3315 14.1665 15.2717 14.1665 14.1667V4.16667C14.1665 3.83836 14.1018 3.51327 13.9762 3.20996C13.8506 2.90664 13.6664 2.63105 13.4343 2.3989C13.2021 2.16675 12.9265 1.9826 12.6232 1.85697C12.3199 1.73133 11.9948 1.66667 11.6665 1.66667C11.3382 1.66667 11.0131 1.73133 10.7098 1.85697C10.4065 1.9826 10.1309 2.16675 9.89874 2.3989C9.66659 2.63105 9.48244 2.90664 9.3568 3.20996C9.23117 3.51327 9.1665 3.83836 9.1665 4.16667V14.1667C9.1665 14.3877 9.2543 14.5996 9.41058 14.7559C9.56686 14.9122 9.77882 15 9.99984 15C10.2209 15 10.4328 14.9122 10.5891 14.7559C10.7454 14.5996 10.8332 14.3877 10.8332 14.1667V5H12.4998V14.1667C12.4998 14.8297 12.2364 15.4656 11.7676 15.9344C11.2988 16.4033 10.6629 16.6667 9.99984 16.6667C9.3368 16.6667 8.70091 16.4033 8.23207 15.9344C7.76323 15.4656 7.49984 14.8297 7.49984 14.1667V4.16667C7.49984 3.0616 7.93882 2.00179 8.72023 1.22039C9.50163 0.438987 10.5614 0 11.6665 0V0Z"
-                                                                fill="white" />
-                                                        </svg>
-                                                        <span>Anexar Arquivo</span>
-                                                    </button>
-                                                </div>
-                                                <div class="self-stretch bg-[#D9D9D9] h-[1px] my-4"></div>
-                                                <div class="flex flex-col">
-                                                    <div class="grid grid-cols-16 gap-4 p-4">
-                                                        <div class="col-span-4 flex flex-col">
-                                                            <span class="text-black font-semibold">
-                                                                Nome
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-span-4 flex flex-col">
-                                                            <span class="text-black font-semibold">
-                                                                Arquivo
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-span-2 flex flex-col">
-                                                            <span class="text-black font-semibold">
-                                                                Tamanho
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-span-2 flex flex-col">
-                                                            <span class="text-black font-semibold">
-                                                                Tipo
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-span-4 flex flex-col">
-                                                            <span class="text-black font-semibold">
-                                                                Ação
-                                                            </span>
+                                                    <div id="uploadDocumentModal"
+                                                        class="fixed inset-0 flex items-center justify-center bg-black/50 opacity-0 scale-95 pointer-events-none">
+                                                        <div id="uploadDocumentModalContent"
+                                                            class="bg-white rounded-lg shadow-lg opacity-0 scale-95 transition-all duration-300 w-[800px] h-[480px]"
+                                                            ng-click="$event.stopPropagation()">
+                                                            <div class="px-8 py-4 flex items-center justify-between">
+                                                                <h2 class="text-xl font-semibold">Novo Arquivo</h2>
+                                                                <button type="button"
+                                                                    ng-click="closeModal('uploadDocumentModal')"
+                                                                    class="group transition-transform duration-200 hover:cursor-pointer">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                        height="20" viewBox="0 0 20 20" fill="none"
+                                                                        class="group-hover:rotate-180 transform transition-transform duration-200">
+                                                                        <path d="M2 2L18 18" stroke="#0F7BC2"
+                                                                            stroke-width="3" stroke-linecap="round" />
+                                                                        <path d="M18 2L2 18" stroke="#0F7BC2"
+                                                                            stroke-width="3" stroke-linecap="round" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                            <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                                                            <div class="flex flex-col p-6 gap-4">
+                                                                <div
+                                                                    class="flex flex-col gap-0 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white w-full">
+                                                                    <div class="flex items-center justify-between p-4">
+                                                                        <h2 class="font-semibold text-[#2563EB]">
+                                                                            Informações
+                                                                            do
+                                                                            Documento</h2>
+                                                                    </div>
+                                                                    <div class="px-4 h-[1px]">
+                                                                        <div class="self-stretch bg-[#D9D9D9] h-[1px]">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="max-h-[800px] p-4">
+                                                                        <div
+                                                                            class="grid grid-cols-12 gap-x-4 gap-y-8 w-full">
+                                                                            <div class="col-span-8 flex flex-col">
+                                                                                <label
+                                                                                    for="documentDescription{{ $index }}"
+                                                                                    class="text-black font-semibold">
+                                                                                    Descrição Documento
+                                                                                    <span class="text-red-500">*</span>
+                                                                                </label>
+                                                                                <input type="text"
+                                                                                    id="documentDescription{{ $index }}"
+                                                                                    name="documentDescription{{ $index }}"
+                                                                                    ng-model="contract.documentDescription"
+                                                                                    placeholder="Contrato de Estágio"
+                                                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                                            </div>
+                                                                            <div class="col-span-4 flex flex-col">
+                                                                                <label for="documentType{{ $index }}"
+                                                                                    class="text-black font-semibold">
+                                                                                    Tipo Documento
+                                                                                    <span class="text-red-500">*</span>
+                                                                                </label>
+                                                                                <select name="documentType{{ $index }}"
+                                                                                    id="documentType{{ $index }}"
+                                                                                    ng-model="contract.documentType"
+                                                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                                                    <option value="" disabled selected>
+                                                                                        Selecione o tipo de documento
+                                                                                    </option>
+                                                                                    <option value="contrato">Contrato
+                                                                                    </option>
+                                                                                    <option value="termo">Termo</option>
+                                                                                    <option value="declaracao">
+                                                                                        Declaração
+                                                                                    </option>
+                                                                                    <option value="outro">Outro</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div
+                                                                    class="flex flex-col gap-0 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white w-full">
+                                                                    <div class="flex items-center justify-between p-4">
+                                                                        <h2 class="font-semibold text-[#2563EB]">
+                                                                            Documento
+                                                                        </h2>
+                                                                    </div>
+                                                                    <div class="px-4 h-[1px]">
+                                                                        <div class="self-stretch bg-[#D9D9D9] h-[1px]">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="max-h-[800px] p-4">
+                                                                        <div
+                                                                            class="flex gap-x-4 gap-y-8 w-full text-nowrap">
+                                                                            <input type="file"
+                                                                                id="documentFile{{ $index }}"
+                                                                                name="documentFile{{ $index }}"
+                                                                                class="hidden"
+                                                                                ng-model="contract.documentFile" />
+                                                                            <label for="documentFile{{ $index }}"
+                                                                                class="flex items-center justify-center gap-2 bg-[#2563EB] text-white rounded-md p-4 cursor-pointer hover:bg-blue-700 h-10">
+                                                                                <svg width="16" height="17"
+                                                                                    viewBox="0 0 16 17" fill="none"
+                                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                                    <path
+                                                                                        d="M9.25 13H6.75C6.3125 13 6 12.6875 6 12.25V7H3.25C2.6875 7 2.40625 6.34375 2.8125 5.9375L7.5625 1.1875C7.78125 0.96875 8.1875 0.96875 8.40625 1.1875L13.1562 5.9375C13.5625 6.34375 13.2812 7 12.7188 7H10V12.25C10 12.6875 9.65625 13 9.25 13ZM16 12.75V16.25C16 16.6875 15.6562 17 15.25 17H0.75C0.3125 17 0 16.6875 0 16.25V12.75C0 12.3438 0.3125 12 0.75 12H5V12.25C5 13.2188 5.78125 14 6.75 14H9.25C10.1875 14 11 13.2188 11 12.25V12H15.25C15.6562 12 16 12.3438 16 12.75ZM12.125 15.5C12.125 15.1562 11.8438 14.875 11.5 14.875C11.1562 14.875 10.875 15.1562 10.875 15.5C10.875 15.8438 11.1562 16.125 11.5 16.125C11.8438 16.125 12.125 15.8438 12.125 15.5ZM14.125 15.5C14.125 15.1562 13.8438 14.875 13.5 14.875C13.1562 14.875 12.875 15.1562 12.875 15.5C12.875 15.8438 13.1562 16.125 13.5 16.125C13.8438 16.125 14.125 15.8438 14.125 15.5Z"
+                                                                                        fill="white" />
+                                                                                </svg>
+                                                                                <span>Escolher Arquivo</span>
+                                                                            </label>
+                                                                            <div class="flex relative group">
+                                                                                <div
+                                                                                    class="flex items-center gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10 relative">
+                                                                                    <span
+                                                                                        class="text-[#2563EB] underline whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40 block cursor-pointer">
+                                                                                        contrato_manuel_rafael_barros_5484728.pdf
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="absolute left-0 bottom-full mb-1 hidden w-max max-w-xs rounded bg-gray-900 px-2 py-1 text-white text-xs group-hover:block">
+                                                                                        contrato_manuel_rafael_barros_5484728.pdf
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
+                                                            <div class="flex justify-end gap-4 p-4">
+                                                                <button type="button"
+                                                                    class="px-4 py-2 bg-white rounded shadow-[0px_0px_3px_1px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-gray-100"
+                                                                    ng-click="closeModal('uploadDocumentModal')">
+                                                                    Cancelar
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="text-white px-4 py-2 bg-[#2563EB] rounded shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-blue-700"
+                                                                    ng-click="closeModal('uploadDocumentModal')">
+                                                                    Concluir
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="grid grid-cols-16 gap-4 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white p-4 items-center">
-                                                        <div class="col-span-4 flex flex-col">
-                                                            <span
-                                                                class="text-black whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40">
-                                                                Contrato de Estágio
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-span-4 flex flex-col">
-                                                            <div class="relative group">
-                                                                <span
-                                                                    class="text-[#2563EB] underline whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40 block cursor-pointer">
-                                                                    contrato_manuel_rafael_barros_5484728.pdf
+                                                    <div class="self-stretch bg-[#D9D9D9] h-[1px] my-4"></div>
+                                                    <div class="flex flex-col">
+                                                        <div class="grid grid-cols-16 gap-4 p-4">
+                                                            <div class="col-span-4 flex flex-col">
+                                                                <span class="text-black font-semibold">
+                                                                    Nome
                                                                 </span>
-                                                                <span
-                                                                    class="absolute left-0 bottom-full mb-1 hidden w-max max-w-xs rounded bg-gray-900 px-2 py-1 text-white text-xs group-hover:block">
-                                                                    contrato_manuel_rafael_barros_5484728.pdf
+                                                            </div>
+                                                            <div class="col-span-4 flex flex-col">
+                                                                <span class="text-black font-semibold">
+                                                                    Arquivo
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-span-2 flex flex-col">
+                                                                <span class="text-black font-semibold">
+                                                                    Tamanho
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-span-2 flex flex-col">
+                                                                <span class="text-black font-semibold">
+                                                                    Tipo
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-span-4 flex flex-col">
+                                                                <span class="text-black font-semibold">
+                                                                    Ação
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="col-span-2 flex flex-col">
-                                                            <span class="text-black">
-                                                                154 kbps
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-span-2 flex flex-col">
-                                                            <span class="text-black">
-                                                                PDF
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-span-4 flex gap-4">
-                                                            <button type="button"
-                                                                class="flex items-center bg-blue-600 gap-2 px-4 py-2 text-white rounded h-10 hover:bg-blue-700 hover:cursor-pointer">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                    height="20" viewBox="0 0 20 20" fill="none">
-                                                                    <path
-                                                                        d="M15.8335 7.5H12.5002V2.5H7.50016V7.5H4.16683L10.0002 14.1667L15.8335 7.5ZM3.3335 15.8333H16.6668V17.5H3.3335V15.8333Z"
-                                                                        fill="white" />
-                                                                </svg>
-                                                                <span>Download</span>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                    height="20" viewBox="0 0 20 20" fill="none">
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M12.6143 2.89143C12.4971 2.77422 12.3381 2.70837 12.1723 2.70837C12.0066 2.70837 11.8476 2.77422 11.7304 2.89143L4.07006 10.5518C3.99154 10.6303 3.93536 10.7283 3.90729 10.8357L3.07396 14.0261C3.01788 14.2408 3.07983 14.4691 3.23673 14.626C3.39363 14.7829 3.62194 14.8448 3.83662 14.7888L7.02698 13.9554C7.13442 13.9274 7.23245 13.8712 7.31097 13.7927L14.9713 6.13234C15.2154 5.88826 15.2154 5.49253 14.9713 5.24846L12.6143 2.89143ZM5.07386 11.3157L12.1723 4.21726L13.6455 5.6904L6.547 12.7889L4.55303 13.3097L5.07386 11.3157Z"
-                                                                        fill="#2563EB" />
-                                                                    <path
-                                                                        d="M3.3335 16.0417C2.98832 16.0417 2.7085 16.3215 2.7085 16.6667C2.7085 17.0119 2.98832 17.2917 3.3335 17.2917H15.8335C16.1787 17.2917 16.4585 17.0119 16.4585 16.6667C16.4585 16.3215 16.1787 16.0417 15.8335 16.0417H3.3335Z"
-                                                                        fill="#2563EB" />
-                                                                </svg>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                    height="20" viewBox="0 0 20 20" fill="none">
-                                                                    <path
-                                                                        d="M15.2187 2.74976H12.875V2.56226C12.875 1.43726 11.9687 0.531006 10.8437 0.531006H9.12499C7.99999 0.531006 7.09374 1.43726 7.09374 2.56226V2.74976H4.74999C3.81249 2.74976 3.03125 3.49975 3.03125 4.4685V5.24975C3.03125 5.93725 3.43749 6.49975 3.99999 6.781V14.9372C3.99999 17.4373 6.03124 19.4373 8.49999 19.4373H11.4062C13.9062 19.4373 15.9062 17.406 15.9062 14.9372V6.781C16.4687 6.49975 16.875 5.93725 16.875 5.24975V4.4685C16.9375 3.531 16.1562 2.74976 15.2187 2.74976ZM8.53124 2.56226C8.53124 2.21851 8.81249 1.93726 9.15624 1.93726H10.875C11.2187 1.93726 11.5 2.21851 11.5 2.56226V2.74976H8.56249V2.56226H8.53124ZM4.46874 4.4685C4.46874 4.31225 4.59374 4.156 4.78124 4.156H15.2187C15.375 4.156 15.5312 4.281 15.5312 4.4685V5.24975C15.5312 5.406 15.4062 5.56225 15.2187 5.56225H4.78124C4.62499 5.56225 4.46874 5.43725 4.46874 5.24975V4.4685ZM11.4687 18.0623H8.56249C6.84374 18.0623 5.46874 16.656 5.46874 14.9685V6.9685H14.5937V14.9685C14.5625 16.656 13.1562 18.0623 11.4687 18.0623Z"
-                                                                        fill="#F50139" />
-                                                                    <path
-                                                                        d="M9.99951 9.81201C9.62451 9.81201 9.28076 10.1245 9.28076 10.5308V14.4995C9.28076 14.8745 9.59326 15.2183 9.99951 15.2183C10.3745 15.2183 10.7183 14.9058 10.7183 14.4995V10.5308C10.7183 10.1245 10.3745 9.81201 9.99951 9.81201Z"
-                                                                        fill="#F50139" />
-                                                                    <path
-                                                                        d="M12.5308 10.4059C12.1558 10.4059 11.812 10.7184 11.812 11.1246V13.9059C11.812 14.2809 12.1245 14.6246 12.5308 14.6246C12.937 14.6246 13.2495 14.3121 13.2495 13.9059V11.1246C13.2495 10.7184 12.937 10.4059 12.5308 10.4059Z"
-                                                                        fill="#F50139" />
-                                                                    <path
-                                                                        d="M7.46875 10.4059C7.09375 10.4059 6.75 10.7184 6.75 11.1246V13.9059C6.75 14.2809 7.0625 14.6246 7.46875 14.6246C7.875 14.6246 8.1875 14.3121 8.1875 13.9059V11.1246C8.15625 10.7184 7.84375 10.4059 7.46875 10.4059Z"
-                                                                        fill="#F50139" />
-                                                                </svg>
-                                                            </button>
+                                                        <div
+                                                            class="grid grid-cols-16 gap-4 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white p-4 items-center">
+                                                            <div class="col-span-4 flex flex-col">
+                                                                <span
+                                                                    class="text-black whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40">
+                                                                    Contrato de Estágio
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-span-4 flex flex-col">
+                                                                <div class="relative group">
+                                                                    <span
+                                                                        class="text-[#2563EB] underline whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40 block cursor-pointer">
+                                                                        contrato_manuel_rafael_barros_5484728.pdf
+                                                                    </span>
+                                                                    <span
+                                                                        class="absolute left-0 bottom-full mb-1 hidden w-max max-w-xs rounded bg-gray-900 px-2 py-1 text-white text-xs group-hover:block">
+                                                                        contrato_manuel_rafael_barros_5484728.pdf
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-span-2 flex flex-col">
+                                                                <span class="text-black">
+                                                                    154 kbps
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-span-2 flex flex-col">
+                                                                <span class="text-black">
+                                                                    PDF
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-span-4 flex gap-4">
+                                                                <button type="button"
+                                                                    class="flex items-center bg-blue-600 gap-2 px-4 py-2 text-white rounded h-10 hover:bg-blue-700 hover:cursor-pointer">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                        height="20" viewBox="0 0 20 20" fill="none">
+                                                                        <path
+                                                                            d="M15.8335 7.5H12.5002V2.5H7.50016V7.5H4.16683L10.0002 14.1667L15.8335 7.5ZM3.3335 15.8333H16.6668V17.5H3.3335V15.8333Z"
+                                                                            fill="white" />
+                                                                    </svg>
+                                                                    <span>Download</span>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                        height="20" viewBox="0 0 20 20" fill="none">
+                                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                            d="M12.6143 2.89143C12.4971 2.77422 12.3381 2.70837 12.1723 2.70837C12.0066 2.70837 11.8476 2.77422 11.7304 2.89143L4.07006 10.5518C3.99154 10.6303 3.93536 10.7283 3.90729 10.8357L3.07396 14.0261C3.01788 14.2408 3.07983 14.4691 3.23673 14.626C3.39363 14.7829 3.62194 14.8448 3.83662 14.7888L7.02698 13.9554C7.13442 13.9274 7.23245 13.8712 7.31097 13.7927L14.9713 6.13234C15.2154 5.88826 15.2154 5.49253 14.9713 5.24846L12.6143 2.89143ZM5.07386 11.3157L12.1723 4.21726L13.6455 5.6904L6.547 12.7889L4.55303 13.3097L5.07386 11.3157Z"
+                                                                            fill="#2563EB" />
+                                                                        <path
+                                                                            d="M3.3335 16.0417C2.98832 16.0417 2.7085 16.3215 2.7085 16.6667C2.7085 17.0119 2.98832 17.2917 3.3335 17.2917H15.8335C16.1787 17.2917 16.4585 17.0119 16.4585 16.6667C16.4585 16.3215 16.1787 16.0417 15.8335 16.0417H3.3335Z"
+                                                                            fill="#2563EB" />
+                                                                    </svg>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                        height="20" viewBox="0 0 20 20" fill="none">
+                                                                        <path
+                                                                            d="M15.2187 2.74976H12.875V2.56226C12.875 1.43726 11.9687 0.531006 10.8437 0.531006H9.12499C7.99999 0.531006 7.09374 1.43726 7.09374 2.56226V2.74976H4.74999C3.81249 2.74976 3.03125 3.49975 3.03125 4.4685V5.24975C3.03125 5.93725 3.43749 6.49975 3.99999 6.781V14.9372C3.99999 17.4373 6.03124 19.4373 8.49999 19.4373H11.4062C13.9062 19.4373 15.9062 17.406 15.9062 14.9372V6.781C16.4687 6.49975 16.875 5.93725 16.875 5.24975V4.4685C16.9375 3.531 16.1562 2.74976 15.2187 2.74976ZM8.53124 2.56226C8.53124 2.21851 8.81249 1.93726 9.15624 1.93726H10.875C11.2187 1.93726 11.5 2.21851 11.5 2.56226V2.74976H8.56249V2.56226H8.53124ZM4.46874 4.4685C4.46874 4.31225 4.59374 4.156 4.78124 4.156H15.2187C15.375 4.156 15.5312 4.281 15.5312 4.4685V5.24975C15.5312 5.406 15.4062 5.56225 15.2187 5.56225H4.78124C4.62499 5.56225 4.46874 5.43725 4.46874 5.24975V4.4685ZM11.4687 18.0623H8.56249C6.84374 18.0623 5.46874 16.656 5.46874 14.9685V6.9685H14.5937V14.9685C14.5625 16.656 13.1562 18.0623 11.4687 18.0623Z"
+                                                                            fill="#F50139" />
+                                                                        <path
+                                                                            d="M9.99951 9.81201C9.62451 9.81201 9.28076 10.1245 9.28076 10.5308V14.4995C9.28076 14.8745 9.59326 15.2183 9.99951 15.2183C10.3745 15.2183 10.7183 14.9058 10.7183 14.4995V10.5308C10.7183 10.1245 10.3745 9.81201 9.99951 9.81201Z"
+                                                                            fill="#F50139" />
+                                                                        <path
+                                                                            d="M12.5308 10.4059C12.1558 10.4059 11.812 10.7184 11.812 11.1246V13.9059C11.812 14.2809 12.1245 14.6246 12.5308 14.6246C12.937 14.6246 13.2495 14.3121 13.2495 13.9059V11.1246C13.2495 10.7184 12.937 10.4059 12.5308 10.4059Z"
+                                                                            fill="#F50139" />
+                                                                        <path
+                                                                            d="M7.46875 10.4059C7.09375 10.4059 6.75 10.7184 6.75 11.1246V13.9059C6.75 14.2809 7.0625 14.6246 7.46875 14.6246C7.875 14.6246 8.1875 14.3121 8.1875 13.9059V11.1246C8.15625 10.7184 7.84375 10.4059 7.46875 10.4059Z"
+                                                                            fill="#F50139" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1104,124 +1288,6 @@
                                                         fill="white" />
                                                 </svg>
                                             </button>
-                                        </div>
-                                    </div>
-                                    <div id="uploadDocumentModal"
-                                        class="fixed inset-0 flex items-center justify-center bg-black/50 opacity-0 scale-95 pointer-events-none">
-                                        <div id="uploadDocumentModalContent"
-                                            class="bg-white rounded-lg shadow-lg opacity-0 scale-95 transition-all duration-300 w-[800px] h-[480px]"
-                                            ng-click="$event.stopPropagation()">
-                                            <div class="px-8 py-4 flex items-center justify-between">
-                                                <h2 class="text-xl font-semibold">Novo Arquivo</h2>
-                                                <button type="button" ng-click="closeModal('uploadDocumentModal')"
-                                                    class="group transition-transform duration-200 hover:cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                        viewBox="0 0 20 20" fill="none"
-                                                        class="group-hover:rotate-180 transform transition-transform duration-200">
-                                                        <path d="M2 2L18 18" stroke="#0F7BC2" stroke-width="3"
-                                                            stroke-linecap="round" />
-                                                        <path d="M18 2L2 18" stroke="#0F7BC2" stroke-width="3"
-                                                            stroke-linecap="round" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
-                                            <div class="flex flex-col p-6 gap-4">
-                                                <div
-                                                    class="flex flex-col gap-0 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white w-full">
-                                                    <div class="flex items-center justify-between p-4">
-                                                        <h2 class="font-semibold text-[#2563EB]">Informações do
-                                                            Documento</h2>
-                                                    </div>
-                                                    <div class="px-4 h-[1px]">
-                                                        <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
-                                                    </div>
-                                                    <div class="max-h-[800px] p-4">
-                                                        <div class="grid grid-cols-12 gap-x-4 gap-y-8 w-full">
-                                                            <div class="col-span-8 flex flex-col">
-                                                                <label for="documentDescription"
-                                                                    class="text-black font-semibold">
-                                                                    Descrição Documento
-                                                                    <span class="text-red-500">*</span>
-                                                                </label>
-                                                                <input type="text" id="documentDescription"
-                                                                    name="documentDescription"
-                                                                    ng-model="user.documentDescription"
-                                                                    placeholder="Contrato de Estágio"
-                                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            </div>
-                                                            <div class="col-span-4 flex flex-col">
-                                                                <label for="documentType"
-                                                                    class="text-black font-semibold">
-                                                                    Tipo Documento
-                                                                    <span class="text-red-500">*</span>
-                                                                </label>
-                                                                <select name="documentType" id="documentType"
-                                                                    ng-model="user.documentType"
-                                                                    class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                                    <option value="" disabled selected>Selecione
-                                                                    </option>
-                                                                    <option value="contrato">Contrato</option>
-                                                                    <option value="termo">Termo</option>
-                                                                    <option value="declaracao">Declaração</option>
-                                                                    <option value="outro">Outro</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="flex flex-col gap-0 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white w-full">
-                                                    <div class="flex items-center justify-between p-4">
-                                                        <h2 class="font-semibold text-[#2563EB]">Documento</h2>
-                                                    </div>
-                                                    <div class="px-4 h-[1px]">
-                                                        <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
-                                                    </div>
-                                                    <div class="max-h-[800px] p-4">
-                                                        <div class="flex gap-x-4 gap-y-8 w-full text-nowrap">
-                                                            <input type="file" id="documentFile" name="documentFile"
-                                                                class="hidden" ng-model="documentFile" />
-                                                            <label for="documentFile"
-                                                                class="flex items-center justify-center gap-2 bg-[#2563EB] text-white rounded-md p-4 cursor-pointer hover:bg-blue-700 h-10">
-                                                                <svg width="16" height="17" viewBox="0 0 16 17"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.25 13H6.75C6.3125 13 6 12.6875 6 12.25V7H3.25C2.6875 7 2.40625 6.34375 2.8125 5.9375L7.5625 1.1875C7.78125 0.96875 8.1875 0.96875 8.40625 1.1875L13.1562 5.9375C13.5625 6.34375 13.2812 7 12.7188 7H10V12.25C10 12.6875 9.65625 13 9.25 13ZM16 12.75V16.25C16 16.6875 15.6562 17 15.25 17H0.75C0.3125 17 0 16.6875 0 16.25V12.75C0 12.3438 0.3125 12 0.75 12H5V12.25C5 13.2188 5.78125 14 6.75 14H9.25C10.1875 14 11 13.2188 11 12.25V12H15.25C15.6562 12 16 12.3438 16 12.75ZM12.125 15.5C12.125 15.1562 11.8438 14.875 11.5 14.875C11.1562 14.875 10.875 15.1562 10.875 15.5C10.875 15.8438 11.1562 16.125 11.5 16.125C11.8438 16.125 12.125 15.8438 12.125 15.5ZM14.125 15.5C14.125 15.1562 13.8438 14.875 13.5 14.875C13.1562 14.875 12.875 15.1562 12.875 15.5C12.875 15.8438 13.1562 16.125 13.5 16.125C13.8438 16.125 14.125 15.8438 14.125 15.5Z"
-                                                                        fill="white" />
-                                                                </svg>
-                                                                <span>Escolher Arquivo</span>
-                                                            </label>
-                                                            <div class="flex relative group">
-                                                                <div
-                                                                    class="flex items-center gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10 relative">
-                                                                    <span
-                                                                        class="text-[#2563EB] underline whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40 block cursor-pointer">
-                                                                        contrato_manuel_rafael_barros_5484728.pdf
-                                                                    </span>
-                                                                    <span
-                                                                        class="absolute left-0 bottom-full mb-1 hidden w-max max-w-xs rounded bg-gray-900 px-2 py-1 text-white text-xs group-hover:block">
-                                                                        contrato_manuel_rafael_barros_5484728.pdf
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="self-stretch bg-[#D9D9D9] h-[1px]"></div>
-                                            <div class="flex justify-end gap-4 p-4">
-                                                <button type="button"
-                                                    class="px-4 py-2 bg-white rounded shadow-[0px_0px_3px_1px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-gray-100"
-                                                    ng-click="closeModal('uploadDocumentModal')">
-                                                    Cancelar
-                                                </button>
-                                                <button type="button"
-                                                    class="text-white px-4 py-2 bg-[#2563EB] rounded shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-blue-700"
-                                                    ng-click="closeModal('uploadDocumentModal')">
-                                                    Concluir
-                                                </button>
-                                            </div>
                                         </div>
                                     </div>
                                 </form>
