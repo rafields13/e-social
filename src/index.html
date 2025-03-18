@@ -244,7 +244,8 @@
                                                             placeholder="Digite o nome completo" autocomplete="off"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ng-model="user.name" ng-required="mandatory"
-                                                            ng-minlength="2" ng-maxlength="70">
+                                                            ng-minlength="2" ng-maxlength="70"
+                                                            ng-keypress="lettersAndSpacesPattern($event)">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col relative">
                                                         <label for="cpf" class="text-black font-semibold">
@@ -365,7 +366,8 @@
                                                             placeholder="Digite o nome social"
                                                             ng-model="user.socialName"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ng-minlength="2" ng-maxlength="70">
+                                                            ng-minlength="2" ng-maxlength="70"
+                                                            ng-keypress="lettersAndSpacesPattern($event)">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="birthDate" class="text-black font-semibold">
@@ -375,7 +377,8 @@
                                                         <input type="date" id="birthDate" name="birthDate"
                                                             ng-required="mandatory" placeholder="Data Nascimento"
                                                             ng-model="user.birthDate"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            age-validator min-age="16">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="nationality" class="text-black font-semibold">
@@ -417,7 +420,8 @@
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
                                                             ng-readonly="hideBirthStateCity"
                                                             ng-disabled="hideBirthStateCity"
-                                                            placeholder="Informe sua nacionalidade, estado e cidade de nascimento">
+                                                            placeholder="Informe sua nacionalidade, estado e cidade de nascimento"
+                                                            ng-keypress="lettersAndSpacesPattern($event)">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="mainPhone" class="text-black font-semibold">
@@ -536,7 +540,7 @@
                                                         </label>
                                                         <input type="text" id="zipCode" name="zipCode"
                                                             ng-required="mandatory" ng-model="user.zipCode"
-                                                            placeholder="Digite o CEP"
+                                                            placeholder="xxxxx-xx"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ui-br-cep-mask ng-keyup="getCEP(user.zipCode)"
                                                             cep-validator>
@@ -594,7 +598,8 @@
                                                         <input type="text" id="houseNumber" name="houseNumber"
                                                             ng-required="mandatory" ng-model="user.houseNumber"
                                                             placeholder="Digite o número"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ng-keypress="lettersAndSpacesPattern($event, true)">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="neighborhood"
@@ -689,9 +694,10 @@
                                                         </label>
                                                         <input type="text" id="grantorCnpj" name="grantorCnpj"
                                                             ng-required="mandatory" ng-model="user.grantorCnpj"
-                                                            placeholder="24.541.522/0001-69"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
-                                                            ui-br-cnpj-mask cnpj-validator>
+                                                            placeholder="xx.xxx.xxx/xxxx-xx"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
+                                                            ng-readonly="true" ng-disabled="true" ui-br-cnpj-mask
+                                                            cnpj-validator>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             viewBox="0 0 16 16" fill="none"
                                                             class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
@@ -725,8 +731,10 @@
                                                             ng-required="mandatory"
                                                             name="educationalInstitutionRegistration"
                                                             ng-model="user.educationalInstitutionRegistration"
-                                                            placeholder="22309617"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            placeholder="Digite a matrícula da instituição de ensino"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ng-minlength="1" ng-maxlength="30"
+                                                            ng-keypress="lettersAndSpacesPattern($event, false)">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="internshipStartDate"
@@ -745,11 +753,15 @@
                                                             Cadastro Inicial
                                                             <span class="text-red-500">*</span>
                                                         </label>
-                                                        <input type="text" id="initialRegistration"
-                                                            name="initialRegistration"
-                                                            ng-model="user.initialRegistration" ng-required="mandatory"
-                                                            placeholder="NÃO"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                        <select name="initialRegistration" id="initialRegistration"
+                                                            ng-required="mandatory" ng-model="user.initialRegistration"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
+                                                            ng-disabled="true" ng-readonly="true">
+                                                            <option value="" disabled selected>Informe a data de início
+                                                                do estágio</option>
+                                                            <option value="S">SIM</option>
+                                                            <option value="N">NÃO</option>
+                                                        </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="internshipNature" class="text-black font-semibold">
@@ -759,9 +771,10 @@
                                                         <select name="internshipNature" id="internshipNature"
                                                             ng-required="mandatory" ng-model="user.internshipNature"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione</option>
-                                                            <option value="obrigatorio">Obrigatório</option>
-                                                            <option value="nao-obrigatorio">Não Obrigatório</option>
+                                                            <option value="" disabled>Selecione a natureza do estágio
+                                                            </option>
+                                                            <option value="N">Não Obrigatório</option>
+                                                            <option value="O">Obrigatório</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -772,12 +785,15 @@
                                                         <select name="internshipLevel" id="internshipLevel"
                                                             ng-required="mandatory" ng-model="user.internshipLevel"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione</option>
-                                                            <option value="fundamental">Ensino Fundamental</option>
-                                                            <option value="medio">Ensino Médio</option>
-                                                            <option value="tecnico">Ensino Técnico</option>
-                                                            <option value="graduacao">Graduação</option>
-                                                            <option value="pos-graduacao">Pós-Graduação</option>
+                                                            <option value="" disabled selected>Selecione o nível do
+                                                                estágio</option>
+                                                            <option value="2">Curso Técnico</option>
+                                                            <option value="2">Nível Médio</option>
+                                                            <option value="4">Nível Superior</option>
+                                                            <option value="2">Acadêmico Não Remunerado (Ensino
+                                                                Médio/Técnico)</option>
+                                                            <option value="4">Acadêmico Não Remunerado (Ensino Superior)
+                                                            </option>
                                                         </select>
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
@@ -788,7 +804,8 @@
                                                         <select name="internshipArea" id="internshipArea"
                                                             ng-required="mandatory" ng-model="user.internshipArea"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
-                                                            <option value="" disabled selected>Selecione</option>
+                                                            <option value="" disabled selected>Selecione a área de
+                                                                atuação do estágio</option>
                                                             <option value="administracao">Administração</option>
                                                             <option value="agronomia">Agronomia</option>
                                                             <option value="arquitetura">Arquitetura</option>
@@ -809,8 +826,10 @@
                                                         <input type="text" id="insurancePolicyNumber"
                                                             ng-required="mandatory" name="insurancePolicyNumber"
                                                             ng-model="user.insurancePolicyNumber"
-                                                            placeholder="0378/2020 09.0982.001.52213"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            placeholder="Digite o número da apólice do seguro"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ng-minlength="1" ng-maxlength="30"
+                                                            ng-keypress="lettersAndSpacesPattern($event, false)">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col text-nowrap">
                                                         <label for="internshipContractNumber"
@@ -821,8 +840,10 @@
                                                         <input type="text" id="internshipContractNumber"
                                                             name="internshipContractNumber" ng-required="mandatory"
                                                             ng-model="user.internshipContractNumber"
-                                                            placeholder="TCE-2025-004157"
-                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
+                                                            placeholder="Digite o número do contrato do estágio"
+                                                            class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
+                                                            ng-minlength="1" ng-maxlength="40"
+                                                            ng-keypress="lettersAndSpacesPattern($event, true)">
                                                     </div>
                                                     <div class="col-span-1 flex flex-col">
                                                         <label for="internshipEndDateForecast"
@@ -844,7 +865,7 @@
                                                         <input type="text" id="educationalInstitutionCnpj"
                                                             name="educationalInstitutionCnpj" ng-required="mandatory"
                                                             ng-model="user.educationalInstitutionCnpj"
-                                                            placeholder="19.994.303/0001-03"
+                                                            placeholder="xx.xxx.xxx/xxxx-xx"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ui-br-cnpj-mask cnpj-validator>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -879,7 +900,7 @@
                                                         <input type="text" id="integratorAgentCnpj"
                                                             name="integratorAgentCnpj" ng-required="mandatory"
                                                             ng-model="user.integratorAgentCnpj"
-                                                            placeholder="26.300.225/0001-57"
+                                                            placeholder="xx.xxx.xxx/xxxx-xx"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             ui-br-cnpj-mask cnpj-validator>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -912,7 +933,7 @@
                                                         </label>
                                                         <input type="text" id="supervisorCpf" name="supervisorCpf"
                                                             ng-required="mandatory" ng-model="user.supervisorCpf"
-                                                            placeholder="896.384.720-90"
+                                                            placeholder="xxx.xxx.xxx-xx"
                                                             class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
                                                             cpf-validator ui-br-cpf-mask>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

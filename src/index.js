@@ -198,6 +198,10 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         grantorCnpj: '',
         state: {},
         city: {},
+        grantorCnpj: "00394684000153",
+        initialRegistration: '',
+        internshipStartDate: '',
+        internshipNature: 'N',
     };
 
     $scope.countries = [];
@@ -244,6 +248,33 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             $scope.user.naturalness = `${newCity.nome} - ${$scope.user.birthState.sigla}`;
         }
     }, true);
+
+    $scope.$watch("user.internshipStartDate", function (newDate) {
+        if (_.isDate(newDate)) {
+            const initialRegistrationDate = new Date("2024-10-01");
+
+            if (new Date(newDate) < initialRegistrationDate) {
+                $scope.user.initialRegistration = 'S';
+            } else {
+                $scope.user.initialRegistration = 'N';
+            }
+        }
+    }, true);
+
+    $scope.lettersAndSpacesPattern = function (event, allowedNumbers = false) {
+        let pattern;
+        let char = String.fromCharCode(event.which);
+
+        if (allowedNumbers) {
+            pattern = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s-/]+$/;
+        } else {
+            pattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$/;
+        }
+
+        if (!pattern.test(char)) {
+            event.preventDefault();
+        }
+    };
 }).directive('cpfValidator', function () {
     return {
         require: 'ngModel',
@@ -358,6 +389,40 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             });
         }
     };
+}).directive('ageValidator', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, ctrl) {
+            let minAge = parseInt(attrs.minAge) || 16;
+
+            ctrl.$parsers.push(function (value) {
+                if (!value) {
+                    ctrl.$setValidity('age', false);
+                    element[0].setCustomValidity("A data de nascimento é obrigatória.");
+                    return value;
+                }
+
+                let birthDate = new Date(value);
+                let today = new Date();
+
+                let age = today.getFullYear() - birthDate.getFullYear();
+                let monthDiff = today.getMonth() - birthDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                if (age < minAge) {
+                    ctrl.$setValidity('age', false);
+                    element[0].setCustomValidity(`A idade mínima para estágio é ${minAge} anos.`);
+                } else {
+                    ctrl.$setValidity('age', true);
+                    element[0].setCustomValidity("");
+                }
+
+                return value;
+            });
+        }
+    };
 }).directive('searchableDropdown', function () {
     return {
         restrict: 'E',
@@ -379,9 +444,10 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                     ng-required="formRequired"
                     ng-focus="showDropdown = true"
                     ng-blur="hideDropdown()"
-                    ng-keydown="onKeydown($event)" />
+                    ng-keydown="onKeydown($event)"
+                    ng-keypress="lettersAndSpacesPattern($event)" />
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" 
-                    class="absolute right-2 top-1/2 transform -translate-y-1/2 transition duration-200">
+                    class="absolute right-0 top-1/2 transform -translate-y-1/2 transition duration-200">
                     <path d="M5.83331 8.33333L9.99998 12.5L14.1666 8.33333" 
                         stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
@@ -424,6 +490,15 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                     scope.searchText = '';
                 }
             }, true);
+
+            scope.lettersAndSpacesPattern = function (event) {
+                let char = String.fromCharCode(event.which);
+                let pattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$/;
+
+                if (!pattern.test(char)) {
+                    event.preventDefault();
+                }
+            };
         }
     };
 }).service('CountriesService', function () {
