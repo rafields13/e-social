@@ -5,6 +5,7 @@
     "angular": "^1.8.2",
     "angular-input-masks": "^4.4.1",
     "lodash": "^4.17.21",
+    "ng-file-upload": "^12.2.13",
     "tailwindcss": "^4.0.3"
   }
 }

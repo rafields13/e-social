@@ -1,4 +1,4 @@
-var app = angular.module("myApp", ['ui.utils.masks']);
+var app = angular.module("myApp", ["ui.utils.masks", "ngFileUpload"]);
 
 app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService, StreetTypeService) {
     // page initialization
@@ -25,6 +25,12 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                 internshipStartDate: '',
                 internshipNature: 'N',
                 requestId: "98041",
+                document: {
+                    documentFile: {},
+                    documentType: '',
+                    documentDescription: ''
+                },
+                documents: []
             }
         ],
     };
@@ -248,18 +254,52 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         }
     }, true);
 
-    // todo fix this watch to work with multiple contracts
-    $scope.$watch("user.internshipStartDate", function (newDate) {
-        if (_.isDate(newDate)) {
+    $scope.updateInitialRegistration = function (contract) {
+        if (contract && contract.internshipStartDate) {
             const initialRegistrationDate = new Date("2024-10-01");
+            const internshipDate = new Date(contract.internshipStartDate);
 
-            if (new Date(newDate) < initialRegistrationDate) {
-                $scope.user.initialRegistration = 'S';
-            } else {
-                $scope.user.initialRegistration = 'N';
-            }
+            contract.initialRegistration = internshipDate < initialRegistrationDate
+                ? 'S'
+                : 'N';
         }
-    }, true);
+    };
+
+    $scope.handleFileUpload = function (index, event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            $scope.user.contracts[index].document.documentFile = file;
+            $scope.$apply();
+            console.log($scope.user.contracts[index]);
+        }
+    };
+
+    $scope.saveSelectedDocument = function (doc, index) {
+        if (_.isObject(doc) && !_.isEmpty(doc)) {
+            if (!doc.documentFile || !doc.documentFile.name) {
+                alert("Selecione um arquivo para upload");
+                return;
+
+            }
+
+            if (!doc.documentType) {
+                alert("Selecione um tipo de documento");
+                return;
+            }
+
+            if (!doc.documentDescription) {
+                alert("Informe uma descrição para o documento");
+                return;
+            }
+
+            $scope.user.contracts[index].documents.push(doc);
+            $scope.user.contracts[index].document = {};
+            $scope.closeModal("uploadDocumentModal");
+            alert("Documento salvo com sucesso!");
+            return;
+        }
+    }
 
     $scope.lettersAndSpacesPattern = function (event, allowedNumbers = false) {
         let pattern;

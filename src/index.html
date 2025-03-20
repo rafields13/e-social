@@ -10,6 +10,7 @@
 
     <script src="../node_modules/angular/angular.min.js"></script>
     <script src="../node_modules/angular-input-masks/releases/angular-input-masks-standalone.min.js"></script>
+    <script src="../node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
     <script src="../node_modules/lodash/lodash.min.js"></script>
     <script src="index.js"></script>
 </head>
@@ -766,6 +767,7 @@
                                                                 ng-required="mandatory"
                                                                 name="internshipStartDate{{ $index }}"
                                                                 ng-model="contract.internshipStartDate"
+                                                                ng-change="updateInitialRegistration(contract)"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
@@ -1075,7 +1077,7 @@
                                                                                 <input type="text"
                                                                                     id="documentDescription{{ $index }}"
                                                                                     name="documentDescription{{ $index }}"
-                                                                                    ng-model="contract.documentDescription"
+                                                                                    ng-model="contract.document.documentDescription"
                                                                                     placeholder="Contrato de Estágio"
                                                                                     class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                                             </div>
@@ -1087,7 +1089,7 @@
                                                                                 </label>
                                                                                 <select name="documentType{{ $index }}"
                                                                                     id="documentType{{ $index }}"
-                                                                                    ng-model="contract.documentType"
+                                                                                    ng-model="contract.document.documentType"
                                                                                     class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                                                     <option value="" disabled selected>
                                                                                         Selecione o tipo de documento
@@ -1122,7 +1124,8 @@
                                                                                 id="documentFile{{ $index }}"
                                                                                 name="documentFile{{ $index }}"
                                                                                 class="hidden"
-                                                                                ng-model="contract.documentFile" />
+                                                                                ngf-select="handleFileUpload($index, $event)"
+                                                                                accept=".pdf,.jpg,.png" />
                                                                             <label for="documentFile{{ $index }}"
                                                                                 class="flex items-center justify-center gap-2 bg-[#2563EB] text-white rounded-md p-4 cursor-pointer hover:bg-blue-700 h-10">
                                                                                 <svg width="16" height="17"
@@ -1134,16 +1137,17 @@
                                                                                 </svg>
                                                                                 <span>Escolher Arquivo</span>
                                                                             </label>
-                                                                            <div class="flex relative group">
+                                                                            <div class="flex relative group"
+                                                                                ng-show="contract.document.documentFile && contract.document.documentFile.name">
                                                                                 <div
                                                                                     class="flex items-center gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10 relative">
                                                                                     <span
-                                                                                        class="text-[#2563EB] underline whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40 block cursor-pointer">
-                                                                                        contrato_manuel_rafael_barros_5484728.pdf
+                                                                                        class="text-[#2563EB] underline whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40 block cursor-pointer"
+                                                                                        ng-bind="contract.document.documentFile.name">
                                                                                     </span>
                                                                                     <span
-                                                                                        class="absolute left-0 bottom-full mb-1 hidden w-max max-w-xs rounded bg-gray-900 px-2 py-1 text-white text-xs group-hover:block">
-                                                                                        contrato_manuel_rafael_barros_5484728.pdf
+                                                                                        class="absolute left-0 bottom-full mb-1 hidden w-max max-w-xs rounded bg-gray-900 px-2 py-1 text-white text-xs group-hover:block"
+                                                                                        ng-bind="contract.document.documentFile.name">
                                                                                     </span>
                                                                                 </div>
                                                                             </div>
@@ -1160,7 +1164,7 @@
                                                                 </button>
                                                                 <button type="button"
                                                                     class="text-white px-4 py-2 bg-[#2563EB] rounded shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-blue-700"
-                                                                    ng-click="closeModal('uploadDocumentModal')">
+                                                                    ng-click="saveSelectedDocument(contract.document, $index)">
                                                                     Concluir
                                                                 </button>
                                                             </div>
@@ -1195,77 +1199,80 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div
-                                                            class="grid grid-cols-16 gap-4 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white p-4 items-center">
-                                                            <div class="col-span-4 flex flex-col">
-                                                                <span
-                                                                    class="text-black whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40">
-                                                                    Contrato de Estágio
-                                                                </span>
-                                                            </div>
-                                                            <div class="col-span-4 flex flex-col">
-                                                                <div class="relative group">
-                                                                    <span
-                                                                        class="text-[#2563EB] underline whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40 block cursor-pointer">
-                                                                        contrato_manuel_rafael_barros_5484728.pdf
-                                                                    </span>
-                                                                    <span
-                                                                        class="absolute left-0 bottom-full mb-1 hidden w-max max-w-xs rounded bg-gray-900 px-2 py-1 text-white text-xs group-hover:block">
-                                                                        contrato_manuel_rafael_barros_5484728.pdf
+                                                        <div class="flex flex-col gap-y-4">
+                                                            <div ng-repeat="doc in contract.documents track by $index"
+                                                                class="grid grid-cols-16 gap-4 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white p-4 items-center">
+                                                                <div class="col-span-4 flex flex-col">
+                                                                    <span ng-bind="doc.documentDescription"
+                                                                        class="text-black whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40">
                                                                     </span>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-span-2 flex flex-col">
-                                                                <span class="text-black">
-                                                                    154 kbps
-                                                                </span>
-                                                            </div>
-                                                            <div class="col-span-2 flex flex-col">
-                                                                <span class="text-black">
-                                                                    PDF
-                                                                </span>
-                                                            </div>
-                                                            <div class="col-span-4 flex gap-4">
-                                                                <button type="button"
-                                                                    class="flex items-center bg-blue-600 gap-2 px-4 py-2 text-white rounded h-10 hover:bg-blue-700 hover:cursor-pointer">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                        height="20" viewBox="0 0 20 20" fill="none">
-                                                                        <path
-                                                                            d="M15.8335 7.5H12.5002V2.5H7.50016V7.5H4.16683L10.0002 14.1667L15.8335 7.5ZM3.3335 15.8333H16.6668V17.5H3.3335V15.8333Z"
-                                                                            fill="white" />
-                                                                    </svg>
-                                                                    <span>Download</span>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                        height="20" viewBox="0 0 20 20" fill="none">
-                                                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                            d="M12.6143 2.89143C12.4971 2.77422 12.3381 2.70837 12.1723 2.70837C12.0066 2.70837 11.8476 2.77422 11.7304 2.89143L4.07006 10.5518C3.99154 10.6303 3.93536 10.7283 3.90729 10.8357L3.07396 14.0261C3.01788 14.2408 3.07983 14.4691 3.23673 14.626C3.39363 14.7829 3.62194 14.8448 3.83662 14.7888L7.02698 13.9554C7.13442 13.9274 7.23245 13.8712 7.31097 13.7927L14.9713 6.13234C15.2154 5.88826 15.2154 5.49253 14.9713 5.24846L12.6143 2.89143ZM5.07386 11.3157L12.1723 4.21726L13.6455 5.6904L6.547 12.7889L4.55303 13.3097L5.07386 11.3157Z"
-                                                                            fill="#2563EB" />
-                                                                        <path
-                                                                            d="M3.3335 16.0417C2.98832 16.0417 2.7085 16.3215 2.7085 16.6667C2.7085 17.0119 2.98832 17.2917 3.3335 17.2917H15.8335C16.1787 17.2917 16.4585 17.0119 16.4585 16.6667C16.4585 16.3215 16.1787 16.0417 15.8335 16.0417H3.3335Z"
-                                                                            fill="#2563EB" />
-                                                                    </svg>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                        height="20" viewBox="0 0 20 20" fill="none">
-                                                                        <path
-                                                                            d="M15.2187 2.74976H12.875V2.56226C12.875 1.43726 11.9687 0.531006 10.8437 0.531006H9.12499C7.99999 0.531006 7.09374 1.43726 7.09374 2.56226V2.74976H4.74999C3.81249 2.74976 3.03125 3.49975 3.03125 4.4685V5.24975C3.03125 5.93725 3.43749 6.49975 3.99999 6.781V14.9372C3.99999 17.4373 6.03124 19.4373 8.49999 19.4373H11.4062C13.9062 19.4373 15.9062 17.406 15.9062 14.9372V6.781C16.4687 6.49975 16.875 5.93725 16.875 5.24975V4.4685C16.9375 3.531 16.1562 2.74976 15.2187 2.74976ZM8.53124 2.56226C8.53124 2.21851 8.81249 1.93726 9.15624 1.93726H10.875C11.2187 1.93726 11.5 2.21851 11.5 2.56226V2.74976H8.56249V2.56226H8.53124ZM4.46874 4.4685C4.46874 4.31225 4.59374 4.156 4.78124 4.156H15.2187C15.375 4.156 15.5312 4.281 15.5312 4.4685V5.24975C15.5312 5.406 15.4062 5.56225 15.2187 5.56225H4.78124C4.62499 5.56225 4.46874 5.43725 4.46874 5.24975V4.4685ZM11.4687 18.0623H8.56249C6.84374 18.0623 5.46874 16.656 5.46874 14.9685V6.9685H14.5937V14.9685C14.5625 16.656 13.1562 18.0623 11.4687 18.0623Z"
-                                                                            fill="#F50139" />
-                                                                        <path
-                                                                            d="M9.99951 9.81201C9.62451 9.81201 9.28076 10.1245 9.28076 10.5308V14.4995C9.28076 14.8745 9.59326 15.2183 9.99951 15.2183C10.3745 15.2183 10.7183 14.9058 10.7183 14.4995V10.5308C10.7183 10.1245 10.3745 9.81201 9.99951 9.81201Z"
-                                                                            fill="#F50139" />
-                                                                        <path
-                                                                            d="M12.5308 10.4059C12.1558 10.4059 11.812 10.7184 11.812 11.1246V13.9059C11.812 14.2809 12.1245 14.6246 12.5308 14.6246C12.937 14.6246 13.2495 14.3121 13.2495 13.9059V11.1246C13.2495 10.7184 12.937 10.4059 12.5308 10.4059Z"
-                                                                            fill="#F50139" />
-                                                                        <path
-                                                                            d="M7.46875 10.4059C7.09375 10.4059 6.75 10.7184 6.75 11.1246V13.9059C6.75 14.2809 7.0625 14.6246 7.46875 14.6246C7.875 14.6246 8.1875 14.3121 8.1875 13.9059V11.1246C8.15625 10.7184 7.84375 10.4059 7.46875 10.4059Z"
-                                                                            fill="#F50139" />
-                                                                    </svg>
-                                                                </button>
+                                                                <div class="col-span-4 flex flex-col">
+                                                                    <div class="relative group">
+                                                                        <span ng-bind="doc.documentFile.name"
+                                                                            class="text-[#2563EB] underline whitespace-nowrap overflow-hidden text-ellipsis max-xl:w-40 block cursor-pointer">
+                                                                        </span>
+                                                                        <span ng-bind="doc.documentFile.name"
+                                                                            class="absolute left-0 bottom-full mb-1 hidden w-max max-w-xs rounded bg-gray-900 px-2 py-1 text-white text-xs group-hover:block">
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-span-2 flex flex-col">
+                                                                    <span class="text-black"
+                                                                        ng-bind="doc.documentFile.size + ' KBS'">
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-span-2 flex flex-col">
+                                                                    <span class="text-black"
+                                                                        ng-bind="doc.documentFile.type">
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-span-4 flex gap-4">
+                                                                    <button type="button"
+                                                                        class="flex items-center bg-blue-600 gap-2 px-4 py-2 text-white rounded h-10 hover:bg-blue-700 hover:cursor-pointer">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="20" height="20" viewBox="0 0 20 20"
+                                                                            fill="none">
+                                                                            <path
+                                                                                d="M15.8335 7.5H12.5002V2.5H7.50016V7.5H4.16683L10.0002 14.1667L15.8335 7.5ZM3.3335 15.8333H16.6668V17.5H3.3335V15.8333Z"
+                                                                                fill="white" />
+                                                                        </svg>
+                                                                        <span>Download</span>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="20" height="20" viewBox="0 0 20 20"
+                                                                            fill="none">
+                                                                            <path fill-rule="evenodd"
+                                                                                clip-rule="evenodd"
+                                                                                d="M12.6143 2.89143C12.4971 2.77422 12.3381 2.70837 12.1723 2.70837C12.0066 2.70837 11.8476 2.77422 11.7304 2.89143L4.07006 10.5518C3.99154 10.6303 3.93536 10.7283 3.90729 10.8357L3.07396 14.0261C3.01788 14.2408 3.07983 14.4691 3.23673 14.626C3.39363 14.7829 3.62194 14.8448 3.83662 14.7888L7.02698 13.9554C7.13442 13.9274 7.23245 13.8712 7.31097 13.7927L14.9713 6.13234C15.2154 5.88826 15.2154 5.49253 14.9713 5.24846L12.6143 2.89143ZM5.07386 11.3157L12.1723 4.21726L13.6455 5.6904L6.547 12.7889L4.55303 13.3097L5.07386 11.3157Z"
+                                                                                fill="#2563EB" />
+                                                                            <path
+                                                                                d="M3.3335 16.0417C2.98832 16.0417 2.7085 16.3215 2.7085 16.6667C2.7085 17.0119 2.98832 17.2917 3.3335 17.2917H15.8335C16.1787 17.2917 16.4585 17.0119 16.4585 16.6667C16.4585 16.3215 16.1787 16.0417 15.8335 16.0417H3.3335Z"
+                                                                                fill="#2563EB" />
+                                                                        </svg>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="20" height="20" viewBox="0 0 20 20"
+                                                                            fill="none">
+                                                                            <path
+                                                                                d="M15.2187 2.74976H12.875V2.56226C12.875 1.43726 11.9687 0.531006 10.8437 0.531006H9.12499C7.99999 0.531006 7.09374 1.43726 7.09374 2.56226V2.74976H4.74999C3.81249 2.74976 3.03125 3.49975 3.03125 4.4685V5.24975C3.03125 5.93725 3.43749 6.49975 3.99999 6.781V14.9372C3.99999 17.4373 6.03124 19.4373 8.49999 19.4373H11.4062C13.9062 19.4373 15.9062 17.406 15.9062 14.9372V6.781C16.4687 6.49975 16.875 5.93725 16.875 5.24975V4.4685C16.9375 3.531 16.1562 2.74976 15.2187 2.74976ZM8.53124 2.56226C8.53124 2.21851 8.81249 1.93726 9.15624 1.93726H10.875C11.2187 1.93726 11.5 2.21851 11.5 2.56226V2.74976H8.56249V2.56226H8.53124ZM4.46874 4.4685C4.46874 4.31225 4.59374 4.156 4.78124 4.156H15.2187C15.375 4.156 15.5312 4.281 15.5312 4.4685V5.24975C15.5312 5.406 15.4062 5.56225 15.2187 5.56225H4.78124C4.62499 5.56225 4.46874 5.43725 4.46874 5.24975V4.4685ZM11.4687 18.0623H8.56249C6.84374 18.0623 5.46874 16.656 5.46874 14.9685V6.9685H14.5937V14.9685C14.5625 16.656 13.1562 18.0623 11.4687 18.0623Z"
+                                                                                fill="#F50139" />
+                                                                            <path
+                                                                                d="M9.99951 9.81201C9.62451 9.81201 9.28076 10.1245 9.28076 10.5308V14.4995C9.28076 14.8745 9.59326 15.2183 9.99951 15.2183C10.3745 15.2183 10.7183 14.9058 10.7183 14.4995V10.5308C10.7183 10.1245 10.3745 9.81201 9.99951 9.81201Z"
+                                                                                fill="#F50139" />
+                                                                            <path
+                                                                                d="M12.5308 10.4059C12.1558 10.4059 11.812 10.7184 11.812 11.1246V13.9059C11.812 14.2809 12.1245 14.6246 12.5308 14.6246C12.937 14.6246 13.2495 14.3121 13.2495 13.9059V11.1246C13.2495 10.7184 12.937 10.4059 12.5308 10.4059Z"
+                                                                                fill="#F50139" />
+                                                                            <path
+                                                                                d="M7.46875 10.4059C7.09375 10.4059 6.75 10.7184 6.75 11.1246V13.9059C6.75 14.2809 7.0625 14.6246 7.46875 14.6246C7.875 14.6246 8.1875 14.3121 8.1875 13.9059V11.1246C8.15625 10.7184 7.84375 10.4059 7.46875 10.4059Z"
+                                                                                fill="#F50139" />
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
