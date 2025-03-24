@@ -271,11 +271,92 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         if (file) {
             $scope.user.contracts[index].document.documentFile = file;
             $scope.$apply();
-            console.log($scope.user.contracts[index]);
         }
     };
 
-    $scope.saveSelectedDocument = function (doc, index) {
+    async function getOptions() {
+        const res = await fetch('/config');
+
+        if (!res.ok) {
+            throw new Error('Erro ao buscar configurações do ambiente');
+        }
+
+        const options = await res.json();
+        return options;
+    }
+
+    async function generateToken() {
+        const {
+            baseUrl,
+            realm,
+            grantType,
+            clientId,
+            username,
+            password
+        } = await getOptions();
+
+        const url = `https://${baseUrl}/auth/realms/${realm}/protocol/openid-connect/token`;
+
+        const formData = new URLSearchParams();
+        formData.append('grant_type', grantType);
+        formData.append('client_id', clientId);
+        formData.append('username', username);
+        formData.append('password', password);
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(`Erro ao gerar token: ${err}`);
+        }
+
+        const data = await response.json();
+        return data.access_token;
+    }
+
+    function getUuid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    async function sendDocumentToServer(doc) {
+        const token = await generateToken();
+
+        const documentDescription = getUuid();
+        const containerId = getUuid();
+        const uuid = getUuid();
+
+        const formData = new FormData();
+        formData.append("file", doc.documentFile);
+
+        const url = `https://portalservicos.economia.df.gov.br/lowcode/document/upload` +
+            `?documentDescription=${documentDescription}` +
+            `&containerId=${containerId}` +
+            `&uuid=${uuid}`;
+
+        const res = await fetch(url, {
+            method: "POST",
+            body: formData,
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const data = await res.json();
+        return data;
+    }
+
+    $scope.saveSelectedDocument = async function (doc, index) {
         if (_.isObject(doc) && !_.isEmpty(doc)) {
             if (!doc.documentFile || !doc.documentFile.name) {
                 alert("Selecione um arquivo para upload");
@@ -294,6 +375,9 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             }
 
             $scope.user.contracts[index].documents.push(doc);
+
+            await sendDocumentToServer(doc);
+
             $scope.user.contracts[index].document = {};
             $scope.closeModal("uploadDocumentModal");
             alert("Documento salvo com sucesso!");
