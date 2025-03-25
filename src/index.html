@@ -666,17 +666,17 @@
                                             </div>
                                             <div class="overflow-hidden transition-all duration-300"
                                                 ng-style="{'max-height': isAccordionOpen['contract'] ? '800px' : '0px', 'padding': isAccordionOpen['contract'] ? '16px' : '0px', 'padding-top': isAccordionOpen['contract'] ? '32px' : '0px'}">
-                                                <div ng-repeat="contract in user.contracts track by $index">
+                                                <div ng-repeat="(contractIndex, contract) in user.contracts">
                                                     <div class="grid grid-cols-4 gap-x-4 gap-y-8 w-full">
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="requestId{{ $index }}"
+                                                            <label for="requestId{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Número Solicitação
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <input type="text" id="requestId{{ $index }}"
-                                                                name="requestId{{ $index }}" ng-required="mandatory"
-                                                                ng-model="contract.requestId"
+                                                            <input type="text" id="requestId{{ contractIndex }}"
+                                                                name="requestId{{ contractIndex }}"
+                                                                ng-required="mandatory" ng-model="contract.requestId"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
                                                                 ng-readonly="true" ng-disabled="true">
                                                         </div>
@@ -688,16 +688,17 @@
                                                             <div
                                                                 class="flex gap-4 border border-[#C9C9C9] rounded-sm p-2 h-10">
                                                                 <label class="flex items-center gap-2 font-semibold">
-                                                                    <input type="radio" name="active{{ $index }}"
-                                                                        id="active{{ $index }}"
+                                                                    <input type="radio" name="active{{ contractIndex }}"
+                                                                        id="active{{ contractIndex }}"
                                                                         ng-model="contract.active"
                                                                         ng-required="mandatory" ng-value="true"
                                                                         class="w-5 h-5">
                                                                     SIM
                                                                 </label>
                                                                 <label class="flex items-center gap-2 font-semibold">
-                                                                    <input type="radio" name="inactive{{ $index }}"
-                                                                        id="inactive{{ $index }}"
+                                                                    <input type="radio"
+                                                                        name="inactive{{ contractIndex }}"
+                                                                        id="inactive{{ contractIndex }}"
                                                                         ng-model="contract.active"
                                                                         ng-required="mandatory" ng-value="false"
                                                                         class="w-5 h-5">
@@ -706,14 +707,14 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-span-1 flex flex-col relative">
-                                                            <label for="grantorCnpj{{ $index }}"
+                                                            <label for="grantorCnpj{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 CNPJ Concedente
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <input type="text" id="grantorCnpj{{ $index }}"
-                                                                name="grantorCnpj{{ $index }}" ng-required="mandatory"
-                                                                ng-model="contract.grantorCnpj"
+                                                            <input type="text" id="grantorCnpj{{ contractIndex }}"
+                                                                name="grantorCnpj{{ contractIndex }}"
+                                                                ng-required="mandatory" ng-model="contract.grantorCnpj"
                                                                 placeholder="xx.xxx.xxx/xxxx-xx"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
                                                                 ng-readonly="true" ng-disabled="true" ui-br-cnpj-mask
@@ -721,7 +722,7 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" viewBox="0 0 16 16" fill="none"
                                                                 class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                                ng-show="!(updateUserForm['grantorCnpj' + $index].$invalid && updateUserForm['grantorCnpj' + $index].$dirty) && contract.grantorCnpj.length === 14">
+                                                                ng-show="!(updateUserForm['grantorCnpj' + contractIndex].$invalid && updateUserForm['grantorCnpj' + contractIndex].$dirty) && contract.grantorCnpj.length === 14">
                                                                 <rect width="16" height="16" rx="8" fill="#00B359" />
                                                                 <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
                                                                 <path
@@ -732,7 +733,7 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" viewBox="0 0 16 16" fill="none"
                                                                 class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                                ng-show="updateUserForm['grantorCnpj' + $index].$invalid && updateUserForm['grantorCnpj' + $index].$dirty">
+                                                                ng-show="updateUserForm['grantorCnpj' + contractIndex].$invalid && updateUserForm['grantorCnpj' + contractIndex].$dirty">
                                                                 <rect width="16" height="16" rx="8" fill="#FF0000" />
                                                                 <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
                                                                 <path d="M4 4L12 12" stroke="white" stroke-width="2"
@@ -742,15 +743,16 @@
                                                             </svg>
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="educationalInstitutionRegistration{{ $index }}"
+                                                            <label
+                                                                for="educationalInstitutionRegistration{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Matrícula Instituição Ensino
                                                                 <span class="text-red-500">*</span>
                                                             </label>
                                                             <input type="text"
-                                                                id="educationalInstitutionRegistration{{ $index }}"
+                                                                id="educationalInstitutionRegistration{{ contractIndex }}"
                                                                 ng-required="mandatory"
-                                                                name="educationalInstitutionRegistration{{ $index }}"
+                                                                name="educationalInstitutionRegistration{{ contractIndex }}"
                                                                 ng-model="contract.educationalInstitutionRegistration"
                                                                 placeholder="Digite a matrícula da instituição de ensino"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
@@ -758,26 +760,27 @@
                                                                 ng-keypress="lettersAndSpacesPattern($event, false)">
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="internshipStartDate{{ $index }}"
+                                                            <label for="internshipStartDate{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Data Início Estágio
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <input type="date" id="internshipStartDate{{ $index }}"
+                                                            <input type="date"
+                                                                id="internshipStartDate{{ contractIndex }}"
                                                                 ng-required="mandatory"
-                                                                name="internshipStartDate{{ $index }}"
+                                                                name="internshipStartDate{{ contractIndex }}"
                                                                 ng-model="contract.internshipStartDate"
                                                                 ng-change="updateInitialRegistration(contract)"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="initialRegistration{{ $index }}"
+                                                            <label for="initialRegistration{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Cadastro Inicial
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <select name="initialRegistration{{ $index }}"
-                                                                id="initialRegistration{{ $index }}"
+                                                            <select name="initialRegistration{{ contractIndex }}"
+                                                                id="initialRegistration{{ contractIndex }}"
                                                                 ng-required="mandatory"
                                                                 ng-model="contract.initialRegistration"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10 disabled:opacity-50 disabled:bg-[#F9F9F9] disabled:cursor-not-allowed"
@@ -790,13 +793,13 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="internshipNature{{ $index }}"
+                                                            <label for="internshipNature{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Natureza Estágio
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <select name="internshipNature{{ $index }}"
-                                                                id="internshipNature{{ $index }}"
+                                                            <select name="internshipNature{{ contractIndex }}"
+                                                                id="internshipNature{{ contractIndex }}"
                                                                 ng-required="mandatory"
                                                                 ng-model="contract.internshipNature"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
@@ -808,13 +811,14 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="internshipLevel{{ $index }}"
+                                                            <label for="internshipLevel{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Nível Estágio
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <select name="internshipLevel{{ $index }}"
-                                                                id="internshipLevel{{ $index }}" ng-required="mandatory"
+                                                            <select name="internshipLevel{{ contractIndex }}"
+                                                                id="internshipLevel{{ contractIndex }}"
+                                                                ng-required="mandatory"
                                                                 ng-model="contract.internshipLevel"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                                 <option value="" disabled selected>Selecione o nível do
@@ -830,13 +834,14 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="internshipArea{{ $index }}"
+                                                            <label for="internshipArea{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Área Atuação Estágio
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <select name="internshipArea{{ $index }}"
-                                                                id="internshipArea{{ $index }}" ng-required="mandatory"
+                                                            <select name="internshipArea{{ contractIndex }}"
+                                                                id="internshipArea{{ contractIndex }}"
+                                                                ng-required="mandatory"
                                                                 ng-model="contract.internshipArea"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                                 <option value="" disabled selected>Selecione a área de
@@ -853,14 +858,15 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="insurancePolicyNumber{{ $index }}"
+                                                            <label for="insurancePolicyNumber{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Número Apólice Seguro
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <input type="text" id="insurancePolicyNumber{{ $index }}"
+                                                            <input type="text"
+                                                                id="insurancePolicyNumber{{ contractIndex }}"
                                                                 ng-required="mandatory"
-                                                                name="insurancePolicyNumber{{ $index }}"
+                                                                name="insurancePolicyNumber{{ contractIndex }}"
                                                                 ng-model="contract.insurancePolicyNumber"
                                                                 placeholder="Digite o número da apólice do seguro"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
@@ -868,13 +874,14 @@
                                                                 ng-keypress="lettersAndSpacesPattern($event, false)">
                                                         </div>
                                                         <div class="col-span-1 flex flex-col text-nowrap">
-                                                            <label for="internshipContractNumber{{ $index }}"
+                                                            <label for="internshipContractNumber{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Número Contrato Estágio
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <input type="text" id="internshipContractNumber{{ $index }}"
-                                                                name="internshipContractNumber{{ $index }}"
+                                                            <input type="text"
+                                                                id="internshipContractNumber{{ contractIndex }}"
+                                                                name="internshipContractNumber{{ contractIndex }}"
                                                                 ng-required="mandatory"
                                                                 ng-model="contract.internshipContractNumber"
                                                                 placeholder="Digite o número do contrato do estágio"
@@ -883,27 +890,27 @@
                                                                 ng-keypress="lettersAndSpacesPattern($event, true)">
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="internshipEndDateForecast{{ $index }}"
+                                                            <label for="internshipEndDateForecast{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Data Prevista Término Estágio
                                                                 <span class="text-red-500">*</span>
                                                             </label>
                                                             <input type="date"
-                                                                id="internshipEndDateForecast{{ $index }}"
-                                                                name="internshipEndDateForecast{{ $index }}"
+                                                                id="internshipEndDateForecast{{ contractIndex }}"
+                                                                name="internshipEndDateForecast{{ contractIndex }}"
                                                                 ng-required="mandatory"
                                                                 ng-model="contract.internshipEndDateForecast"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                         </div>
                                                         <div class="col-span-1 flex flex-col relative">
-                                                            <label for="educationalInstitutionCnpj{{ $index }}"
+                                                            <label for="educationalInstitutionCnpj{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 CNPJ Instituição Ensino
                                                                 <span class="text-red-500">*</span>
                                                             </label>
                                                             <input type="text"
-                                                                id="educationalInstitutionCnpj{{ $index }}"
-                                                                name="educationalInstitutionCnpj{{ $index }}"
+                                                                id="educationalInstitutionCnpj{{ contractIndex }}"
+                                                                name="educationalInstitutionCnpj{{ contractIndex }}"
                                                                 ng-required="mandatory"
                                                                 ng-model="contract.educationalInstitutionCnpj"
                                                                 placeholder="xx.xxx.xxx/xxxx-xx"
@@ -912,7 +919,7 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" viewBox="0 0 16 16" fill="none"
                                                                 class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                                ng-show="!(updateUserForm['educationalInstitutionCnpj' + $index].$invalid && updateUserForm['educationalInstitutionCnpj' + $index].$dirty) && contract.educationalInstitutionCnpj.length === 14">
+                                                                ng-show="!(updateUserForm['educationalInstitutionCnpj' + contractIndex].$invalid && updateUserForm['educationalInstitutionCnpj' + contractIndex].$dirty) && contract.educationalInstitutionCnpj.length === 14">
                                                                 <rect width="16" height="16" rx="8" fill="#00B359" />
                                                                 <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
                                                                 <path
@@ -923,7 +930,7 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" viewBox="0 0 16 16" fill="none"
                                                                 class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                                ng-show="updateUserForm['educationalInstitutionCnpj' + $index].$invalid && updateUserForm['educationalInstitutionCnpj' + $index].$dirty">
+                                                                ng-show="updateUserForm['educationalInstitutionCnpj' + contractIndex].$invalid && updateUserForm['educationalInstitutionCnpj' + contractIndex].$dirty">
                                                                 <rect width="16" height="16" rx="8" fill="#FF0000" />
                                                                 <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
                                                                 <path d="M4 4L12 12" stroke="white" stroke-width="2"
@@ -933,13 +940,14 @@
                                                             </svg>
                                                         </div>
                                                         <div class="col-span-1 flex flex-col relative">
-                                                            <label for="integratorAgentCnpj{{ $index }}"
+                                                            <label for="integratorAgentCnpj{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 CNPJ Agente Integrador
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <input type="text" id="integratorAgentCnpj{{ $index }}"
-                                                                name="integratorAgentCnpj{{ $index }}"
+                                                            <input type="text"
+                                                                id="integratorAgentCnpj{{ contractIndex }}"
+                                                                name="integratorAgentCnpj{{ contractIndex }}"
                                                                 ng-required="mandatory"
                                                                 ng-model="contract.integratorAgentCnpj"
                                                                 placeholder="xx.xxx.xxx/xxxx-xx"
@@ -948,7 +956,7 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" viewBox="0 0 16 16" fill="none"
                                                                 class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                                ng-show="!(updateUserForm['integratorAgentCnpj' + $index].$invalid && updateUserForm['integratorAgentCnpj' + $index].$dirty) && contract.integratorAgentCnpj.length === 14">
+                                                                ng-show="!(updateUserForm['integratorAgentCnpj' + contractIndex].$invalid && updateUserForm['integratorAgentCnpj' + contractIndex].$dirty) && contract.integratorAgentCnpj.length === 14">
                                                                 <rect width="16" height="16" rx="8" fill="#00B359" />
                                                                 <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
                                                                 <path
@@ -959,7 +967,7 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" viewBox="0 0 16 16" fill="none"
                                                                 class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                                ng-show="updateUserForm['integratorAgentCnpj' + $index].$invalid && updateUserForm['integratorAgentCnpj' + $index].$dirty">
+                                                                ng-show="updateUserForm['integratorAgentCnpj' + contractIndex].$invalid && updateUserForm['integratorAgentCnpj' + contractIndex].$dirty">
                                                                 <rect width="16" height="16" rx="8" fill="#FF0000" />
                                                                 <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
                                                                 <path d="M4 4L12 12" stroke="white" stroke-width="2"
@@ -969,13 +977,14 @@
                                                             </svg>
                                                         </div>
                                                         <div class="col-span-1 flex flex-col relative">
-                                                            <label for="supervisorCpf{{ $index }}"
+                                                            <label for="supervisorCpf{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 CPF Supervisor
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <input type="text" id="supervisorCpf{{ $index }}"
-                                                                name="supervisorCpf{{ $index }}" ng-required="mandatory"
+                                                            <input type="text" id="supervisorCpf{{ contractIndex }}"
+                                                                name="supervisorCpf{{ contractIndex }}"
+                                                                ng-required="mandatory"
                                                                 ng-model="contract.supervisorCpf"
                                                                 placeholder="xxx.xxx.xxx-xx"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10"
@@ -983,7 +992,7 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" viewBox="0 0 16 16" fill="none"
                                                                 class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                                ng-show="!(updateUserForm['supervisorCpf' + $index].$invalid && updateUserForm['supervisorCpf' + $index].$dirty) && contract.supervisorCpf.length === 11">
+                                                                ng-show="!(updateUserForm['supervisorCpf' + contractIndex].$invalid && updateUserForm['supervisorCpf' + contractIndex].$dirty) && contract.supervisorCpf.length === 11">
                                                                 <rect width="16" height="16" rx="8" fill="#00B359" />
                                                                 <circle cx="8" cy="8" r="7.5" stroke="#00B359" />
                                                                 <path
@@ -994,7 +1003,7 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" viewBox="0 0 16 16" fill="none"
                                                                 class="absolute right-2 top-7/10 transform -translate-y-1/2 transition duration-200"
-                                                                ng-show="updateUserForm['supervisorCpf' + $index].$invalid && updateUserForm['supervisorCpf' + $index].$dirty">
+                                                                ng-show="updateUserForm['supervisorCpf' + contractIndex].$invalid && updateUserForm['supervisorCpf' + contractIndex].$dirty">
                                                                 <rect width="16" height="16" rx="8" fill="#FF0000" />
                                                                 <circle cx="8" cy="8" r="7.5" stroke="#FF0000" />
                                                                 <path d="M4 4L12 12" stroke="white" stroke-width="2"
@@ -1004,14 +1013,14 @@
                                                             </svg>
                                                         </div>
                                                         <div class="col-span-1 flex flex-col">
-                                                            <label for="internshipEndDate{{ $index }}"
+                                                            <label for="internshipEndDate{{ contractIndex }}"
                                                                 class="text-black font-semibold">
                                                                 Data Fim Desligamento Estágio
                                                                 <span class="text-red-500">*</span>
                                                             </label>
-                                                            <input type="date" id="internshipEndDate{{ $index }}"
+                                                            <input type="date" id="internshipEndDate{{ contractIndex }}"
                                                                 ng-required="mandatory"
-                                                                name="internshipEndDate{{ $index }}"
+                                                                name="internshipEndDate{{ contractIndex }}"
                                                                 ng-model="contract.internshipEndDate"
                                                                 class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                         </div>
@@ -1031,7 +1040,7 @@
                                                         </button>
                                                     </div>
                                                     <div id="uploadDocumentModal"
-                                                        class="fixed inset-0 flex items-center justify-center bg-black/50 opacity-0 scale-95 pointer-events-none">
+                                                        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 opacity-0 scale-95 pointer-events-none">
                                                         <div id="uploadDocumentModalContent"
                                                             class="bg-white rounded-lg shadow-lg opacity-0 scale-95 transition-all duration-300 w-[800px] h-[480px]"
                                                             ng-click="$event.stopPropagation()">
@@ -1069,26 +1078,28 @@
                                                                             class="grid grid-cols-12 gap-x-4 gap-y-8 w-full">
                                                                             <div class="col-span-8 flex flex-col">
                                                                                 <label
-                                                                                    for="documentDescription{{ $index }}"
+                                                                                    for="documentDescription{{ contractIndex }}"
                                                                                     class="text-black font-semibold">
                                                                                     Descrição Documento
                                                                                     <span class="text-red-500">*</span>
                                                                                 </label>
                                                                                 <input type="text"
-                                                                                    id="documentDescription{{ $index }}"
-                                                                                    name="documentDescription{{ $index }}"
+                                                                                    id="documentDescription{{ contractIndex }}"
+                                                                                    name="documentDescription{{ contractIndex }}"
                                                                                     ng-model="contract.document.documentDescription"
                                                                                     placeholder="Contrato de Estágio"
                                                                                     class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                                             </div>
                                                                             <div class="col-span-4 flex flex-col">
-                                                                                <label for="documentType{{ $index }}"
+                                                                                <label
+                                                                                    for="documentType{{ contractIndex }}"
                                                                                     class="text-black font-semibold">
                                                                                     Tipo Documento
                                                                                     <span class="text-red-500">*</span>
                                                                                 </label>
-                                                                                <select name="documentType{{ $index }}"
-                                                                                    id="documentType{{ $index }}"
+                                                                                <select
+                                                                                    name="documentType{{ contractIndex }}"
+                                                                                    id="documentType{{ contractIndex }}"
                                                                                     ng-model="contract.document.documentType"
                                                                                     class="p-2 border border-[#C9C9C9] rounded-sm focus:outline-none h-10">
                                                                                     <option value="" disabled selected>
@@ -1121,12 +1132,12 @@
                                                                         <div
                                                                             class="flex gap-x-4 gap-y-8 w-full text-nowrap">
                                                                             <input type="file"
-                                                                                id="documentFile{{ $index }}"
-                                                                                name="documentFile{{ $index }}"
+                                                                                id="documentFile{{ contractIndex }}"
+                                                                                name="documentFile{{ contractIndex }}"
                                                                                 class="hidden"
-                                                                                ngf-select="handleFileUpload($index, $event)"
+                                                                                ngf-select="handleFileUpload(contractIndex, $event)"
                                                                                 accept=".pdf,.jpg,.png" />
-                                                                            <label for="documentFile{{ $index }}"
+                                                                            <label for="documentFile{{ contractIndex }}"
                                                                                 class="flex items-center justify-center gap-2 bg-[#2563EB] text-white rounded-md p-4 cursor-pointer hover:bg-blue-700 h-10">
                                                                                 <svg width="16" height="17"
                                                                                     viewBox="0 0 16 17" fill="none"
@@ -1164,7 +1175,7 @@
                                                                 </button>
                                                                 <button type="button"
                                                                     class="text-white px-4 py-2 bg-[#2563EB] rounded shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-blue-700"
-                                                                    ng-click="saveSelectedDocument(contract.document, $index)">
+                                                                    ng-click="saveSelectedDocument(contract.document, contractIndex)">
                                                                     Concluir
                                                                 </button>
                                                             </div>
@@ -1200,7 +1211,11 @@
                                                             </div>
                                                         </div>
                                                         <div class="flex flex-col gap-y-4">
-                                                            <div ng-repeat="doc in contract.documents track by $index"
+                                                            <div ng-show="contract.documents.length === 0"
+                                                                class="text-center text-gray-500 py-8">
+                                                                Nenhum documento cadastrado para este contrato.
+                                                            </div>
+                                                            <div ng-repeat="(docIndex, doc) in contract.documents"
                                                                 class="grid grid-cols-16 gap-4 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] rounded bg-white p-4 items-center">
                                                                 <div class="col-span-4 flex flex-col">
                                                                     <span ng-bind="doc.documentDescription"
@@ -1229,6 +1244,7 @@
                                                                 </div>
                                                                 <div class="col-span-4 flex gap-4">
                                                                     <button type="button"
+                                                                        ng-click="downloadDocument(doc)"
                                                                         class="flex items-center bg-blue-600 gap-2 px-4 py-2 text-white rounded h-10 hover:bg-blue-700 hover:cursor-pointer">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             width="20" height="20" viewBox="0 0 20 20"
@@ -1240,6 +1256,7 @@
                                                                         <span>Download</span>
                                                                     </button>
                                                                     <button type="button"
+                                                                        ng-click="editDocument(contractIndex, docIndex)"
                                                                         class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             width="20" height="20" viewBox="0 0 20 20"
@@ -1254,6 +1271,7 @@
                                                                         </svg>
                                                                     </button>
                                                                     <button type="button"
+                                                                        ng-click="deleteDocument(contractIndex, docIndex)"
                                                                         class="flex justify-center items-center p-2 rounded-lg h-10 w-10 aspect-square shadow-md bg-white hover:bg-gray-100 hover:cursor-pointer">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             width="20" height="20" viewBox="0 0 20 20"

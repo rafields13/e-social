@@ -265,11 +265,26 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         }
     };
 
-    $scope.handleFileUpload = function (index, event) {
+    $scope.lettersAndSpacesPattern = function (event, allowedNumbers = false) {
+        let pattern;
+        let char = String.fromCharCode(event.which);
+
+        if (allowedNumbers) {
+            pattern = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s-/]+$/;
+        } else {
+            pattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$/;
+        }
+
+        if (!pattern.test(char)) {
+            event.preventDefault();
+        }
+    };
+
+    $scope.handleFileUpload = function (contractIndex, event) {
         const file = event.target.files[0];
 
         if (file) {
-            $scope.user.contracts[index].document.documentFile = file;
+            $scope.user.contracts[contractIndex].document.documentFile = file;
             $scope.$apply();
         }
     };
@@ -332,7 +347,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
     async function sendDocumentToServer(doc) {
         const token = await generateToken();
 
-        const documentDescription = getUuid();
+        const documentDescription = doc.documentDescription;
         const containerId = getUuid();
         const uuid = getUuid();
 
@@ -356,47 +371,120 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         return data;
     }
 
-    $scope.saveSelectedDocument = async function (doc, index) {
-        if (_.isObject(doc) && !_.isEmpty(doc)) {
-            if (!doc.documentFile || !doc.documentFile.name) {
-                alert("Selecione um arquivo para upload");
-                return;
+    $scope.downloadDocument = async function (doc) {
+        if (
+            _.isObject(doc)
+            && !_.isEmpty(doc)
+        ) {
+            const token = await generateToken();
+            const url = `https://portalservicos.economia.df.gov.br/lowcode/document/download?uuid=${doc.serverDocumentId}`;
 
+            const res = await fetch(url, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (!res.ok) {
+                alert("Erro ao baixar documento");
+                return;
             }
 
-            if (!doc.documentType) {
-                alert("Selecione um tipo de documento");
-                return;
-            }
+            const blob = await res.blob();
+            const urlBlob = URL.createObjectURL(blob);
 
-            if (!doc.documentDescription) {
-                alert("Informe uma descrição para o documento");
-                return;
-            }
-
-            $scope.user.contracts[index].documents.push(doc);
-
-            await sendDocumentToServer(doc);
-
-            $scope.user.contracts[index].document = {};
-            $scope.closeModal("uploadDocumentModal");
-            alert("Documento salvo com sucesso!");
+            const a = document.createElement('a');
+            a.href = urlBlob;
+            a.download = doc.documentFile.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(urlBlob);
             return;
         }
-    }
 
-    $scope.lettersAndSpacesPattern = function (event, allowedNumbers = false) {
-        let pattern;
-        let char = String.fromCharCode(event.which);
+        alert("Documento inválido");
+        return;
+    };
 
-        if (allowedNumbers) {
-            pattern = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s-/]+$/;
-        } else {
-            pattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$/;
+    $scope.saveSelectedDocument = async function (doc, contractIndex) {
+        if (!_.isObject(doc) || _.isEmpty(doc)) return;
+
+        if (!doc.documentFile || !doc.documentFile.name) {
+            alert("Selecione um arquivo para upload");
+            return;
         }
 
-        if (!pattern.test(char)) {
-            event.preventDefault();
+        if (!doc.documentType) {
+            alert("Selecione um tipo de documento");
+            return;
+        }
+
+        if (!doc.documentDescription) {
+            alert("Informe uma descrição para o documento");
+            return;
+        }
+
+        const contract = $scope.user.contracts[contractIndex];
+
+        const docInServer = await sendDocumentToServer(doc);
+
+        if (!docInServer?.id) {
+            alert("Erro ao salvar documento no servidor");
+            return;
+        }
+
+        const documentData = {
+            documentDescription: doc.documentDescription,
+            documentType: doc.documentType,
+            serverDocumentId: docInServer.id,
+            documentFile: doc.documentFile
+        };
+
+        const idx = contract.editingDocumentIndex;
+
+        if (idx !== undefined) {
+            contract.documents[idx] = documentData;
+            delete contract.editingDocumentIndex;
+        } else {
+            contract.documents.push(documentData);
+        }
+
+        contract.document = {};
+        $scope.closeModal("uploadDocumentModal");
+        alert("Documento salvo com sucesso!");
+        $scope.$applyAsync();
+    };
+
+    $scope.editDocument = function (contractIndex, docIndex) {
+        const contract = $scope.user.contracts[contractIndex];
+        const doc = contract.documents[docIndex];
+
+        contract.editingDocumentIndex = docIndex;
+
+        contract.document = {
+            documentType: doc.documentType,
+            documentDescription: doc.documentDescription,
+            serverDocumentId: doc.serverDocumentId,
+            documentFile: doc.documentFile
+        };
+
+        $scope.openModal("uploadDocumentModal");
+    };
+
+    $scope.deleteDocument = function (contractIndex, docIndex) {
+        const confirmed = confirm("Tem certeza que deseja excluir este documento?");
+
+        if (!confirmed) return;
+
+        const contract = $scope.user.contracts[contractIndex];
+
+        if (contract && contract.documents && contract.documents.length > docIndex) {
+            contract.documents.splice(docIndex, 1);
+            alert("Documento removido com sucesso!");
+            $scope.$applyAsync();
+        } else {
+            alert("Erro ao tentar remover o documento.");
         }
     };
 }).directive('cpfValidator', function () {
