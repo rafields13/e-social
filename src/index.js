@@ -30,8 +30,12 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                     documentType: '',
                     documentDescription: ''
                 },
-                documents: []
-            }
+                documents: [],
+                recess: {},
+                recesses: [],
+                rescission: {},
+                rescissions: [],
+            },
         ],
     };
     $scope.countries = [];
@@ -140,7 +144,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         });
     };
 
-    $scope.closeModal = function (id) {
+    $scope.closeModal = function (id, contractIndex) {
         let body = document.querySelector("body");
         let modal = document.getElementById(id);
         let content = document.getElementById(id + "Content");
@@ -154,6 +158,11 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             modal.classList.remove("opacity-100", "scale-100", "pointer-events-auto");
             modal.classList.add("opacity-0", "scale-95", "pointer-events-none");
         }, 300);
+
+        if (contractIndex !== undefined) {
+            $scope.user.contracts[contractIndex].document = {};
+            $scope.$applyAsync();
+        }
     };
 
     $scope.submitForm = function (event) {
