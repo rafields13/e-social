@@ -1,11 +1,12 @@
 var app = angular.module("myApp", ["ui.utils.masks", "ngFileUpload"]);
 
-app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService, StreetTypeService) {
+app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService, StreetTypeService, AlertService) {
     // page initialization
     $timeout(async function () {
         $scope.states = await getStates();
         $scope.countries = CountriesService.getCountries();
         $scope.streetTypes = StreetTypeService.getStreetTypes();
+        $scope.$applyAsync();
     });
 
     // vars initialization
@@ -381,10 +382,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
     }
 
     $scope.downloadDocument = async function (doc) {
-        if (
-            _.isObject(doc)
-            && !_.isEmpty(doc)
-        ) {
+        if (_.isObject(doc) && !_.isEmpty(doc)) {
             const token = await generateToken();
             const url = `https://portalservicos.economia.df.gov.br/lowcode/document/download?uuid=${doc.serverDocumentId}`;
 
@@ -395,7 +393,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             });
 
             if (!res.ok) {
-                alert("Erro ao baixar documento");
+                AlertService.error("Erro ao baixar o documento. Verifique se o documento existe ou se você tem permissão para acessá-lo.");
                 return;
             }
 
@@ -412,7 +410,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
             return;
         }
 
-        alert("Documento inválido");
+        AlertService.error("Erro ao baixar o documento. Verifique se o documento existe ou se você tem permissão para acessá-lo.");
         return;
     };
 
@@ -420,17 +418,17 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         if (!_.isObject(doc) || _.isEmpty(doc)) return;
 
         if (!doc.documentFile || !doc.documentFile.name) {
-            alert("Selecione um arquivo para upload");
+            AlertService.info("Selecione um arquivo para o documento");
             return;
         }
 
         if (!doc.documentType) {
-            alert("Selecione um tipo de documento");
+            AlertService.info("Informe o tipo do documento");
             return;
         }
 
         if (!doc.documentDescription) {
-            alert("Informe uma descrição para o documento");
+            AlertService.info("Informe a descrição do documento");
             return;
         }
 
@@ -439,7 +437,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         const docInServer = await sendDocumentToServer(doc);
 
         if (!docInServer?.id) {
-            alert("Erro ao salvar documento no servidor");
+            AlertService.error("Erro ao tentar salvar o documento. Verifique se o arquivo é válido e tente novamente.");
             return;
         }
 
@@ -461,7 +459,7 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
 
         contract.document = {};
         $scope.closeModal("uploadDocumentModal");
-        alert("Documento salvo com sucesso!");
+        AlertService.success("Documento salvo com sucesso!");
         $scope.$applyAsync();
     };
 
@@ -481,19 +479,18 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
         $scope.openModal("uploadDocumentModal");
     };
 
-    $scope.deleteDocument = function (contractIndex, docIndex) {
-        const confirmed = confirm("Tem certeza que deseja excluir este documento?");
-
+    $scope.deleteDocument = async function (contractIndex, docIndex) {
+        const confirmed = await AlertService.confirm("Tem certeza que deseja excluir este documento?");
         if (!confirmed) return;
 
         const contract = $scope.user.contracts[contractIndex];
 
         if (contract && contract.documents && contract.documents.length > docIndex) {
             contract.documents.splice(docIndex, 1);
-            alert("Documento removido com sucesso!");
+            AlertService.success("Documento removido com sucesso!");
             $scope.$applyAsync();
         } else {
-            alert("Erro ao tentar remover o documento.");
+            AlertService.error("Erro ao tentar remover o documento. Tente novamente.");
         }
     };
 }).directive('cpfValidator', function () {
@@ -3146,5 +3143,136 @@ app.controller("MyCtrl", function ($scope, $timeout, $document, CountriesService
                 "nome": "Zigue-Zague"
             }
         ]
+    };
+}).service('AlertService', function ($timeout, $q) {
+    var modal = {
+        visible: false,
+        type: '',
+        message: '',
+        onClose: null,
+        onConfirm: null,
+        onCancel: null,
+        isConfirm: false
+    };
+
+    return {
+        getModal: function () {
+            return modal;
+        },
+        showModal: function (type, message, duration, onCloseCallback) {
+            modal.type = type;
+            modal.message = message;
+            modal.visible = true;
+            modal.isConfirm = false;
+            modal.onClose = function () {
+                modal.visible = false;
+                if (onCloseCallback) onCloseCallback();
+            };
+
+            if (duration) {
+                $timeout(() => modal.onClose(), duration);
+            }
+        },
+        success: function (message, duration, cb) {
+            this.showModal('success', message, duration, cb);
+        },
+        error: function (message, duration, cb) {
+            this.showModal('error', message, duration, cb);
+        },
+        info: function (message, duration, cb) {
+            this.showModal('info', message, duration, cb);
+        },
+        warning: function (message, duration, cb) {
+            this.showModal('warning', message, duration, cb);
+        },
+        confirm: function (message) {
+            const deferred = $q.defer();
+
+            modal.type = 'warning';
+            modal.message = message;
+            modal.visible = true;
+            modal.isConfirm = true;
+
+            modal.onConfirm = function () {
+                modal.visible = false;
+                deferred.resolve(true);
+            };
+            modal.onCancel = function () {
+                modal.visible = false;
+                deferred.resolve(false);
+            };
+
+            return deferred.promise;
+        }
+    };
+}).directive('customModal', function (AlertService) {
+    return {
+        restrict: 'E',
+        template: `
+        <div ng-if="modal.visible"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-300">
+            
+            <div class="bg-white rounded-2xl p-6 shadow-xl animate-fade-in-up w-[450px] h-[300px]">
+                <div class="flex flex-col justify-between items-center text-center h-full w-full">
+
+                    <div class="flex justify-center">
+                        <svg ng-if="modal.type === 'success'" xmlns="http://www.w3.org/2000/svg" width="60" height="60"
+                            viewBox="0 0 60 60" fill="none">
+                            <circle cx="30" cy="30" r="29" stroke="#28A745" stroke-width="2" />
+                            <path d="M16.1665 30L25.7886 39.6221C25.9931 39.8266 26.328 39.8155 26.5184 39.5978L43.6665 20"
+                                stroke="#28A745" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <svg ng-if="modal.type === 'warning'" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="30" r="29" stroke="#FF9700" stroke-width="2"/>
+                            <path d="M30.3681 12.5C29.0347 12.5 27.8125 13.8812 27.8125 15.6768V34.3232C27.8125 35.9807 28.9236 37.5 30.3681 37.5C31.8125 37.5 32.8125 36.1188 32.8125 34.3232V15.5387C32.8125 13.8812 31.7014 12.5 30.3681 12.5Z" fill="#FF9700"/>
+                            <path d="M30.3681 42.5C29.0347 42.5 27.8125 43.4804 27.8125 44.7549V45.2451C27.8125 46.4216 28.9236 47.5 30.3681 47.5C31.8125 47.5 32.8125 46.5196 32.8125 45.2451V44.7549C32.8125 43.4804 31.7014 42.5 30.3681 42.5Z" fill="#FF9700"/>
+                        </svg>
+                        <svg ng-if="modal.type === 'error'" xmlns="http://www.w3.org/2000/svg" width="60" height="60"
+                            viewBox="0 0 60 60" fill="none">
+                            <circle cx="30" cy="30" r="29" stroke="#DC3545" stroke-width="2" />
+                            <path d="M20 20L40 40M40 20L20 40" stroke="#DC3545" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <svg ng-if="modal.type === 'info'" xmlns="http://www.w3.org/2000/svg" width="60" height="60"
+                            viewBox="0 0 60 60" fill="none">
+                            <circle cx="30" cy="30" r="29" stroke="#17A2B8" stroke-width="2" />
+                            <line x1="30" y1="20" x2="30" y2="22" stroke="#17A2B8" stroke-width="2" stroke-linecap="round" />
+                            <line x1="30" y1="26" x2="30" y2="40" stroke="#17A2B8" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+
+                    <div class="px-4">
+                        <h1 class="text-lg font-semibold text-gray-800 break-words">{{ modal.message }}</h1>
+                    </div>
+
+                    <div class="self-stretch bg-[#D9D9D9] h-[1px] my-4"></div>
+
+                    <div ng-if="!modal.isConfirm">
+                        <button ng-click="modal.onClose()"
+                            class="px-5 py-2 rounded bg-blue-600 text-white font-medium hover:bg-blue-700 hover:cursor-pointer transition">
+                            OK
+                        </button>
+                    </div>
+
+                    <p ng-if="modal.isConfirm" class="text-gray-500 text-sm">Esta ação não poderá ser desfeita!</p>
+
+                    <div ng-if="modal.isConfirm" class="flex gap-4">
+                        <button type="button"
+                            class="px-4 py-2 bg-white rounded shadow-[0px_0px_3px_1px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-gray-100"
+                            ng-click="modal.onCancel()">
+                            Cancelar
+                        </button>
+                        <button type="button"
+                            class="text-white px-4 py-2 bg-[#2563EB] rounded shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] font-semibold hover:cursor-pointer hover:bg-blue-700"
+                            ng-click="modal.onConfirm()">
+                            Excluir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      `,
+        link: function (scope) {
+            scope.modal = AlertService.getModal();
+        }
     };
 });
